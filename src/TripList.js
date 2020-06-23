@@ -1,27 +1,22 @@
 import React from 'react'
 import Trip from './Trip'
-import { Button } from 'antd'
 
 class TripList extends React.Component {
-    deleteTrip = index => {
-        this.props.deleteTrip(index)
-    }
-    editTrip = index => {
-        this.props.editTrip(index)
-    }
-
     render() {
+        const handleDeleteTrip = this.props.deleteTrip
+        const handleEditTrip = this.props.editTrip
         const currentTrips = this.props.tripData.map((trip, index) => {
             return (
                 <div key={index}>
-                    <Trip title={trip.title} startDate={trip.startDate} endDate={trip.endDate} details={trip.details} />
-                    
-                    <Button type="link" onClick={() => this.editTrip(index)}>
-                        Edit
-                    </Button>
-                    <Button type="link" onClick={() => this.deleteTrip(index)}>
-                        Delete
-                    </Button>
+                    <Trip
+                        index={index}
+                        title={trip.title}
+                        startDate={trip.startDate}
+                        endDate={trip.endDate}
+                        details={trip.details}
+                        deleteTrip={handleDeleteTrip}
+                        editTrip={handleEditTrip}                        
+                        />
                 </div>
             )
         })
