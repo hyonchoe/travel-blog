@@ -1,4 +1,5 @@
 import React from 'react'
+import { Button, Input, Typography } from 'antd'
 
 class EditTrip extends React.Component {
     initialState = {
@@ -31,7 +32,7 @@ class EditTrip extends React.Component {
         
         return (
             <form>
-                <h1>Enter new trip</h1>
+                <Typography.Title>Enter new trip</Typography.Title>
                 <EditTripTitle 
                     value={this.state.title}
                     onChange={this.handleFieldsChanged} />
@@ -41,7 +42,7 @@ class EditTrip extends React.Component {
                 <EditTripDetails
                     value={this.state.details}
                     onChange={this.handleFieldsChanged} />
-                <input type="button" value={btnName} onClick={this.submitTrip} />
+                <Button type="primary" onClick={this.submitTrip}>{btnName}</Button>
             </form>
         )
     }
@@ -51,13 +52,12 @@ const EditTripTitle = props => {
     return (
         <div className="titleContainer">
             <label htmlFor="title">Trip Title</label>
-            <input 
+            <Input
                 type="text"
                 name="title"
                 id="title"
                 value={props.value}
-                onChange={props.onChange}
-                />
+                onChange={props.onChange}/>
         </div>
     )
 }
@@ -65,13 +65,12 @@ const EditTripDate = props => {
     return (
         <div className="dateContainer">
             <label htmlFor="date">Date of Trip</label>
-            <input 
+            <Input
                 type="text"
                 name="date"
                 id="date"
                 value={props.value}
-                onChange={props.onChange} 
-                />
+                onChange={props.onChange}/>            
         </div>
     )
 }
@@ -79,13 +78,12 @@ const EditTripDetails = props => {
     return (
         <div className="detailsContainer">
             <label htmlFor="details">Details</label>
-            <textarea 
-                type="text"
+            <Input.TextArea
                 name="details"
                 id="details"
                 value={props.value}
-                onChange={props.onChange}
-                />
+                autoSize={ {minRows:4, maxRows:20} }
+                onChange={props.onChange}/>
         </div>
     )
 }

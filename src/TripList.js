@@ -1,5 +1,6 @@
 import React from 'react'
 import Trip from './Trip'
+import { Button } from 'antd'
 
 class TripList extends React.Component {
     deleteTrip = index => {
@@ -14,15 +15,13 @@ class TripList extends React.Component {
             return (
                 <div key={index}>
                     <Trip title={trip.title} date={trip.date} details={trip.details} />
-                    <input 
-                        type="button"
-                        value="Edit"
-                        onClick={() => this.editTrip(index)}
-                         />
-                    <input
-                        type="button"
-                        value="Delete"
-                        onClick={() => this.deleteTrip(index)} />                                    
+                    
+                    <Button type="link" onClick={() => this.editTrip(index)}>
+                        Edit
+                    </Button>
+                    <Button type="link" onClick={() => this.deleteTrip(index)}>
+                        Delete
+                    </Button>
                 </div>
             )
         })

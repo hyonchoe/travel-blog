@@ -1,4 +1,5 @@
 import React from 'react'
+import { Typography, Card } from 'antd'
 
 class Trip extends React.Component {
     /**
@@ -8,23 +9,22 @@ class Trip extends React.Component {
     render() {
         return (
             <div className="tripContainer">
-                <TripTitle title={this.props.title}/>
-                <TripDate date={this.props.date} />
-                <TripDetails details={this.props.details} />
+                <Card
+                    title={this.props.title}
+                    hoverable={true}
+                    bordered={true}
+                    extra="More">
+                    <Card.Meta title={this.props.date}/>
+                    <TripDetails details={this.props.details} />
+                </Card>
             </div>
         )
     }
 }
 
-const TripTitle = (props) => {
-    return <h1>{props.title}</h1>
-}
-const TripDate = (props) => {
-    return <h4>{props.date}</h4>
-}
 const TripDetails = (props) => {
     return (
-        <textarea readOnly={true} value={props.details} />
+        <Typography.Paragraph>{props.details}</Typography.Paragraph>
     )
 }
 
