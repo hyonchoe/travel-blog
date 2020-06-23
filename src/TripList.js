@@ -14,7 +14,7 @@ class TripList extends React.Component {
         const currentTrips = this.props.tripData.map((trip, index) => {
             return (
                 <div key={index}>
-                    <Trip title={trip.title} date={trip.date} details={trip.details} />
+                    <Trip title={trip.title} startDate={trip.startDate} endDate={trip.endDate} details={trip.details} />
                     
                     <Button type="link" onClick={() => this.editTrip(index)}>
                         Edit

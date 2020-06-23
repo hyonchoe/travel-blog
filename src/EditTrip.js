@@ -1,10 +1,11 @@
 import React from 'react'
-import { Button, Input, Typography } from 'antd'
+import { Button, Input, Typography, DatePicker } from 'antd'
 
 class EditTrip extends React.Component {
     initialState = {
         title: '',
-        date: '',
+        startDate: null,
+        endDate: null,
         details: '',
     }
     state = (this.props.editTrip) ? this.props.editTrip : this.initialState
@@ -13,6 +14,12 @@ class EditTrip extends React.Component {
         const { name, value } = event.target
         this.setState({
             [name]: value,
+        })
+    }
+    handleDateFieldsChanged = (dates, datesStrings) => {
+        this.setState({
+            startDate: dates[0],
+            endDate: dates[1],
         })
     }
     submitTrip = () => {
@@ -37,8 +44,9 @@ class EditTrip extends React.Component {
                     value={this.state.title}
                     onChange={this.handleFieldsChanged} />
                 <EditTripDate
-                    value={this.state.date}
-                    onChange={this.handleFieldsChanged} />
+                    startDateValue={this.state.startDate}
+                    endDateValue={this.state.endDate}
+                    onChange={this.handleDateFieldsChanged} />
                 <EditTripDetails
                     value={this.state.details}
                     onChange={this.handleFieldsChanged} />
@@ -61,16 +69,17 @@ const EditTripTitle = props => {
         </div>
     )
 }
-const EditTripDate = props => {
+const EditTripDate = props => {    
     return (
         <div className="dateContainer">
             <label htmlFor="date">Date of Trip</label>
-            <Input
-                type="text"
+            <DatePicker.RangePicker
                 name="date"
                 id="date"
-                value={props.value}
-                onChange={props.onChange}/>            
+                allowClear={true}
+                value={[props.startDateValue, props.endDateValue]}
+                onChange={props.onChange}    
+            />
         </div>
     )
 }

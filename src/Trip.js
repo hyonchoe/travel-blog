@@ -7,6 +7,12 @@ class Trip extends React.Component {
      * when more actions can be taken, such as viewing images, and so on.
      */
     render() {
+        const dateFormat="dddd, MMMM Do YYYY"
+        let dateStr = this.props.startDate.format(dateFormat)
+        if (this.props.endDate){
+            dateStr += " - " + this.props.endDate.format(dateFormat)
+        }
+
         return (
             <div className="tripContainer">
                 <Card
@@ -14,7 +20,7 @@ class Trip extends React.Component {
                     hoverable={true}
                     bordered={true}
                     extra="More">
-                    <Card.Meta title={this.props.date}/>
+                    <Card.Meta title={dateStr}/>
                     <TripDetails details={this.props.details} />
                 </Card>
             </div>
