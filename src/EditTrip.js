@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Input, DatePicker, Form } from 'antd'
+import { Button, Input, DatePicker, Form, Space } from 'antd'
 
 const EditTrip = props => {
     const [form] = Form.useForm()
@@ -28,6 +28,9 @@ const EditTrip = props => {
         else{
             props.handleSubmit(tripData)
         }
+    }
+    const onCancel = () => {
+        props.handleCancel()
     }
 
     return (
@@ -76,7 +79,12 @@ const EditTrip = props => {
 
             <Form.Item
                 {...tailLayout} >
-                    <Button type="primary" htmlType="submit">{btnName}</Button>
+                    <Space>
+                        <Button type="primary" htmlType="submit">{btnName}</Button>
+                        {existingTrip && 
+                            <Button type="link" onClick={onCancel}>Cancel</Button>
+                        }
+                    </Space>
             </Form.Item>
         </Form>
     )

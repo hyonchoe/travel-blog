@@ -48,6 +48,9 @@ class App extends React.Component {
         })
         history.push('/')
     }
+    handleCancel = () => {
+        history.push('/')
+    }
     
     render() {
         const trips = this.state.trips
@@ -68,7 +71,9 @@ class App extends React.Component {
                                 editTrip={tripToEdit}
                                 editTripIndex={tripEditIndex}
                                 handleUpdate={this.handleUpdate}
-                                handleSubmit={this.handleSubmit} />
+                                handleSubmit={this.handleSubmit}
+                                handleCancel={this.handleCancel}
+                                />
                         </Route>
                     </Switch>
                 </Router>                    

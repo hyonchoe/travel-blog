@@ -1,4 +1,5 @@
 import React from 'react'
+import { Space } from 'antd'
 import Trip from './Trip'
 
 class TripList extends React.Component {
@@ -7,17 +8,22 @@ class TripList extends React.Component {
         const handleEditTrip = this.props.editTrip
         const currentTrips = this.props.tripData.map((trip, index) => {
             return (
-                <div key={index}>
-                    <Trip
-                        index={index}
-                        title={trip.title}
-                        startDate={trip.startDate}
-                        endDate={trip.endDate}
-                        details={trip.details}
-                        deleteTrip={handleDeleteTrip}
-                        editTrip={handleEditTrip}                        
-                        />
-                </div>
+                <Space
+                    direction="vertical"
+                    align="start"
+                    >
+                    <div key={index}>
+                        <Trip
+                            index={index}
+                            title={trip.title}
+                            startDate={trip.startDate}
+                            endDate={trip.endDate}
+                            details={trip.details}
+                            deleteTrip={handleDeleteTrip}
+                            editTrip={handleEditTrip}                        
+                            />
+                    </div>
+                </Space>
             )
         })
 
