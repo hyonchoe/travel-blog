@@ -1,7 +1,6 @@
 import React from 'react'
 import TripList from './TripList.js'
-import history from './history'
-import { Button } from 'antd'
+import { Empty } from 'antd'
 
 class Home extends React.Component {    
     render() {
@@ -11,15 +10,15 @@ class Home extends React.Component {
         
         return (
           <div className="homeContainer">
-            <Button
-              type="link"
-              onClick={() => history.push('/addTrip')}>
-                Add new trip
-            </Button>
-            <TripList
-              tripData={trips}
-              deleteTrip={handleDeleteTrip}
-              editTrip={handleEditTrip} />
+            { trips.length > 0 && 
+              <TripList
+                tripData={trips}
+                deleteTrip={handleDeleteTrip}
+                editTrip={handleEditTrip} />
+            }
+            { trips.length == 0 && 
+              <Empty />
+            }
           </div>
           )
       }    
