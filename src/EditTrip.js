@@ -1,100 +1,97 @@
 import React from 'react'
-import { Button, Input, Typography, DatePicker } from 'antd'
+import { Button, Input, DatePicker, Form } from 'antd'
 
-class EditTrip extends React.Component {
-    initialState = {
-        title: '',
-        startDate: null,
-        endDate: null,
-        details: '',
+const EditTrip = props => {
+    const [form] = Form.useForm()
+    const existingTrip = props.editTrip
+    let btnName = 'Submit'
+    if (existingTrip){
+        form.setFieldsValue({
+            title: existingTrip.title,
+            dates: [existingTrip.startDate, existingTrip.endDate],
+            details: existingTrip.details,
+        })
+        btnName = 'Update'
     }
-    state = (this.props.editTrip) ? this.props.editTrip : this.initialState
 
-    handleFieldsChanged = event => {
-        const { name, value } = event.target
-        this.setState({
-            [name]: value,
-        })
-    }
-    handleDateFieldsChanged = (dates, datesStrings) => {
-        this.setState({
-            startDate: dates[0],
-            endDate: dates[1],
-        })
-    }
-    submitTrip = () => {
-        if (this.props.editTrip){
-            this.props.handleUpdate(this.state, this.props.editTripIndex)
-            this.setState(this.initialState)
+    const onFinish = values => {
+        const tripData = {
+            title: values.title,
+            startDate: values.dates[0],
+            endDate: values.dates[1],
+            details: values.details,
+        }
+        
+        if (props.editTrip){
+            props.handleUpdate(tripData, props.editTripIndex)
         }
         else{
-            this.props.handleSubmit(this.state)
-            this.setState(this.initialState)
+            props.handleSubmit(tripData)
         }
-        
     }
 
-    render() {
-        const btnName = (this.props.editTrip) ? "Update" : "Submit"
-        
-        return (
-            <form>
-                <Typography.Title>Enter new trip</Typography.Title>
-                <EditTripTitle 
-                    value={this.state.title}
-                    onChange={this.handleFieldsChanged} />
-                <EditTripDate
-                    startDateValue={this.state.startDate}
-                    endDateValue={this.state.endDate}
-                    onChange={this.handleDateFieldsChanged} />
-                <EditTripDetails
-                    value={this.state.details}
-                    onChange={this.handleFieldsChanged} />
-                <Button type="primary" onClick={this.submitTrip}>{btnName}</Button>
-            </form>
-        )
-    }
-}
-
-const EditTripTitle = props => {
     return (
-        <div className="titleContainer">
-            <label htmlFor="title">Trip Title</label>
-            <Input
-                type="text"
+        <Form
+            {...layout}
+            form={form}
+            onFinish={onFinish} >
+            <Form.Item
+                label="Trip Title"
                 name="title"
-                id="title"
-                value={props.value}
-                onChange={props.onChange}/>
-        </div>
-    )
-}
-const EditTripDate = props => {    
-    return (
-        <div className="dateContainer">
-            <label htmlFor="date">Date of Trip</label>
-            <DatePicker.RangePicker
-                name="date"
-                id="date"
-                allowClear={true}
-                value={[props.startDateValue, props.endDateValue]}
-                onChange={props.onChange}    
-            />
-        </div>
-    )
-}
-const EditTripDetails = props => {
-    return (
-        <div className="detailsContainer">
-            <label htmlFor="details">Details</label>
-            <Input.TextArea
+                rules={[
+                    {
+                        required: true,
+                        message: 'Please input your trip title.',
+                    },
+                ]}
+                >
+                <Input />
+            </Form.Item>
+
+            <Form.Item
+                label="Date of Trip"
+                name="dates"
+                rules={[
+                    {
+                        required: true,
+                        message: 'Please input your trip date.',
+                    },
+                ]} >
+                <DatePicker.RangePicker
+                    allowClear={true} />
+            </Form.Item>
+            
+            <Form.Item
+                label="Details"
                 name="details"
-                id="details"
-                value={props.value}
-                autoSize={ {minRows:4, maxRows:20} }
-                onChange={props.onChange}/>
-        </div>
+                rules={[
+                    {
+                        required: true,
+                        message: 'Pleaes input your trip details.',
+                    },
+                ]} >
+                <Input.TextArea
+                    autoSize={ {minRows:4, maxRows:20} } />
+            </Form.Item>
+
+            <Form.Item
+                {...tailLayout} >
+                    <Button type="primary" htmlType="submit">{btnName}</Button>
+            </Form.Item>
+        </Form>
     )
 }
+
+const layout = {
+    labelCol: { span: 8 },
+    wrapperCol: { span: 16 },
+}
+const tailLayout = {
+    wrapperCol: {
+        offset: 8,
+        span: 16,
+    },
+}
+
 
 export default EditTrip
