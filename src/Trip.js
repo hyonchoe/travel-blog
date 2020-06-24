@@ -18,7 +18,6 @@ class Trip extends React.Component {
                                         editTrip={this.props.editTrip}
                                         deleteTrip={this.props.deleteTrip} />
         return (
-            
             <div className="tripContainer">
                 <Card
                     title={this.props.title}

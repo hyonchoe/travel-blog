@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Input, DatePicker, Form, Space } from 'antd'
+import { Button, Input, DatePicker, Form, Space, Row, Col } from 'antd'
 
 const EditTrip = props => {
     const [form] = Form.useForm()
@@ -34,9 +34,12 @@ const EditTrip = props => {
     }
 
     return (
+        <Row>
+            <Col span={4} />
+            <Col span={16}>
         <Form
-            {...layout}
             form={form}
+            layout="vertical"
             onFinish={onFinish} >
             <Form.Item
                 label="Trip Title"
@@ -77,8 +80,7 @@ const EditTrip = props => {
                     autoSize={ {minRows:4, maxRows:20} } />
             </Form.Item>
 
-            <Form.Item
-                {...tailLayout} >
+            <Form.Item >
                     <Space>
                         <Button type="primary" htmlType="submit">{btnName}</Button>
                         {existingTrip && 
@@ -86,7 +88,10 @@ const EditTrip = props => {
                         }
                     </Space>
             </Form.Item>
+            <Col span={4} />
         </Form>
+        </Col>
+        </Row>
     )
 }
 
