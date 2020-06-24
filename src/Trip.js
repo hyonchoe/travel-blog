@@ -12,6 +12,7 @@ class Trip extends React.Component {
         if (this.props.endDate){
             dateStr += " - " + this.props.endDate.format(dateFormat)
         }
+        
 
         const editDeleteActions = <CardAddlActions
                                         index={this.props.index}

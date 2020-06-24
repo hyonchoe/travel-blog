@@ -1,6 +1,7 @@
 import React from 'react'
 import { Switch, Route, Router, Link, useLocation } from 'react-router-dom'
-import { Layout, Menu } from 'antd';
+import { Layout, Menu } from 'antd'
+import moment from 'moment'
 
 import history from './history'
 import Home from './Home.js'
@@ -15,15 +16,35 @@ class App extends React.Component {
         /**
          * {
          *  title: 'asdf',
-         *  date: 'asdf',
+         *  startDate: null,
+         *  endDate: null,
          *  details: 'asdf',
          * },
          * ...
          */
-
          editTripIndex: null,
     }
     
+    componentDidMount() {
+        fetch('/trips')
+            .then(result => result.json())
+            .then(
+                (result) => {
+                    const curTrips = result.trips.map((trip) => {
+                        trip.startDate = moment(trip.startDate)
+                        trip.endDate = moment(trip.endDate)
+                        return trip
+                    })
+                    this.setState({
+                        trips: curTrips,
+                    })
+                },
+                (error) => {
+                    console.log(error)
+                }
+            )
+    }
+
     handleSubmit = trip => {
       this.setState({
           trips: [...this.state.trips, trip] 
