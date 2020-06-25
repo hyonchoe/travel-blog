@@ -24,5 +24,16 @@ export default {
         }
     
         return []
+    },
+
+    updateTrip: async (updatedTrip, tripId) => {
+        try {
+            let res = await axios.put(`/trips/${tripId}`, updatedTrip)
+            console.log(res)
+            return res
+        } catch (error) {
+            console.log(error)
+            return null
+        }
     }
 }

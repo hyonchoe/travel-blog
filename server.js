@@ -2,6 +2,7 @@ const express = require('express')
 const moment = require('moment')
 const { MongoClient } = require('mongodb')
 const { response } = require('express')
+const ObjectId = require("mongodb").ObjectID
 require('dotenv').config()
 
 const app = express()
@@ -54,18 +55,36 @@ app.post('/trips', (req, res) => {
             if (error){
                 return res.status(500).send(error)
             }
-            console.log("Post: " + result.result)
-            res.send(result.result)
+            res.send(result)
         })
     })
 })
 
-/*
 // Update existing trip (PUT)
 app.put('/trips/:tripId', (req, res) => {
-    //req.params.userId
-    res.send()
+    const mgClient = new MongoClient(uri, { useUnifiedTopology: true })
+    const tripId = req.params.tripId
+    const updatedTrip = {
+        title: req.body.title,
+        startDate: req.body.startDate,
+        endDate: req.body.endDate,
+        details:req.body.details,
+    }
+
+    mgClient.connect((error, client) => {
+        if(error){
+            throw error
+        }
+
+        client.db("trips").collection("tripInfo").updateOne({"_id": ObjectId(tripId)}, { $set: updatedTrip }, (error, result) => {
+            if (error) {
+                throw error
+            }
+            res.send(result)
+        })
+    })
 })
+/*
 // Delete existing trip (DEL)
 app.delete('/trips/:tripId', (req, res) => {
     //req.params.userId

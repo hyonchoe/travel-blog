@@ -25,7 +25,7 @@ class App extends React.Component {
               ...
          * ]
          */
-         editTripIndex: null,
+         editTripId: null,
     }
     
     async componentDidMount() {
@@ -33,28 +33,6 @@ class App extends React.Component {
         this.setState({
             trips: res
         })
-        /*
-        fetch('/trips')
-            .then(result => result.json())
-            .then(
-                (result) => {
-                    if (result.trips){
-                        const curTrips = result.trips.map((trip) => {
-                            trip.startDate = moment(trip.startDate)
-                            trip.endDate = moment(trip.endDate)
-                            return trip
-                        })
-    
-                        this.setState({
-                            trips: curTrips,
-                        })
-                    }
-                },
-                (error) => {
-                    console.log(error)
-                }
-            )
-        */
     }
 
     handleSubmit = async trip => {
@@ -72,18 +50,20 @@ class App extends React.Component {
             })
         })
     }
-    handleEditTrip = index => {
+    handleEditTrip = tripId => {
         this.setState({
-            editTripIndex: index,
+            editTripId: tripId,
         })
         history.push('/addTrip')
     }
-    handleUpdate = (updatedTrip, index) => {
-        const clone = this.state.trips.slice()
-        clone[index] = updatedTrip
+    handleUpdate = async (updatedTrip, tripId) => {
+        const res = await tripService.updateTrip(updatedTrip, tripId)
+        
         this.setState({
-            trips: clone,
-            editTripIndex: null,
+            trips: this.state.trips.map((trip) => {
+                return (trip._id === tripId) ? updatedTrip : trip
+            }),
+            editTripId: null,
         })
         history.push('/')
     }
@@ -93,8 +73,14 @@ class App extends React.Component {
     
     render() {
         const trips = this.state.trips
-        const tripEditIndex = this.state.editTripIndex
-        let tripToEdit = (tripEditIndex !== null) ? trips[tripEditIndex] : null
+        const tripEditId = this.state.editTripId
+        let tripToEdit = null
+        for(let i=0; tripEditId!== null && i<trips.length; i++){
+            if(trips[i]._id === tripEditId){
+                tripToEdit = trips[i]
+                break
+            }
+        }
 
         return (
             <div className="appContainer">
@@ -116,7 +102,7 @@ class App extends React.Component {
                                         <Route path="/addTrip">
                                             <EditTrip
                                                 editTrip={tripToEdit}
-                                                editTripIndex={tripEditIndex}
+                                                editTripId={tripEditId}
                                                 handleUpdate={this.handleUpdate}
                                                 handleSubmit={this.handleSubmit}
                                                 handleCancel={this.handleCancel}

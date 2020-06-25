@@ -6,7 +6,7 @@ class TripList extends React.Component {
     render() {
         const handleDeleteTrip = this.props.deleteTrip
         const handleEditTrip = this.props.editTrip
-        const currentTrips = this.props.tripData.map((trip, index) => {
+        const currentTrips = this.props.tripData.map((trip) => {
             return (
                     <Row
                         gutter={[8, 16]}
@@ -14,11 +14,11 @@ class TripList extends React.Component {
                         >
                         <Col span={4} />
                         <Col span={16}>
-                            <div key={index}>
+                            <div key={trip._id}>
                                 
                                     
                                         <Trip
-                                            index={index}
+                                            index={trip._id}
                                             title={trip.title}
                                             startDate={trip.startDate}
                                             endDate={trip.endDate}

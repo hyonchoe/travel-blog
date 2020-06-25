@@ -23,7 +23,7 @@ const EditTrip = props => {
         }
         
         if (props.editTrip){
-            props.handleUpdate(tripData, props.editTripIndex)
+            props.handleUpdate(tripData, props.editTripId)
         }
         else{
             props.handleSubmit(tripData)
