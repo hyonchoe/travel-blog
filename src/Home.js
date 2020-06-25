@@ -16,7 +16,7 @@ class Home extends React.Component {
                 deleteTrip={handleDeleteTrip}
                 editTrip={handleEditTrip} />
             }
-            { trips.length == 0 && 
+            { trips.length === 0 && 
               <Empty />
             }
           </div>

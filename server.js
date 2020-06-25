@@ -84,10 +84,23 @@ app.put('/trips/:tripId', (req, res) => {
         })
     })
 })
-/*
+
 // Delete existing trip (DEL)
 app.delete('/trips/:tripId', (req, res) => {
-    //req.params.userId
-    res.send()
+    const mgClient = new MongoClient(uri, { useUnifiedTopology: true })
+    const tripId = req.params.tripId
+
+    mgClient.connect((error, client) => {
+        if(error){
+            throw error
+        }
+
+        client.db("trips").collection("tripInfo").deleteOne({"_id": ObjectId(tripId)}, (error, result) => {
+            if (error) {
+                throw error
+            }
+            
+            res.send(result)
+        })
+    })
 })
-*/

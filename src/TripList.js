@@ -1,5 +1,5 @@
 import React from 'react'
-import { Space, Row, Col } from 'antd'
+import { Row, Col } from 'antd'
 import Trip from './Trip'
 
 class TripList extends React.Component {

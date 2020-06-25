@@ -1,7 +1,6 @@
 import React from 'react'
 import { Switch, Route, Router, Link, useLocation } from 'react-router-dom'
 import { Layout, Menu } from 'antd'
-import moment from 'moment'
 
 import history from './history'
 import Home from './Home.js'
@@ -13,8 +12,8 @@ const { Header, Content, Footer } = Layout
 
 class App extends React.Component {
     state = {
-        trips: [],
-        /**[
+        /**
+         * [
              {
                _id: '', (assigned from MongoDB)
                 title: 'asdf',
@@ -24,8 +23,9 @@ class App extends React.Component {
               },
               ...
          * ]
-         */
-         editTripId: null,
+         */        
+        trips: [],
+        editTripId: null,
     }
     
     async componentDidMount() {
@@ -38,15 +38,18 @@ class App extends React.Component {
     handleSubmit = async trip => {
         const res = await tripService.submitNewTrip(trip)
         console.log(res)
+        trip._id = res.data.insertedId
         this.setState({
             trips: [...this.state.trips, trip]
         })
         history.push('/')
     }
-    handleDeleteTrip = index => {
+    handleDeleteTrip = async tripId => {
+        const res = await tripService.deleteTrip(tripId)
+        console.log(res)
         this.setState({
-            trips: this.state.trips.filter((trip, i) => {
-                return i !== index
+            trips: this.state.trips.filter((trip) => {
+                return trip._id !== tripId
             })
         })
     }
@@ -58,10 +61,10 @@ class App extends React.Component {
     }
     handleUpdate = async (updatedTrip, tripId) => {
         const res = await tripService.updateTrip(updatedTrip, tripId)
-        
+        console.log(res)
         this.setState({
             trips: this.state.trips.map((trip) => {
-                return (trip._id === tripId) ? updatedTrip : trip
+                return (trip._id === tripId) ? {...trip, ...updatedTrip} : trip
             }),
             editTripId: null,
         })

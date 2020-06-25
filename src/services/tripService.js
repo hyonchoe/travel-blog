@@ -35,5 +35,16 @@ export default {
             console.log(error)
             return null
         }
+    },
+
+    deleteTrip: async (tripId) => {
+        try {
+            let res = await axios.delete(`/trips/${tripId}`)
+            console.log(res)
+            return res
+        } catch (error) {
+            console.log(error)
+            return null
+        }
     }
 }
