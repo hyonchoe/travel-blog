@@ -6,6 +6,7 @@ import moment from 'moment'
 import history from './history'
 import Home from './Home.js'
 import EditTrip from './EditTrip.js'
+import tripService from './services/tripService.js'
 import './App.css'
 
 const { Header, Content, Footer } = Layout
@@ -13,43 +14,56 @@ const { Header, Content, Footer } = Layout
 class App extends React.Component {
     state = {
         trips: [],
-        /**
-         * {
-         *  title: 'asdf',
-         *  startDate: null,
-         *  endDate: null,
-         *  details: 'asdf',
-         * },
-         * ...
+        /**[
+             {
+               _id: '', (assigned from MongoDB)
+                title: 'asdf',
+               startDate: null,
+               endDate: null,
+               details: 'asdf',
+              },
+              ...
+         * ]
          */
          editTripIndex: null,
     }
     
-    componentDidMount() {
+    async componentDidMount() {
+        const res = await tripService.getTrips()
+        this.setState({
+            trips: res
+        })
+        /*
         fetch('/trips')
             .then(result => result.json())
             .then(
                 (result) => {
-                    const curTrips = result.trips.map((trip) => {
-                        trip.startDate = moment(trip.startDate)
-                        trip.endDate = moment(trip.endDate)
-                        return trip
-                    })
-                    this.setState({
-                        trips: curTrips,
-                    })
+                    if (result.trips){
+                        const curTrips = result.trips.map((trip) => {
+                            trip.startDate = moment(trip.startDate)
+                            trip.endDate = moment(trip.endDate)
+                            return trip
+                        })
+    
+                        this.setState({
+                            trips: curTrips,
+                        })
+                    }
                 },
                 (error) => {
                     console.log(error)
                 }
             )
+        */
     }
 
-    handleSubmit = trip => {
-      this.setState({
-          trips: [...this.state.trips, trip] 
+    handleSubmit = async trip => {
+        const res = await tripService.submitNewTrip(trip)
+        console.log(res)
+        this.setState({
+            trips: [...this.state.trips, trip]
         })
-      history.push('/')
+        history.push('/')
     }
     handleDeleteTrip = index => {
         this.setState({
