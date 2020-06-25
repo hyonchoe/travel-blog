@@ -35,7 +35,16 @@ class Trip extends React.Component {
 
 const TripDetails = (props) => {
     return (
-        <Typography.Paragraph>{props.details}</Typography.Paragraph>
+        <Typography>
+            { 
+                props.details.split('\n').map( (line) => { 
+                    if (line) {
+                        return <p>{line}</p>
+                    }
+                    return ""
+                })
+            }
+        </Typography>
     )
 }
 const CardAddlActions = (props) => {
