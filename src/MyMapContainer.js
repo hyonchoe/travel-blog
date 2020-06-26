@@ -8,7 +8,8 @@ export default class MyMapContainer extends React.Component {
         
 		return (
 			<MyMap
-                center={this.props.center}
+				center={this.props.center}
+				searchResult={this.props.searchResult}
                 googleMapURL={mapURL}
 				loadingElement={<div style={{ height: `100%` }} />}
 				containerElement={<div style={{ height: `500px`, width: `500px` }} />}
