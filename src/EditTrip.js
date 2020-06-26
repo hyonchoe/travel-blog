@@ -1,7 +1,12 @@
-import React from 'react'
-import { Button, Input, DatePicker, Form, Space, Row, Col } from 'antd'
+import React, { useState } from 'react'
+import { Button, Input, DatePicker, Form, Space, Row, Col, Modal  } from 'antd'
+import './EditTrip.css'
+
 
 const EditTrip = props => {
+    const [modalShown, setModalShown] = useState(false)
+    const [fieldName, setFieldName] = useState('')
+    
     const [form] = Form.useForm()
     const existingTrip = props.editTrip
     let btnName = 'Submit'
@@ -20,6 +25,7 @@ const EditTrip = props => {
             startDate: values.dates[0],
             endDate: values.dates[1],
             details: values.details,
+            location: values.location,
         }
         
         if (props.editTrip){
@@ -31,6 +37,22 @@ const EditTrip = props => {
     }
     const onCancel = () => {
         props.handleCancel()
+    }
+
+    const openModal = (locFieldName) => {
+        setModalShown(true)
+        setFieldName(locFieldName)
+    }
+    const handleModalSubmit = () => {
+        setModalShown(false)
+        let updatedVal = {}
+        updatedVal[fieldName] = "AAAA"
+        form.setFieldsValue(updatedVal)
+        setFieldName('')
+    }
+    const handleModalCancel = () => {
+        setModalShown(false)
+        setFieldName('')
     }
 
     return (
@@ -80,7 +102,34 @@ const EditTrip = props => {
                     autoSize={ {minRows:4, maxRows:20} } />
             </Form.Item>
 
-            <Form.Item >
+            <Form.Item
+                label="Location"
+            >
+                <Form.Item
+                    name="location0"
+                    noStyle
+                >
+                    <Input readOnly={true} placeholder="Location" />
+                </Form.Item>
+                <Button type="link" onClick={() => { openModal("location0") }}>Select location</Button>
+
+                <Form.Item
+                    name="location1"
+                    noStyle
+                >
+                    <Input readOnly={true} placeholder="Location" />
+                </Form.Item>
+                <Button type="link" onClick={() => { openModal("location1") }}>Select location</Button>
+                <Form.Item
+                    name="location2"
+                    noStyle
+                >
+                    <Input readOnly={true} placeholder="Location" />
+                </Form.Item>
+                <Button type="link" onClick={() => { openModal("location2") }}>Select location</Button>
+            </Form.Item>
+
+            <Form.Item>
                     <Space>
                         <Button type="primary" htmlType="submit">{btnName}</Button>
                         {existingTrip && 
@@ -91,6 +140,7 @@ const EditTrip = props => {
             <Col span={4} />
         </Form>
         </Col>
+
         </Row>
     )
 }

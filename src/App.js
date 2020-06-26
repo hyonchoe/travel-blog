@@ -8,6 +8,8 @@ import EditTrip from './EditTrip.js'
 import tripService from './services/tripService.js'
 import './App.css'
 
+import Maptest from './Maptest.js'
+
 const { Header, Content, Footer } = Layout
 
 class App extends React.Component {
@@ -110,6 +112,9 @@ class App extends React.Component {
                                                 handleSubmit={this.handleSubmit}
                                                 handleCancel={this.handleCancel}
                                                 />
+                                        </Route>
+                                        <Route path="/testMap">
+                                            <Maptest />
                                         </Route>
                                     </Switch>
                         </Content>
