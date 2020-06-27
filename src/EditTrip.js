@@ -39,14 +39,6 @@ const EditTrip = props => {
         loc2: 'loc2',
         loc2Hidden: 'loc2' + hiddenSuffix,
     }
-    /*
-    const loc0 = 'loc0'
-    const loc0Hidden = loc0 + hiddenSuffix
-    const loc1 = 'loc1'
-    const loc1Hidden = loc1 + hiddenSuffix
-    const loc2 = 'loc2'
-    const loc2Hidden = loc2 + hiddenSuffix
-    */
 
     const getInitialMapCenter = () => {
         return {
@@ -73,14 +65,13 @@ const EditTrip = props => {
         let value = {}
         value[locFieldName] = addr.fmtAddr
         let locFieldNameLatLng = locFieldName + hiddenSuffix
-        value[locFieldNameLatLng] = markerLatLng.lat + latLngDelim + markerLatLng.lng
+        value[locFieldNameLatLng] = (markerLatLng.lat) ? markerLatLng.lat + latLngDelim + markerLatLng.lng : null
         form.setFieldsValue(value)
 
-        //TODO
         let disableBtnsValue = {}
         disableBtnsValue[locFieldName] = (form.getFieldValue(locFieldName) === '')
         setDisableDelBtns({...disableDelBtns, ...disableBtnsValue})
-        //
+
         setModalVisible(false)
         clearMapStates()
 
@@ -101,11 +92,10 @@ const EditTrip = props => {
         let reset = {}
         reset[curLocFieldName]=''
         form.setFieldsValue(reset)
-        //TODO
+
         let disableBtnsValue = {}
         disableBtnsValue[curLocFieldName] = true
         setDisableDelBtns({...disableDelBtns, ...disableBtnsValue})
-        //
     }
     const clearMapStates = () => {
         const resetAddr = getInitialAddr()
@@ -136,20 +126,35 @@ const EditTrip = props => {
     }
 
     const onFinish = values => {
+        const loc0Value = (values[locations.loc0Hidden]) ? 
+            {   
+                fmtAddr: values[locations.loc0],
+                latLng: values[locations.loc0Hidden].split(latLngDelim),
+            }
+            : null
+        const loc1Value = (values[locations.loc1Hidden]) ?
+            { 
+                fmtAddr: values[locations.loc1],
+                latLng: values[locations.loc1Hidden].split(latLngDelim),
+            }
+            : null
+        const loc2Value = (values[locations.loc2Hidden]) ?
+            { 
+                fmtAddr: values[locations.loc2],
+                latLng: values[locations.loc2Hidden].split(latLngDelim),
+            }
+            : null
+
         const tripData = {
             title: values.title,
             startDate: values.dates[0],
             endDate: values.dates[1],
             details: values.details,
             location: values.location,
+            loc0: loc0Value,
+            loc1: loc1Value,
+            loc2: loc2Value,
         }
-
-        const loc0FmtAddr = values[locations.loc0]
-        const loc0FmtAddrHidden = values[locations.loc0Hidden]
-        const loc1FmtAddr = values[locations.loc1]
-        const loc1FmtAddrHidden = values[locations.loc1Hidden]
-        const loc2FmtAddr = values[locations.loc2]
-        const loc2FmtAddrHidden = values[locations.loc2Hidden]
         
         if (props.editTrip){
             props.handleUpdate(tripData, props.editTripId)
