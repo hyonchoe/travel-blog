@@ -5,30 +5,26 @@ import './Maptest.css'
 import MyMapContainer from './MyMapContainer.js'
 
 const Maptest = props => {
+    const [markerLatLng, setMarkerLatLng] = useState({
+        lat: null,
+        lng: null,
+    })
+    const [mapCenter, setMapCenter] = useState({
+        // Default coordinate is New York, NY
+        lat: 40.730610,
+        lng: -73.935242,
+    })
     const [addr, setAddr] = useState({
         city: '',
         state: '',
         country: '',
         fmtAddr: '',
-      })
-      const [markerLatLng, setMarkerLatLng] = useState({
-        lat: null,
-        lng: null,
-      })
-      // Default coordinate is New York, NY
-      const [mapCenter, setMapCenter] = useState({
-        lat: 40.730610,
-        lng: -73.935242,
-      })
-
-    // Central park: lat:40.769361, lng: -73.977655
-    // NY: lat: 40.730610,  lng: -73.935242    
-    //const search = { lat:40.769361, lng: -73.977655 }
-    const [modalVisible, setModalVisible] = useState(false)
+      })    
     const [fieldInfo, setFieldInfo] = useState({
         fmtAddr: '',
     })
     const [disableDelBtn, setDisableDelBtn] = useState(true)
+    const [modalVisible, setModalVisible] = useState(false)    
 
     const getInitialFieldValue = () => {
         return { fmtAddr: '', }
@@ -89,7 +85,7 @@ const Maptest = props => {
         <Row>
             <Col span={4} />
             <Col span={10}>
-                <Input name="hacTest" readOnly={true} placeholder='Where did you go?' value={fieldInfo.fmtAddr}/>
+                <Input readOnly={true} placeholder='Where did you go?' value={fieldInfo.fmtAddr}/>
             </Col>
             <Col span={6}> 
                 <CloseCircleOutlined

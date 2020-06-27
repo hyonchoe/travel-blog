@@ -2,9 +2,6 @@ import React from "react";
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps";
 import Autocomplete from 'react-google-autocomplete'
 
-// Central park: lat:40.769361, lng: -73.977655
-// NY: lat: 40.730610,  lng: -73.935242
-
 const MyMap = withScriptjs(withGoogleMap((props) =>{
 
   const addrTypes = {
@@ -35,9 +32,6 @@ const MyMap = withScriptjs(withGoogleMap((props) =>{
     const country = findSpecificAddrComp(addrComponents, addrTypes.country)
     const fmtAddr = place.formatted_address
 
-    //TODO: update these to call prop functions
-    //setMapCenter({lat: newLat, lng: newLng})
-    //setMarkerLatLng({lat: newLat, lng: newLng})
     const locAddrInfo = {}
     locAddrInfo['city'] = city
     locAddrInfo['state'] = state
@@ -50,14 +44,6 @@ const MyMap = withScriptjs(withGoogleMap((props) =>{
 
     props.onLocSelected(locAddrInfo, locLatLngInfo)
   }
-
-  /**
-   * mapCenterLat={}
-mapCenterLng={}
-markerLat={}
-markerLng={}
-   */
-
   
   let markers = null
   if (props.searchMode){
