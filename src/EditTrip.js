@@ -1,12 +1,106 @@
 import React, { useState } from 'react'
 import { Button, Input, DatePicker, Form, Space, Row, Col, Modal  } from 'antd'
+import { CloseCircleOutlined } from '@ant-design/icons';
 import './EditTrip.css'
+import MyMapContainer from './MyMapContainer.js'
 
 
 const EditTrip = props => {
-    const [modalShown, setModalShown] = useState(false)
-    const [fieldName, setFieldName] = useState('')
-    
+    const [markerLatLng, setMarkerLatLng] = useState({
+        lat: null,
+        lng: null,
+    })
+    const [mapCenter, setMapCenter] = useState({
+        // Default coordinate is New York, NY
+        lat: 40.730610,
+        lng: -73.935242,
+    })
+    const [addr, setAddr] = useState({
+        city: '',
+        state: '',
+        country: '',
+        fmtAddr: '',
+      })    
+    const [disableDelBtn, setDisableDelBtn] = useState(true)
+    const [modalVisible, setModalVisible] = useState(false)        
+    const [locFieldName, setLocFieldName] = useState('')
+
+    const latLngDelim = ','
+    const hiddenSuffix = '_hidden'
+    const loc0 = 'loc0'
+    const loc0Hidden = loc0 + hiddenSuffix
+    const loc1 = 'loc1'
+    const loc1Hidden = loc1 + hiddenSuffix
+    const loc2 = 'loc2'
+    const loc2Hidden = loc2 + hiddenSuffix
+
+    const getInitialMapCenter = () => {
+        return {
+            lat: 40.730610,
+            lng: -73.935242,
+        }
+    }
+    const getInitialAddr = () => {
+        return {
+            city: '',
+            state: '',
+            country: '',
+            fmtAddr: '',
+        }
+    }
+    const getInitialMarker = () => {
+        return {
+            lat: null,
+            lng: null,
+        }
+    }
+
+    const handleModalOk = () => {
+        let value = {}
+        value[locFieldName] = addr.fmtAddr
+        let locFieldNameLatLng = locFieldName + hiddenSuffix
+        value[locFieldNameLatLng] = markerLatLng.lat + latLngDelim + markerLatLng.lng
+        form.setFieldsValue(value)
+
+        setDisableDelBtn(false)
+        setModalVisible(false)
+        clearMapStates()
+
+        setLocFieldName('')
+    }
+    const handleModalCancel = () => {
+        setModalVisible(false)
+        clearMapStates()
+
+        setLocFieldName('')
+    }
+    const onLocSelected = (locAddrInfo, locLatLngInfo) => {
+        setAddr(locAddrInfo)
+        setMarkerLatLng(locLatLngInfo)
+        setMapCenter(locLatLngInfo)
+    }
+    const clearLocation = (curLocFieldName) => {
+        let reset = {}
+        reset[curLocFieldName]=''
+        form.setFieldsValue(reset)
+        setDisableDelBtn(true)
+    }
+    const clearMapStates = () => {
+        const resetAddr = getInitialAddr()
+        const resetMarker = getInitialMarker()
+        const resetMapCenter = getInitialMapCenter()
+
+        setAddr(resetAddr)
+        setMarkerLatLng(resetMarker)
+        setMapCenter(resetMapCenter)
+    }
+
+    const onButtonClicked = (curLocFieldName) => {
+        setModalVisible(true)
+        setLocFieldName(curLocFieldName)
+    }
+
+
     const [form] = Form.useForm()
     const existingTrip = props.editTrip
     let btnName = 'Submit'
@@ -27,6 +121,13 @@ const EditTrip = props => {
             details: values.details,
             location: values.location,
         }
+
+        const loc0FmtAddr = values[loc0]
+        const loc0FmtAddrHidden = values[loc0Hidden]
+        const loc1FmtAddr = values[loc1]
+        const loc1FmtAddrHidden = values[loc1Hidden]
+        const loc2FmtAddr = values[loc2]
+        const loc2FmtAddrHidden = values[loc2Hidden]
         
         if (props.editTrip){
             props.handleUpdate(tripData, props.editTripId)
@@ -37,22 +138,6 @@ const EditTrip = props => {
     }
     const onCancel = () => {
         props.handleCancel()
-    }
-
-    const openModal = (locFieldName) => {
-        setModalShown(true)
-        setFieldName(locFieldName)
-    }
-    const handleModalSubmit = () => {
-        setModalShown(false)
-        let updatedVal = {}
-        updatedVal[fieldName] = "AAAA"
-        form.setFieldsValue(updatedVal)
-        setFieldName('')
-    }
-    const handleModalCancel = () => {
-        setModalShown(false)
-        setFieldName('')
     }
 
     return (
@@ -103,30 +188,70 @@ const EditTrip = props => {
             </Form.Item>
 
             <Form.Item
-                label="Location"
-            >
+                label="Location (up to three)" >
                 <Form.Item
-                    name="location0"
-                    noStyle
-                >
-                    <Input readOnly={true} placeholder="Location" />
+                    noStyle >                
+                    <Form.Item
+                        name={loc0}
+                        noStyle >
+                        <Input readOnly={true} placeholder='Where did you go?' />
+                    </Form.Item>
+                    <CloseCircleOutlined
+                        className="dynamic-delete-button"
+                        disabled={disableDelBtn}
+                        style={{ margin: '0 8px' }}
+                        onClick={() => clearLocation(loc0)} />
+                    <Button type="link" onClick={() => onButtonClicked(loc0)}>Select location</Button>                
                 </Form.Item>
-                <Button type="link" onClick={() => { openModal("location0") }}>Select location</Button>
+                <Form.Item 
+                    name={loc0Hidden}
+                    noStyle
+                    style={{ display: 'none' }} >
+                    <Input readOnly={true} style={{ display: 'none' }} />
+                </Form.Item>
+                <Form.Item
+                    noStyle >
+                    <Form.Item
+                        name={loc1}
+                        noStyle >
+                        <Input readOnly={true} placeholder='Where did you go?' />
+                    </Form.Item>
+                    <CloseCircleOutlined
+                        className="dynamic-delete-button"
+                        disabled={disableDelBtn}
+                        style={{ margin: '0 8px' }}
+                        onClick={() => clearLocation(loc1)}
+                    />
+                    <Button type="link" onClick={() => onButtonClicked(loc1)}>Select location</Button>                
+                </Form.Item>
+                <Form.Item 
+                    name={loc1Hidden}
+                    noStyle
+                    style={{ display: 'none' }} >
+                    <Input readOnly={true} style={{ display: 'none' }} />
+                </Form.Item>
+                <Form.Item
+                    noStyle >
+                    <Form.Item
+                        name={loc2}
+                        noStyle >
+                        <Input readOnly={true} placeholder='Where did you go?' />
+                    </Form.Item>
+                    <CloseCircleOutlined
+                        className="dynamic-delete-button"
+                        disabled={disableDelBtn}
+                        style={{ margin: '0 8px' }}
+                        onClick={() => clearLocation(loc2)}
+                    />
+                    <Button type="link" onClick={() => onButtonClicked(loc2)}>Select location</Button>                
+                </Form.Item>
+                <Form.Item 
+                    name={loc2Hidden}
+                    noStyle
+                    style={{ display: 'none' }} >
+                    <Input readOnly={true} style={{ display: 'none' }} />
+                </Form.Item>                
 
-                <Form.Item
-                    name="location1"
-                    noStyle
-                >
-                    <Input readOnly={true} placeholder="Location" />
-                </Form.Item>
-                <Button type="link" onClick={() => { openModal("location1") }}>Select location</Button>
-                <Form.Item
-                    name="location2"
-                    noStyle
-                >
-                    <Input readOnly={true} placeholder="Location" />
-                </Form.Item>
-                <Button type="link" onClick={() => { openModal("location2") }}>Select location</Button>
             </Form.Item>
 
             <Form.Item>
@@ -140,6 +265,24 @@ const EditTrip = props => {
             <Col span={4} />
         </Form>
         </Col>
+
+        <Modal
+            title="Search for the trip location"
+            visible={modalVisible}
+            bodyStyle={{height: '550px'}}
+            width="500px"
+            maskClosable={false}
+            onOk={handleModalOk}
+            onCancel={handleModalCancel} >
+            <MyMapContainer
+                    searchMode={true}
+                    tripLocations={null}
+                    mapCenterLat={mapCenter.lat}
+                    mapCenterLng={mapCenter.lng}
+                    markerLat={markerLatLng.lat}
+                    markerLng={markerLatLng.lng}
+                    onLocSelected={onLocSelected} />
+        </Modal>
 
         </Row>
     )
