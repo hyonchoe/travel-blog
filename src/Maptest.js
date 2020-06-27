@@ -102,7 +102,7 @@ const Maptest = props => {
                 visible={modalVisible}
                 bodyStyle={{height: '550px'}}
                 width="500px"
-
+                maskClosable={false}
                 onOk={handleModalOk}
                 onCancel={handleModalCancel}
             >
