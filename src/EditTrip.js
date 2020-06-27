@@ -126,34 +126,37 @@ const EditTrip = props => {
     }
 
     const onFinish = values => {
-        const loc0Value = (values[locations.loc0Hidden]) ? 
-            {   
+        let counter = 0
+        let locationData = []
+        
+        if (values[locations.loc0Hidden]){
+            locationData[counter] = {
                 fmtAddr: values[locations.loc0],
                 latLng: values[locations.loc0Hidden].split(latLngDelim),
             }
-            : null
-        const loc1Value = (values[locations.loc1Hidden]) ?
-            { 
+            counter++
+        }
+        if (values[locations.loc1Hidden]){
+            locationData[counter] = {
                 fmtAddr: values[locations.loc1],
-                latLng: values[locations.loc1Hidden].split(latLngDelim),
+                latLng: values[locations.loc1Hidden].split(latLngDelim),                
             }
-            : null
-        const loc2Value = (values[locations.loc2Hidden]) ?
-            { 
+            counter++
+        }
+        if (values[locations.loc2Hidden]){
+            locationData[counter] = {
                 fmtAddr: values[locations.loc2],
                 latLng: values[locations.loc2Hidden].split(latLngDelim),
             }
-            : null
+            counter++
+        }
 
         const tripData = {
             title: values.title,
             startDate: values.dates[0],
             endDate: values.dates[1],
             details: values.details,
-            location: values.location,
-            loc0: loc0Value,
-            loc1: loc1Value,
-            loc2: loc2Value,
+            locations: locationData,
         }
         
         if (props.editTrip){
