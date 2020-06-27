@@ -29,15 +29,24 @@ const EditTrip = props => {
     const [modalVisible, setModalVisible] = useState(false)        
     const [locFieldName, setLocFieldName] = useState('')
 
-
     const latLngDelim = ','
     const hiddenSuffix = '_hidden'
+    const locations = {
+        loc0: 'loc0',
+        loc0Hidden: 'loc0' + hiddenSuffix,
+        loc1: 'loc1',
+        loc1Hidden: 'loc1' + hiddenSuffix,
+        loc2: 'loc2',
+        loc2Hidden: 'loc2' + hiddenSuffix,
+    }
+    /*
     const loc0 = 'loc0'
     const loc0Hidden = loc0 + hiddenSuffix
     const loc1 = 'loc1'
     const loc1Hidden = loc1 + hiddenSuffix
     const loc2 = 'loc2'
     const loc2Hidden = loc2 + hiddenSuffix
+    */
 
     const getInitialMapCenter = () => {
         return {
@@ -135,12 +144,12 @@ const EditTrip = props => {
             location: values.location,
         }
 
-        const loc0FmtAddr = values[loc0]
-        const loc0FmtAddrHidden = values[loc0Hidden]
-        const loc1FmtAddr = values[loc1]
-        const loc1FmtAddrHidden = values[loc1Hidden]
-        const loc2FmtAddr = values[loc2]
-        const loc2FmtAddrHidden = values[loc2Hidden]
+        const loc0FmtAddr = values[locations.loc0]
+        const loc0FmtAddrHidden = values[locations.loc0Hidden]
+        const loc1FmtAddr = values[locations.loc1]
+        const loc1FmtAddrHidden = values[locations.loc1Hidden]
+        const loc2FmtAddr = values[locations.loc2]
+        const loc2FmtAddrHidden = values[locations.loc2Hidden]
         
         if (props.editTrip){
             props.handleUpdate(tripData, props.editTripId)
@@ -205,7 +214,7 @@ const EditTrip = props => {
                 <Form.Item
                     noStyle >                
                     <Form.Item
-                        name={loc0}
+                        name={locations.loc0}
                         noStyle >
                         <Input readOnly={true} placeholder='Where did you go?' />
                     </Form.Item>
@@ -213,11 +222,11 @@ const EditTrip = props => {
                         className="dynamic-delete-button"
                         disabled={disableDelBtns.loc0}
                         style={{ margin: '0 8px' }}
-                        onClick={() => clearLocation(loc0)} />
-                    <Button type="link" onClick={() => onButtonClicked(loc0)}>Select location</Button>                
+                        onClick={() => clearLocation(locations.loc0)} />
+                    <Button type="link" onClick={() => onButtonClicked(locations.loc0)}>Select location</Button>                
                 </Form.Item>
                 <Form.Item 
-                    name={loc0Hidden}
+                    name={locations.loc0Hidden}
                     noStyle
                     style={{ display: 'none' }} >
                     <Input readOnly={true} style={{ display: 'none' }} />
@@ -225,7 +234,7 @@ const EditTrip = props => {
                 <Form.Item
                     noStyle >
                     <Form.Item
-                        name={loc1}
+                        name={locations.loc1}
                         noStyle >
                         <Input readOnly={true} placeholder='Where did you go?' />
                     </Form.Item>
@@ -233,12 +242,12 @@ const EditTrip = props => {
                         className="dynamic-delete-button"
                         disabled={disableDelBtns.loc1}
                         style={{ margin: '0 8px' }}
-                        onClick={() => clearLocation(loc1)}
+                        onClick={() => clearLocation(locations.loc1)}
                     />
-                    <Button type="link" onClick={() => onButtonClicked(loc1)}>Select location</Button>                
+                    <Button type="link" onClick={() => onButtonClicked(locations.loc1)}>Select location</Button>                
                 </Form.Item>
                 <Form.Item 
-                    name={loc1Hidden}
+                    name={locations.loc1Hidden}
                     noStyle
                     style={{ display: 'none' }} >
                     <Input readOnly={true} style={{ display: 'none' }} />
@@ -246,7 +255,7 @@ const EditTrip = props => {
                 <Form.Item
                     noStyle >
                     <Form.Item
-                        name={loc2}
+                        name={locations.loc2}
                         noStyle >
                         <Input readOnly={true} placeholder='Where did you go?' />
                     </Form.Item>
@@ -254,12 +263,12 @@ const EditTrip = props => {
                         className="dynamic-delete-button"
                         disabled={disableDelBtns.loc2}
                         style={{ margin: '0 8px' }}
-                        onClick={() => clearLocation(loc2)}
+                        onClick={() => clearLocation(locations.loc2)}
                     />
-                    <Button type="link" onClick={() => onButtonClicked(loc2)}>Select location</Button>                
+                    <Button type="link" onClick={() => onButtonClicked(locations.loc2)}>Select location</Button>                
                 </Form.Item>
                 <Form.Item 
-                    name={loc2Hidden}
+                    name={locations.loc2Hidden}
                     noStyle
                     style={{ display: 'none' }} >
                     <Input readOnly={true} style={{ display: 'none' }} />
