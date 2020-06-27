@@ -20,10 +20,15 @@ const EditTrip = props => {
         state: '',
         country: '',
         fmtAddr: '',
-      })    
-    const [disableDelBtn, setDisableDelBtn] = useState(true)
+    })
+    const [disableDelBtns, setDisableDelBtns] = useState({
+        loc0: true,
+        loc1: true,
+        loc2: true,
+    })
     const [modalVisible, setModalVisible] = useState(false)        
     const [locFieldName, setLocFieldName] = useState('')
+
 
     const latLngDelim = ','
     const hiddenSuffix = '_hidden'
@@ -62,7 +67,11 @@ const EditTrip = props => {
         value[locFieldNameLatLng] = markerLatLng.lat + latLngDelim + markerLatLng.lng
         form.setFieldsValue(value)
 
-        setDisableDelBtn(false)
+        //TODO
+        let disableBtnsValue = {}
+        disableBtnsValue[locFieldName] = (form.getFieldValue(locFieldName) === '')
+        setDisableDelBtns({...disableDelBtns, ...disableBtnsValue})
+        //
         setModalVisible(false)
         clearMapStates()
 
@@ -83,7 +92,11 @@ const EditTrip = props => {
         let reset = {}
         reset[curLocFieldName]=''
         form.setFieldsValue(reset)
-        setDisableDelBtn(true)
+        //TODO
+        let disableBtnsValue = {}
+        disableBtnsValue[curLocFieldName] = true
+        setDisableDelBtns({...disableDelBtns, ...disableBtnsValue})
+        //
     }
     const clearMapStates = () => {
         const resetAddr = getInitialAddr()
@@ -198,7 +211,7 @@ const EditTrip = props => {
                     </Form.Item>
                     <CloseCircleOutlined
                         className="dynamic-delete-button"
-                        disabled={disableDelBtn}
+                        disabled={disableDelBtns.loc0}
                         style={{ margin: '0 8px' }}
                         onClick={() => clearLocation(loc0)} />
                     <Button type="link" onClick={() => onButtonClicked(loc0)}>Select location</Button>                
@@ -218,7 +231,7 @@ const EditTrip = props => {
                     </Form.Item>
                     <CloseCircleOutlined
                         className="dynamic-delete-button"
-                        disabled={disableDelBtn}
+                        disabled={disableDelBtns.loc1}
                         style={{ margin: '0 8px' }}
                         onClick={() => clearLocation(loc1)}
                     />
@@ -239,7 +252,7 @@ const EditTrip = props => {
                     </Form.Item>
                     <CloseCircleOutlined
                         className="dynamic-delete-button"
-                        disabled={disableDelBtn}
+                        disabled={disableDelBtns.loc2}
                         style={{ margin: '0 8px' }}
                         onClick={() => clearLocation(loc2)}
                     />
