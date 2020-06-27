@@ -5,43 +5,84 @@ import './Maptest.css'
 import MyMapContainer from './MyMapContainer.js'
 
 const Maptest = props => {
+    const [addr, setAddr] = useState({
+        city: '',
+        state: '',
+        country: '',
+        fmtAddr: '',
+      })
+      const [markerLatLng, setMarkerLatLng] = useState({
+        lat: null,
+        lng: null,
+      })
+      // Default coordinate is New York, NY
+      const [mapCenter, setMapCenter] = useState({
+        lat: 40.730610,
+        lng: -73.935242,
+      })
+
     // Central park: lat:40.769361, lng: -73.977655
     // NY: lat: 40.730610,  lng: -73.935242    
     //const search = { lat:40.769361, lng: -73.977655 }
     const [modalVisible, setModalVisible] = useState(false)
-    const [selectedLoc, setSelectedLoc] = useState({
-        lat: null,
-        lng: null,
-        fmtAddr: '',
-    })
     const [fieldInfo, setFieldInfo] = useState({
         fmtAddr: '',
     })
     const [disableDelBtn, setDisableDelBtn] = useState(true)
 
-    const getInitialLocValue = () => {
+    const getInitialFieldValue = () => {
         return { fmtAddr: '', }
+    }
+    const getInitialMapCenter = () => {
+        return {
+            lat: 40.730610,
+            lng: -73.935242,
+        }
+    }
+    const getInitialAddr = () => {
+        return {
+            city: '',
+            state: '',
+            country: '',
+            fmtAddr: '',
+        }
+    }
+    const getInitialMarker = () => {
+        return {
+            lat: null,
+            lng: null,
+        }
     }
 
     const handleModalOk = () => {
-        const loc = { fmtAddr: selectedLoc.fmtAddr}
+        const loc = { fmtAddr: addr.fmtAddr}
         setFieldInfo(loc)
         setDisableDelBtn(false)
         setModalVisible(false)
+        clearMapStates()
     }
     const handleModalCancel = () => {
         setModalVisible(false)
+        clearMapStates()
     }
-    const onLocSelected = (fmtAddr, latlng) => {
-        let lala = {}
-        lala['fmtAddr'] = fmtAddr
-
-        setSelectedLoc({...selectedLoc, ...lala})
+    const onLocSelected = (locAddrInfo, locLatLngInfo) => {
+        setAddr(locAddrInfo)
+        setMarkerLatLng(locLatLngInfo)
+        setMapCenter(locLatLngInfo)
     }
     const clearLocation = () => {
-        const reset = getInitialLocValue()
+        const reset = getInitialFieldValue()
         setFieldInfo(reset)
         setDisableDelBtn(true)
+    }
+    const clearMapStates = () => {
+        const resetAddr = getInitialAddr()
+        const resetMarker = getInitialMarker()
+        const resetMapCenter = getInitialMapCenter()
+
+        setAddr(resetAddr)
+        setMarkerLatLng(resetMarker)
+        setMapCenter(resetMapCenter)
     }
 
     return (
@@ -51,13 +92,13 @@ const Maptest = props => {
                 <Input name="hacTest" readOnly={true} placeholder='Where did you go?' value={fieldInfo.fmtAddr}/>
             </Col>
             <Col span={6}> 
-                <Button type="link" onClick={() => setModalVisible(true)}>Select location</Button>
                 <CloseCircleOutlined
                       className="dynamic-delete-button"
                       disabled={disableDelBtn}
                       style={{ margin: '0 8px' }}
                       onClick={() => clearLocation()}
                 />
+                <Button type="link" onClick={() => setModalVisible(true)}>Select location</Button>
             </Col>
             <Col span={4} />
             <Modal
@@ -72,6 +113,10 @@ const Maptest = props => {
                 <MyMapContainer
                         searchMode={true}
                         tripLocations={null}
+                        mapCenterLat={mapCenter.lat}
+                        mapCenterLng={mapCenter.lng}
+                        markerLat={markerLatLng.lat}
+                        markerLng={markerLatLng.lng}
                         onLocSelected={onLocSelected}
                         />
             </Modal>

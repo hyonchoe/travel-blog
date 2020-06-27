@@ -10,6 +10,10 @@ export default class MyMapContainer extends React.Component {
 			<MyMap
 				searchMode={this.props.searchMode}
 				tripLocations={this.props.tripLocations}
+				mapCenterLat={ this.props.mapCenterLat }
+				mapCenterLng={ this.props.mapCenterLng }
+				markerLat={ this.props.markerLat }
+				markerLng={ this.props.markerLng }
 				onLocSelected={this.props.onLocSelected}
                 googleMapURL={mapURL}
 				loadingElement={<div style={{ height: `100%` }} />}
