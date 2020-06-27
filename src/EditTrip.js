@@ -170,151 +170,159 @@ const EditTrip = props => {
         props.handleCancel()
     }
 
+    const layout = {
+        labelCol: { span: 8 },
+        wrapperCol: { span: 10, },
+    }
+    const tailLayout = {
+        wrapperCol: { offset: 8, span: 12 }
+    }
+
     return (
-        <Row>
-            <Col span={4} />
-            <Col span={16}>
         <Form
             form={form}
-            layout="vertical"
+            {...layout}
+            layout="horizontal"
             onFinish={onFinish} >
-            <Form.Item
-                label="Trip Title"
-                name="title"
-                rules={[
-                    {
-                        required: true,
-                        message: 'Please input your trip title.',
-                    },
-                ]}
-                >
-                <Input />
-            </Form.Item>
+                <Form.Item
+                    label="Trip Title"
+                    name="title"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input your trip title.',
+                        },
+                    ]}
+                    >
+                    <Input />
+                </Form.Item>
 
-            <Form.Item
-                label="Date of Trip"
-                name="dates"
-                rules={[
-                    {
-                        required: true,
-                        message: 'Please input your trip date.',
-                    },
-                ]} >
-                <DatePicker.RangePicker
-                    allowClear={true} />
-            </Form.Item>
+                <Form.Item
+                    label="Date of Trip"
+                    name="dates"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input your trip date.',
+                        },
+                    ]} >
+                    <DatePicker.RangePicker
+                        allowClear={true} />
+                </Form.Item>
+
             
-            <Form.Item
-                label="Details"
-                name="details"
-                rules={[
-                    {
-                        required: true,
-                        message: 'Pleaes input your trip details.',
-                    },
-                ]} >
-                <Input.TextArea
-                    autoSize={ {minRows:4, maxRows:20} } />
-            </Form.Item>
 
-            <Form.Item
-                label="Location (up to three)" >
                 <Form.Item
-                    noStyle >                
-                    <Form.Item
-                        name={locations.loc0}
-                        noStyle >
-                        <Input readOnly={true} placeholder='Where did you go?' />
-                    </Form.Item>
-                    <CloseCircleOutlined
-                        className="dynamic-delete-button"
-                        disabled={disableDelBtns.loc0}
-                        style={{ margin: '0 8px' }}
-                        onClick={() => clearLocation(locations.loc0)} />
-                    <Button type="link" onClick={() => onButtonClicked(locations.loc0)}>Select location</Button>                
+                    label="Details"
+                    name="details"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Pleaes input your trip details.',
+                        },
+                    ]} >
+                    <Input.TextArea
+                        autoSize={ {minRows:4, maxRows:20} } />
                 </Form.Item>
-                <Form.Item 
-                    name={locations.loc0Hidden}
-                    noStyle
-                    style={{ display: 'none' }} >
-                    <Input readOnly={true} style={{ display: 'none' }} />
-                </Form.Item>
+            
                 <Form.Item
-                    noStyle >
+                    label="Location (up to three)" >
                     <Form.Item
-                        name={locations.loc1}
-                        noStyle >
-                        <Input readOnly={true} placeholder='Where did you go?' />
+                        style={{display: 'block', margin: '0'}} >
+                        <Form.Item
+                            name={locations.loc0}
+                            style={{ display: 'inline-block' }}
+                             >
+                            <Input readOnly={true} placeholder='Where did you go?' />
+                        </Form.Item>
+                        <CloseCircleOutlined
+                            className="dynamic-delete-button"
+                            disabled={disableDelBtns.loc0}
+                            style={{ margin: '0 8px' }}
+                            onClick={() => clearLocation(locations.loc0)} />
+                        <Button type="link" onClick={() => onButtonClicked(locations.loc0)}>Select location</Button>
                     </Form.Item>
-                    <CloseCircleOutlined
-                        className="dynamic-delete-button"
-                        disabled={disableDelBtns.loc1}
-                        style={{ margin: '0 8px' }}
-                        onClick={() => clearLocation(locations.loc1)}
-                    />
-                    <Button type="link" onClick={() => onButtonClicked(locations.loc1)}>Select location</Button>                
-                </Form.Item>
-                <Form.Item 
-                    name={locations.loc1Hidden}
-                    noStyle
-                    style={{ display: 'none' }} >
-                    <Input readOnly={true} style={{ display: 'none' }} />
-                </Form.Item>
-                <Form.Item
-                    noStyle >
-                    <Form.Item
-                        name={locations.loc2}
-                        noStyle >
-                        <Input readOnly={true} placeholder='Where did you go?' />
+                    <Form.Item 
+                        name={locations.loc0Hidden}
+                        noStyle
+                        style={{ display: 'none' }} >
+                        <Input readOnly={true} style={{ display: 'none' }} />
                     </Form.Item>
-                    <CloseCircleOutlined
-                        className="dynamic-delete-button"
-                        disabled={disableDelBtns.loc2}
-                        style={{ margin: '0 8px' }}
-                        onClick={() => clearLocation(locations.loc2)}
-                    />
-                    <Button type="link" onClick={() => onButtonClicked(locations.loc2)}>Select location</Button>                
-                </Form.Item>
-                <Form.Item 
-                    name={locations.loc2Hidden}
-                    noStyle
-                    style={{ display: 'none' }} >
-                    <Input readOnly={true} style={{ display: 'none' }} />
-                </Form.Item>                
 
-            </Form.Item>
+                    <Form.Item
+                        style={{display: 'block', margin: '0'}} >
+                        <Form.Item
+                            name={locations.loc1}
+                            style={{ display: 'inline-block' }} >
+                            <Input readOnly={true} placeholder='Where did you go?' />
+                        </Form.Item>
+                        <CloseCircleOutlined
+                            className="dynamic-delete-button"
+                            disabled={disableDelBtns.loc1}
+                            style={{ margin: '0 8px' }}
+                            onClick={() => clearLocation(locations.loc1)}
+                        />
+                        <Button type="link" onClick={() => onButtonClicked(locations.loc1)}>Select location</Button>
+                    </Form.Item>
+                    <Form.Item 
+                        name={locations.loc1Hidden}
+                        noStyle
+                        style={{ display: 'none' }} >
+                        <Input readOnly={true} style={{ display: 'none' }} />
+                    </Form.Item>
 
-            <Form.Item>
-                    <Space>
-                        <Button type="primary" htmlType="submit">{btnName}</Button>
-                        {existingTrip && 
-                            <Button type="link" onClick={onCancel}>Cancel</Button>
-                        }
-                    </Space>
-            </Form.Item>
-            <Col span={4} />
+                    <Form.Item
+                        style={{display: 'block', margin: '0'}} >
+                        <Form.Item
+                            name={locations.loc2}
+                            style={{ display: 'inline-block' }} >
+                            <Input readOnly={true} placeholder='Where did you go?' />
+                        </Form.Item>
+                        <CloseCircleOutlined
+                            className="dynamic-delete-button"
+                            disabled={disableDelBtns.loc2}
+                            style={{ margin: '0 8px' }}
+                            onClick={() => clearLocation(locations.loc2)}
+                        />
+                        <Button type="link" onClick={() => onButtonClicked(locations.loc2)}>Select location</Button>
+                    </Form.Item>
+                    <Form.Item 
+                        name={locations.loc2Hidden}
+                        noStyle
+                        style={{ display: 'none' }} >
+                        <Input readOnly={true} style={{ display: 'none' }} />
+                    </Form.Item>
+                </Form.Item>
+
+                <Form.Item
+                    {...tailLayout}
+                >
+                        <Space>
+                            <Button type="primary" htmlType="submit">{btnName}</Button>
+                            {existingTrip && 
+                                <Button type="link" onClick={onCancel}>Cancel</Button>
+                            }
+                        </Space>
+                </Form.Item>
+
+            <Modal
+                title="Search for the trip location"
+                visible={modalVisible}
+                bodyStyle={{height: '550px'}}
+                width="500px"
+                maskClosable={false}
+                onOk={handleModalOk}
+                onCancel={handleModalCancel} >
+                <MyMapContainer
+                        searchMode={true}
+                        tripLocations={null}
+                        mapCenterLat={mapCenter.lat}
+                        mapCenterLng={mapCenter.lng}
+                        markerLat={markerLatLng.lat}
+                        markerLng={markerLatLng.lng}
+                        onLocSelected={onLocSelected} />
+            </Modal>            
         </Form>
-        </Col>
-
-        <Modal
-            title="Search for the trip location"
-            visible={modalVisible}
-            bodyStyle={{height: '550px'}}
-            width="500px"
-            maskClosable={false}
-            onOk={handleModalOk}
-            onCancel={handleModalCancel} >
-            <MyMapContainer
-                    searchMode={true}
-                    tripLocations={null}
-                    mapCenterLat={mapCenter.lat}
-                    mapCenterLng={mapCenter.lng}
-                    markerLat={markerLatLng.lat}
-                    markerLng={markerLatLng.lng}
-                    onLocSelected={onLocSelected} />
-        </Modal>
-
-        </Row>
     )
 }
 
