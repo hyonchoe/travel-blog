@@ -1,5 +1,7 @@
 import React from 'react'
-import { Typography, Card, Button } from 'antd'
+import { Typography, Card } from 'antd'
+import { GlobalOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
+
 
 import './Trip.css'
 
@@ -9,6 +11,14 @@ class Trip extends React.Component {
      * when more actions can be taken, such as viewing images, and so on.
      */    
 
+     state = {
+         key: 'journal',
+     }
+
+    onTabChange = () => {
+
+    }
+
      render() {
         const curTrip = this.props.trip
         const dateFormat="dddd, MMMM Do YYYY"
@@ -16,25 +26,38 @@ class Trip extends React.Component {
         if (curTrip.endDate){
             dateStr += " - " + curTrip.endDate.format(dateFormat)
         }
-        
+
         const locAddr = LocationSpans(curTrip.locations)
-        const editDeleteActions = <CardAddlActions
-                                        index={curTrip._id}
-                                        editTrip={this.props.editTrip}
-                                        deleteTrip={this.props.deleteTrip} />
+        const tabList = [
+            {
+                key: 'journal',
+                tab: 'Journal',
+            },
+            {
+                key: 'pictures',
+                tab: 'Pictures',
+            },
+        ]
         return (
             <div className="tripContainer">
                 <Card
                     title={curTrip.title}
                     hoverable={true}
                     bordered={true}
-                    extra={editDeleteActions}>
-                    <div className="divDateLocation">
-                        <div> {dateStr} </div>
-                        {locAddr && 
-                        <div> {locAddr} </div>
-                        }
-                    </div>
+                    extra={dateStr}
+                    actions={[
+                        <GlobalOutlined key="map" onClick={() => this.props.launchMapModal(curTrip.title, curTrip.locations)} />,
+                        <EditOutlined key="edit" onClick={() => this.props.editTrip(curTrip._id) } />,
+                        <DeleteOutlined key="delete" onClick={() => this.props.deleteTrip(curTrip._id) } />,
+                    ]}
+                    tabList={tabList}
+                    activeTabKey={ this.state.key }
+                    tabProps={ {size: 'small'} }
+                    onTabChange={() => this.onTabChange }
+                    >
+                    {locAddr && 
+                    <div className="divLocation"> {locAddr} </div>
+                    }
                     <TripDetails details={curTrip.details} />
                 </Card>
             </div>
@@ -54,22 +77,6 @@ const TripDetails = (props) => {
                 })
             }
         </Typography>
-    )
-}
-const CardAddlActions = (props) => {
-    const handleEditTrip = props.editTrip
-    const handleDeleteTrip = props.deleteTrip
-    const index = props.index
-
-    return (
-        <div>
-            <Button type="link" onClick={()=>handleEditTrip(index)}>
-                Edit
-            </Button>
-            <Button type="link" onClick={()=>handleDeleteTrip(index)}>
-                Delete
-            </Button>    
-        </div>
     )
 }
 const LocationSpans = (locations) => {

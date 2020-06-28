@@ -7,6 +7,7 @@ class Home extends React.Component {
         const trips = this.props.tripData
         const handleDeleteTrip = this.props.deleteTrip
         const handleEditTrip = this.props.editTrip
+        const handleLaunchMapModal = this.props.launchMapModal
         
         return (
           <div className="homeContainer">
@@ -14,7 +15,9 @@ class Home extends React.Component {
               <TripList
                 tripData={trips}
                 deleteTrip={handleDeleteTrip}
-                editTrip={handleEditTrip} />
+                editTrip={handleEditTrip}
+                launchMapModal={handleLaunchMapModal}
+                 />
             }
             { trips.length === 0 && 
               <Empty />

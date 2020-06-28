@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Input, DatePicker, Form, Space, Row, Col, Modal  } from 'antd'
+import { Button, Input, DatePicker, Form, Space, Modal  } from 'antd'
 import { CloseCircleOutlined } from '@ant-design/icons';
 import './EditTrip.css'
 import MyMapContainer from './MyMapContainer.js'

@@ -21,6 +21,21 @@ const MyMap = withScriptjs(withGoogleMap((props) =>{
     return ''
   }
 
+  const createMarkers = (tripLocations) => {
+    const latLngs = []
+    tripLocations.forEach((loc)=> {
+      const latLngPos = {
+        lat: loc.latLng[0],
+        lng: loc.latLng[1],
+      }
+      latLngs.push(latLngPos)
+    })
+
+    return latLngs.map((latLng) => (
+      <Marker position={{ lat: latLng.lat, lng: latLng.lng, }} />
+    ))
+  }
+
   const onPlaceSelected = (place) => {
     const addrComponents = place.address_components
     const latLngInfo = place.geometry.location
@@ -46,18 +61,22 @@ const MyMap = withScriptjs(withGoogleMap((props) =>{
   }
   
   let markers = null
+  let zoomLevel = 10
   if (props.searchMode){
     if (props.markerLat && props.markerLng){
       markers = <Marker position={{ lat: props.markerLat, lng: props.markerLng }} /> 
     }
   } else {
-    // TODO for displaying existing trip data
+    zoomLevel = 6
+    if(props.tripLocations){
+        markers = createMarkers(props.tripLocations)
+    }
   }
 
   return (
       <div>
         <GoogleMap
-          defaultZoom={10}
+          defaultZoom={zoomLevel}
           center={ { lat: props.mapCenterLat, lng: props.mapCenterLng } }
           >
             {markers}

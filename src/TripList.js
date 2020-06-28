@@ -6,6 +6,7 @@ class TripList extends React.Component {
     render() {
         const handleDeleteTrip = this.props.deleteTrip
         const handleEditTrip = this.props.editTrip
+        const handleLaunchMapModal = this.props.launchMapModal
         const currentTrips = this.props.tripData.map((trip) => {
             return (
                     <Row
@@ -20,7 +21,8 @@ class TripList extends React.Component {
                                         <Trip
                                             trip={trip}
                                             deleteTrip={handleDeleteTrip}
-                                            editTrip={handleEditTrip}                        
+                                            editTrip={handleEditTrip}
+                                            launchMapModal={handleLaunchMapModal}
                                             />  
                             </div>
                         </Col>

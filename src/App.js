@@ -1,10 +1,11 @@
 import React from 'react'
 import { Switch, Route, Router, Link, useLocation } from 'react-router-dom'
-import { Layout, Menu } from 'antd'
+import { Layout, Menu, Modal } from 'antd'
 
 import history from './history'
 import Home from './Home.js'
 import EditTrip from './EditTrip.js'
+import MyMapContainer from './MyMapContainer.js'
 import tripService from './services/tripService.js'
 import './App.css'
 
@@ -26,6 +27,8 @@ class App extends React.Component {
          */        
         trips: [],
         editTripId: null,
+        modalVisible: false,
+        tripLocationsForMap: null,
     }
     
     async componentDidMount() {
@@ -73,10 +76,27 @@ class App extends React.Component {
     handleCancel = () => {
         history.push('/')
     }
+    launchMapModal = (tripTitle, tripLocations) => {
+        this.setState({
+            modalVisible: true,
+            tripLocationsForMap: tripLocations,
+        })
+    }
+    handleModalOk = () => {
+        this.setState({
+            modalVisible: false,
+            tripLocationsForMap: null,
+        })
+    }
     
     render() {
         const trips = this.state.trips
         const tripEditId = this.state.editTripId
+        const modalVisible = this.state.modalVisible
+        const tripLocations = this.state.tripLocationsForMap
+        const mapCenterLat = (tripLocations) ? tripLocations[0].latLng[0] : null
+        const mapCenterLng = (tripLocations) ? tripLocations[0].latLng[1] : null
+
         let tripToEdit = null
         for(let i=0; tripEditId!== null && i<trips.length; i++){
             if(trips[i]._id === tripEditId){
@@ -100,7 +120,8 @@ class App extends React.Component {
                                             <Home
                                                 tripData={trips}
                                                 deleteTrip={this.handleDeleteTrip}
-                                                editTrip={this.handleEditTrip} />
+                                                editTrip={this.handleEditTrip}
+                                                launchMapModal={this.launchMapModal} />
                                         </Route>                
                                         <Route path="/addTrip">
                                             <EditTrip
@@ -119,6 +140,22 @@ class App extends React.Component {
                         </Footer>
                     </Layout>
                 </Router>
+                
+                <Modal
+                    title='Trip locations'
+                    visible={modalVisible}
+                    bodyStyle={{height: '500px'}}
+                    width='500px'
+                    maskClosable={false}
+                    onOk={this.handleModalOk} >
+                    <MyMapContainer
+                        searchMode={false}
+                        tripLocations={tripLocations}
+                        mapCenterLat={mapCenterLat}
+                        mapCenterLng={mapCenterLng}
+                         />
+
+                </Modal>
             </div>
         )
     }
