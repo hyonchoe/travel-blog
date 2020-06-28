@@ -4,24 +4,24 @@ import { GlobalOutlined, EditOutlined, DeleteOutlined, ExclamationCircleOutlined
 import './Trip.css'
 
 class Trip extends React.Component {
-    /**
-     * Will be adding state information to this component later on
-     * when more actions can be taken, such as viewing images, and so on.
-     */    
-
      state = {
          key: 'journal',
      }
 
-    onTabChange = () => {
-        //TODO
+    onTabChange = (key, type) => {
+        let updatedTabKey = {}
+        updatedTabKey[type] = key
+        this.setState(updatedTabKey)
+        /*
+        TODO: Below does the same thing. Should update to use that pattern in this project
+        - this.setState({ [type]: key });
+        */
     }
     onGlobeClicked = (curTrip) => {
         if (curTrip.locations){
             this.props.launchMapModal(curTrip.title, curTrip.locations)
         }
     }
-
     showDeleteConfirm = (tripId, tripInstance) => {
         confirm({
           title: 'Are you sure you want to delete this trip?',
@@ -60,6 +60,10 @@ class Trip extends React.Component {
                 key: 'pictures',
                 tab: 'Pictures',
             },
+            {
+                key: 'videos',
+                tab: 'Videos',
+            },
         ]
         
         return (
@@ -90,12 +94,9 @@ class Trip extends React.Component {
                     tabList={tabList}
                     activeTabKey={ this.state.key }
                     tabProps={ {size: 'small'} }
-                    onTabChange={() => this.onTabChange }
+                    onTabChange={(key) => this.onTabChange(key, 'key') }
                     >
-                    {locAddr && 
-                    <div className="divLocation"> {locAddr} </div>
-                    }
-                    <TripDetails details={curTrip.details} />
+                    <TripTabContent tabKey={this.state.key} curTrip={curTrip} locAddr={locAddr} />
                 </Card>                
             </div>
         )
@@ -106,13 +107,16 @@ const { confirm } = Modal
 const TripDetails = (props) => {
     return (
         <Typography>
+            {props.locAddr && 
+            <div className="divLocation"> {props.locAddr} </div>
+            }
             { 
-                props.details.split('\n').map( (line) => { 
-                    if (line) {
-                        return <p>{line}</p>
-                    }
-                    return ""
-                })
+            props.details.split('\n').map( (line) => { 
+                if (line) {
+                    return <p>{line}</p>
+                }
+                return ""
+            })
             }
         </Typography>
     )
@@ -123,6 +127,28 @@ const LocationSpans = (locations) => {
     return locations.map((loc) => (
         <span className="spanLocation">{loc.fmtAddr}</span>
     ))
+}
+const TripTabContent = (props) => {
+    let contentComponent = null
+    switch (props.tabKey){
+        case 'journal':
+            contentComponent = <TripDetails details={props.curTrip.details} locAddr={props.locAddr} />
+            break
+
+        case 'pictures':
+            contentComponent = <span>THIS IS FOR PICTURES</span>
+            break
+
+        case 'videos':
+            contentComponent = <span>THIS IS FOR VIDEOS</span>
+            break
+
+        default:
+            contentComponent = <TripDetails details={props.curTrip.details} locAddr={props.locAddr} />
+            break
+    }
+    
+    return contentComponent
 }
 
 export default Trip
