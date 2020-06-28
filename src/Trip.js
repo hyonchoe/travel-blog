@@ -1,5 +1,5 @@
 import React from 'react'
-import { Typography, Card, Modal, Popconfirm } from 'antd'
+import { Typography, Card, Modal, Popconfirm, Tooltip } from 'antd'
 import { GlobalOutlined, EditOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import './Trip.css'
 
@@ -70,16 +70,22 @@ class Trip extends React.Component {
                     bordered={true}
                     extra={dateStr}
                     actions={[
-                        <GlobalOutlined key="map" onClick={() => this.onGlobeClicked(curTrip) } />,
-                        <Popconfirm
-                            title="Are you sure about editing this trip?"
-                            onConfirm={() => this.popoverConfirm(curTrip._id)}
-                            onCancel={() => this.popoverCancel()}
-                            okText="Yes"
-                            cancelText="No" >
-                            <EditOutlined key="edit" />
-                        </Popconfirm>,
-                        <DeleteOutlined key="delete" onClick={() => this.showDeleteConfirm(curTrip._id, this)} />,
+                        <Tooltip title="View this trip locations on a map">
+                            <GlobalOutlined key="map" onClick={() => this.onGlobeClicked(curTrip) } />,
+                        </Tooltip>,                        
+                        <Tooltip title="Edit this trip information">
+                            <Popconfirm
+                                title="Are you sure about editing this trip?"
+                                onConfirm={() => this.popoverConfirm(curTrip._id)}
+                                onCancel={() => this.popoverCancel()}
+                                okText="Yes"
+                                cancelText="No" >
+                                <EditOutlined key="edit" />
+                            </Popconfirm>
+                        </Tooltip>,
+                        <Tooltip title="Delete this trip">
+                            <DeleteOutlined key="delete" onClick={() => this.showDeleteConfirm(curTrip._id, this)} />
+                        </Tooltip>,
                     ]}
                     tabList={tabList}
                     activeTabKey={ this.state.key }
@@ -96,6 +102,7 @@ class Trip extends React.Component {
     }
 }
 
+const { confirm } = Modal
 const TripDetails = (props) => {
     return (
         <Typography>
@@ -117,7 +124,5 @@ const LocationSpans = (locations) => {
         <span className="spanLocation">{loc.fmtAddr}</span>
     ))
 }
-const { confirm } = Modal
-
 
 export default Trip
