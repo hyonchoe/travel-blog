@@ -112,7 +112,6 @@ const EditTrip = props => {
         setLocFieldName(curLocFieldName)
     }
 
-
     const [form] = Form.useForm()
     const existingTrip = props.editTrip
     let btnName = 'Submit'
@@ -306,7 +305,7 @@ const EditTrip = props => {
                 </Form.Item>
 
             <Modal
-                title="Search for the trip location"
+                title="Search your trip location"
                 visible={modalVisible}
                 bodyStyle={{height: '550px'}}
                 width="500px"

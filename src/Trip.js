@@ -1,32 +1,41 @@
 import React from 'react'
 import { Typography, Card, Button } from 'antd'
 
+import './Trip.css'
+
 class Trip extends React.Component {
     /**
      * Will be adding state information to this component later on
      * when more actions can be taken, such as viewing images, and so on.
      */    
+
      render() {
+        const curTrip = this.props.trip
         const dateFormat="dddd, MMMM Do YYYY"
-        let dateStr = this.props.startDate.format(dateFormat)
-        if (this.props.endDate){
-            dateStr += " - " + this.props.endDate.format(dateFormat)
+        let dateStr = curTrip.startDate.format(dateFormat)
+        if (curTrip.endDate){
+            dateStr += " - " + curTrip.endDate.format(dateFormat)
         }
         
-
+        const locAddr = LocationSpans(curTrip.locations)
         const editDeleteActions = <CardAddlActions
-                                        index={this.props.index}
+                                        index={curTrip._id}
                                         editTrip={this.props.editTrip}
                                         deleteTrip={this.props.deleteTrip} />
         return (
             <div className="tripContainer">
                 <Card
-                    title={this.props.title}
+                    title={curTrip.title}
                     hoverable={true}
                     bordered={true}
                     extra={editDeleteActions}>
-                    <Card.Meta title={dateStr}/>
-                    <TripDetails details={this.props.details} />
+                    <div className="divDateLocation">
+                        <div> {dateStr} </div>
+                        {locAddr && 
+                        <div> {locAddr} </div>
+                        }
+                    </div>
+                    <TripDetails details={curTrip.details} />
                 </Card>
             </div>
         )
@@ -62,6 +71,13 @@ const CardAddlActions = (props) => {
             </Button>    
         </div>
     )
+}
+const LocationSpans = (locations) => {
+    if (!locations) return null
+
+    return locations.map((loc) => (
+        <span className="spanLocation">{loc.fmtAddr}</span>
+    ))
 }
 
 export default Trip

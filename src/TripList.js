@@ -18,11 +18,7 @@ class TripList extends React.Component {
                                 
                                     
                                         <Trip
-                                            index={trip._id}
-                                            title={trip.title}
-                                            startDate={trip.startDate}
-                                            endDate={trip.endDate}
-                                            details={trip.details}
+                                            trip={trip}
                                             deleteTrip={handleDeleteTrip}
                                             editTrip={handleEditTrip}                        
                                             />  

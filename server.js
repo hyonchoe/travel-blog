@@ -39,11 +39,18 @@ app.get('/trips', (req, res) => {
 // Create a trip (POST)
 app.post('/trips', (req, res) => {
     const mgClient = new MongoClient(uri, { useUnifiedTopology: true })
+    const tripLocations = req.body.locations
+    tripLocations.forEach((loc) => {
+        loc.latLng[0] = parseFloat(loc.latLng[0])
+        loc.latLng[1] = parseFloat(loc.latLng[1])
+    })
+
     const newTrip = {
         title: req.body.title,
         startDate: req.body.startDate,
         endDate: req.body.endDate,
-        details:req.body.details,
+        details: req.body.details,
+        locations: tripLocations,
     }
 
     mgClient.connect((error, client) => {
