@@ -31,6 +31,26 @@ app.get('/trips', (req, res) => {
             if (error){
                 return res.status(500).send(error)
             }
+            /*
+            const pic1 = "https://live.staticflickr.com/3289/3103459782_1a2041a696_b.jpg"
+            const pic2 = "https://live.staticflickr.com/3098/2635151392_4329152951_b.jpg"
+            const pic3 = "https://farm4.staticflickr.com/3743/9069061715_3284531f1c_b.jpg"
+            const pic4 = "https://live.staticflickr.com/8826/17364031883_c9e0c9e09b_b.jpg"
+            const pictures = [pic1, pic2, pic3, pic4]
+            result.forEach((trip) => {
+                trip.pictures = pictures
+            })
+            console.log(result)
+            */
+            /*
+            array of objects
+                [
+                    {
+                        _id, title, startDate, endDate, dtails, locations, PICTURES
+                    }
+                ]
+            */
+
             res.send(result)
         })
     })

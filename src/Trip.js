@@ -1,6 +1,7 @@
 import React from 'react'
 import { Typography, Card, Modal, Popconfirm, Tooltip } from 'antd'
 import { GlobalOutlined, EditOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import PictureCarousel from './PictureCarousel.js'
 import './Trip.css'
 
 class Trip extends React.Component {
@@ -136,7 +137,7 @@ const TripTabContent = (props) => {
             break
 
         case 'pictures':
-            contentComponent = <span>THIS IS FOR PICTURES</span>
+            contentComponent = <PictureCarousel pics={props.curTrip.pictures}/>
             break
 
         case 'videos':

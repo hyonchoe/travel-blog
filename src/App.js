@@ -18,11 +18,12 @@ class App extends React.Component {
                 [
                     {
                     _id: '', (assigned from MongoDB)
-                        title: 'asdf',
-                    startDate: null,
-                    endDate: null,
-                    details: 'asdf',
-                    locations: null,
+                        title: '',
+                    startDate: null (string), TODO: should be date object
+                    endDate: null (string), TODO: should be date object
+                    details: '',
+                    locations: null (array),
+                    pictures: null (array),
                     },
                     ...
                 ]
