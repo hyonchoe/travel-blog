@@ -310,6 +310,7 @@ const EditTrip = props => {
                 width="500px"
                 maskClosable={false}
                 destroyOnClose={true}
+                okButtonProps={{ disabled: (markerLatLng.lat === null) }}
                 onOk={handleModalOk}
                 onCancel={handleModalCancel} >
                 <MyMapContainer
