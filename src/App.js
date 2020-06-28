@@ -1,6 +1,6 @@
 import React from 'react'
 import { Switch, Route, Router, Link, useLocation } from 'react-router-dom'
-import { Layout, Menu, Modal } from 'antd'
+import { Layout, Menu, Modal, Button } from 'antd'
 
 import history from './history'
 import Home from './Home.js'
@@ -14,16 +14,18 @@ const { Header, Content, Footer } = Layout
 class App extends React.Component {
     state = {
         /**
-         * [
-             {
-               _id: '', (assigned from MongoDB)
-                title: 'asdf',
-               startDate: null,
-               endDate: null,
-               details: 'asdf',
-              },
-              ...
-         * ]
+           trips:
+                [
+                    {
+                    _id: '', (assigned from MongoDB)
+                        title: 'asdf',
+                    startDate: null,
+                    endDate: null,
+                    details: 'asdf',
+                    locations: null,
+                    },
+                    ...
+                ]
          */        
         trips: [],
         editTripId: null,
@@ -110,6 +112,7 @@ class App extends React.Component {
                 <Router history={history}>
                     <Layout className="appLayout">
                         <Header className="appHeader">
+                            {/* TODO: add logo */}
                             <div className="logo" />
                             <TopMenus />
                         </Header>
@@ -132,7 +135,7 @@ class App extends React.Component {
                                                 handleCancel={this.handleCancel}
                                                 />
                                         </Route>
-                                    </Switch>
+                                    </Switch>                                    
                         </Content>
 
                         <Footer className="appFooter">
@@ -140,21 +143,26 @@ class App extends React.Component {
                         </Footer>
                     </Layout>
                 </Router>
-                
                 <Modal
                     title='Trip locations'
                     visible={modalVisible}
+                    maskClosable={false}
                     bodyStyle={{height: '500px'}}
                     width='500px'
-                    maskClosable={false}
-                    onOk={this.handleModalOk} >
+                    onCancel={this.handleModalOk}
+                    footer={[
+                        <Button
+                            key="back"
+                            type="primary"
+                            onClick={this.handleModalOk} >
+                            Close
+                        </Button>
+                    ]} >
                     <MyMapContainer
                         searchMode={false}
                         tripLocations={tripLocations}
                         mapCenterLat={mapCenterLat}
-                        mapCenterLng={mapCenterLng}
-                         />
-
+                        mapCenterLng={mapCenterLng} />
                 </Modal>
             </div>
         )
