@@ -4,7 +4,6 @@ import { CloseCircleOutlined } from '@ant-design/icons';
 import './EditTrip.css'
 import MyMapContainer from './MyMapContainer.js'
 
-
 const EditTrip = props => {
     const [markerLatLng, setMarkerLatLng] = useState({
         lat: null,
@@ -310,6 +309,7 @@ const EditTrip = props => {
                 bodyStyle={{height: '550px'}}
                 width="500px"
                 maskClosable={false}
+                destroyOnClose={true}
                 onOk={handleModalOk}
                 onCancel={handleModalCancel} >
                 <MyMapContainer
