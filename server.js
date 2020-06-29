@@ -1,13 +1,16 @@
 const express = require('express')
+const cors = require('cors')
 const moment = require('moment')
 const { MongoClient } = require('mongodb')
 const { response } = require('express')
 const ObjectId = require("mongodb").ObjectID
+const { genSignedUrlPut } = require('./S3SignedURLs')
 require('dotenv').config()
 
 const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(cors())
 
 const port = process.env.PORT || 5000
 const dbusername = process.env.DB_ADMIN_USERNAME
@@ -31,17 +34,13 @@ app.get('/trips', (req, res) => {
             if (error){
                 return res.status(500).send(error)
             }
-            /*
-            const pic1 = "https://live.staticflickr.com/3289/3103459782_1a2041a696_b.jpg"
-            const pic2 = "https://live.staticflickr.com/3098/2635151392_4329152951_b.jpg"
-            const pic3 = "https://farm4.staticflickr.com/3743/9069061715_3284531f1c_b.jpg"
-            const pic4 = "https://live.staticflickr.com/8826/17364031883_c9e0c9e09b_b.jpg"
-            const pictures = [pic1, pic2, pic3, pic4]
+            const pic1 = "https://travelblog-media.s3.us-east-2.amazonaws.com/upload_test2.jpg"
+            const pic2 = "https://travelblog-media.s3.us-east-2.amazonaws.com/upload_test.jpg"
+            const pictures = [pic1, pic2]
             result.forEach((trip) => {
                 trip.pictures = pictures
             })
             console.log(result)
-            */
             /*
             array of objects
                 [
@@ -130,4 +129,24 @@ app.delete('/trips/:tripId', (req, res) => {
             res.send(result)
         })
     })
+})
+
+// Generate S3 signed URL for photo upload
+app.get('/get-signed-url', (req, res) => {
+    //TODO: Can add some validation for allowed file type check here
+    const fileName = req.query.name
+    const fileType = req.query.type
+    
+    console.log(fileName)
+    console.log(fileType)
+
+    genSignedUrlPut(fileName, fileType)
+        .then(signedUrl => {
+            res.send({signedUrl})
+            console.log(signedUrl)
+        })
+        .catch(err => {
+            res.send(err)
+            console.log(err)
+        })
 })

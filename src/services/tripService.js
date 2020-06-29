@@ -46,5 +46,33 @@ export default {
             console.log(error)
             return null
         }
+    },
+
+    //TODO
+    getS3SignedUrl: async (fileName, fileType) => {
+        console.log(fileName)
+        console.log(fileType)
+        try {
+            let res = await axios.get(`/get-signed-url`, {
+                params: {
+                    name: fileName,
+                    type: fileType,
+                }
+            })
+
+            return res
+        } catch (error) {
+            console.log(error)
+            return null
+        }
+    },
+
+    //TODO
+    uploadFile: async (file) => {
+        try {
+
+        } catch(error) {
+
+        }
     }
 }

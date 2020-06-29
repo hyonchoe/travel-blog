@@ -1,6 +1,6 @@
 import React from 'react'
 import { Switch, Route, Router, Link, useLocation } from 'react-router-dom'
-import { Layout, Menu, Modal, Button } from 'antd'
+import { Layout, Menu, Modal, Button, Upload } from 'antd'
 
 import history from './history'
 import Home from './Home.js'
@@ -8,6 +8,8 @@ import EditTrip from './EditTrip.js'
 import MyMapContainer from './MyMapContainer.js'
 import tripService from './services/tripService.js'
 import './App.css'
+
+import UploadTest from './UploadTest.js'
 
 const { Header, Content, Footer } = Layout
 
@@ -135,6 +137,10 @@ class App extends React.Component {
                                                 handleSubmit={this.handleSubmit}
                                                 handleCancel={this.handleCancel}
                                                 />
+                                        </Route>
+
+                                        <Route path="/upload">
+                                            <UploadTest />
                                         </Route>
                                     </Switch>                                    
                         </Content>

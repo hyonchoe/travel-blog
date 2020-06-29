@@ -208,8 +208,6 @@ const EditTrip = props => {
                         allowClear={true} />
                 </Form.Item>
 
-            
-
                 <Form.Item
                     label="Details"
                     name="details"
