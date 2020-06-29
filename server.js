@@ -18,7 +18,6 @@ const dbpassword = process.env.DB_ADMIN_PASSWORD
 const dbname = process.env.DB_NAME
 const uri = `mongodb+srv://${dbusername}:${dbpassword}@travelblog-ugmhk.mongodb.net/${dbname}?retryWrites=true&w=majority`
 
-// console.log that your server is up and running
 app.listen(port, () => console.log(`Listening on port ${port}`))
 
 // Get existing trips (GET)
@@ -40,7 +39,6 @@ app.get('/trips', (req, res) => {
             result.forEach((trip) => {
                 trip.pictures = pictures
             })
-            console.log(result)
             /*
             array of objects
                 [
@@ -136,17 +134,13 @@ app.get('/get-signed-url', (req, res) => {
     //TODO: Can add some validation for allowed file type check here
     const fileName = req.query.name
     const fileType = req.query.type
-    
-    console.log(fileName)
-    console.log(fileType)
 
     genSignedUrlPut(fileName, fileType)
-        .then(signedUrl => {
-            res.send({signedUrl})
-            console.log(signedUrl)
+        .then(urlInfo => {
+            res.send(urlInfo)
         })
         .catch(err => {
-            res.send(err)
             console.log(err)
+            res.send(err)
         })
 })

@@ -50,8 +50,6 @@ export default {
 
     //TODO
     getS3SignedUrl: async (fileName, fileType) => {
-        console.log(fileName)
-        console.log(fileType)
         try {
             let res = await axios.get(`/get-signed-url`, {
                 params: {
@@ -59,20 +57,21 @@ export default {
                     type: fileType,
                 }
             })
-
-            return res
+            return res.data
         } catch (error) {
             console.log(error)
             return null
         }
     },
 
-    //TODO
-    uploadFile: async (file) => {
-        try {
-
-        } catch(error) {
-
+    uploadToS3: async (file, signedUrl) => {
+        console.log(file)
+        console.log(signedUrl)
+        try{
+            let res = await axios.put(`/uploadToS3`, file)
+            console.log(res)
+        } catch (error) {
+            console.log(error)
         }
     }
 }
