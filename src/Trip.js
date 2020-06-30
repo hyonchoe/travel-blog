@@ -43,6 +43,18 @@ class Trip extends React.Component {
     popoverCancel = () => {
     }
 
+    getTabList = () => {
+        let cardTabList = [{ key: 'journal', tab: 'Journal', }]
+        
+        const tripImages = this.props.trip.images
+        if (tripImages && tripImages.length > 0){
+            cardTabList.push({ key: 'images', tab: 'Photos' })
+        }
+        
+        cardTabList.push({ key: 'videos', tab: 'Videos', })
+        return cardTabList
+    }
+
      render() {
         const curTrip = this.props.trip
         const dateFormat="dddd, MMMM Do YYYY"
@@ -52,20 +64,6 @@ class Trip extends React.Component {
         }
 
         const locAddr = LocationSpans(curTrip.locations)
-        const tabList = [
-            {
-                key: 'journal',
-                tab: 'Journal',
-            },
-            {
-                key: 'pictures',
-                tab: 'Pictures',
-            },
-            {
-                key: 'videos',
-                tab: 'Videos',
-            },
-        ]
         
         return (
             <div className="tripContainer">
@@ -92,7 +90,7 @@ class Trip extends React.Component {
                             <DeleteOutlined key="delete" onClick={() => this.showDeleteConfirm(curTrip._id, this)} />
                         </Tooltip>,
                     ]}
-                    tabList={tabList}
+                    tabList={this.getTabList()}
                     activeTabKey={ this.state.key }
                     tabProps={ {size: 'small'} }
                     onTabChange={(key) => this.onTabChange(key, 'key') }
@@ -136,7 +134,7 @@ const TripTabContent = (props) => {
             contentComponent = <TripDetails details={props.curTrip.details} locAddr={props.locAddr} />
             break
 
-        case 'pictures':
+        case 'images':
             contentComponent = <PictureCarousel images={props.curTrip.images}/>
             break
 
