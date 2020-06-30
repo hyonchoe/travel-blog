@@ -52,10 +52,8 @@ app.get('/trips', (req, res) => {
 app.post('/trips', (req, res) => {
     const mgClient = new MongoClient(uri, { useUnifiedTopology: true })
     const tripLocations = req.body.locations
-    tripLocations.forEach((loc) => {
-        loc.latLng[0] = parseFloat(loc.latLng[0])
-        loc.latLng[1] = parseFloat(loc.latLng[1])
-    })
+    processTripLocData(tripLocations)
+    
     const newTrip = {
         title: req.body.title,
         startDate: req.body.startDate,
@@ -84,11 +82,7 @@ app.put('/trips/:tripId', (req, res) => {
     const mgClient = new MongoClient(uri, { useUnifiedTopology: true })
     const tripId = req.params.tripId
     const tripLocations = req.body.locations
-    tripLocations.forEach((loc) => {
-        console.log(loc)
-        loc.latLng[0] = parseFloat(loc.latLng[0])
-        loc.latLng[1] = parseFloat(loc.latLng[1])
-    })    
+    processTripLocData(tripLocations)
     
     const updatedTrip = {
         title: req.body.title,
@@ -147,3 +141,10 @@ app.get('/get-signed-url', (req, res) => {
             res.send(err)
         })
 })
+
+const processTripLocData = (tripLocations) => {
+    tripLocations.forEach((loc) => {
+        loc.latLng[0] = parseFloat(loc.latLng[0])
+        loc.latLng[1] = parseFloat(loc.latLng[1])
+    })
+}
