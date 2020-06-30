@@ -12,7 +12,7 @@ const s3 = new AWS.S3({
     signatureVersion: 'v4',
 })
 
-genSignedUrlPut = (name, type) => {
+const genSignedUrlPut = (name, type) => {
     return new Promise((resolve, reject) => {
         const params = { 
             Bucket: BUCKET_NAME, 
@@ -29,12 +29,13 @@ genSignedUrlPut = (name, type) => {
           resolve({ 
             signedUrl: url,
             fileUrlName: name,
+            pendingFileUrl: getImageS3URL(name)
           })
         })
       })
 }
 
-getImageS3URL = (name) => {
+const getImageS3URL = (name) => {
   return `https://${BUCKET_NAME}.s3.${BUCKET_REGION}.amazonaws.com/${name}`
 }
 

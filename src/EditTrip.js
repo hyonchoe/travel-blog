@@ -190,6 +190,7 @@ const EditTrip = props => {
                     imageInfoData.push({
                         name: curFileNameInfo.name,
                         fileUrlName: curFileNameInfo.fileUrlName,
+                        S3Url: curFileNameInfo.pendingFileUrl,
                     })
                 }
             })
@@ -327,6 +328,7 @@ const EditTrip = props => {
             const fileNameInfo = {
                 name: fileName,
                 fileUrlName: urlInfo.fileUrlName,
+                pendingFileUrl: urlInfo.pendingFileUrl,
             }
             setNameToUrlName({...nameToUrlName,  [fileUID]: fileNameInfo })
             
