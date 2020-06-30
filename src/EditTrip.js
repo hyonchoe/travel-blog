@@ -230,7 +230,26 @@ const EditTrip = props => {
         previewImage: '',
         privewTitle: '',
     })
-    const [fileList, setFileList] = useState([]) 
+    
+    const getInitialImgvalues = (images) => {
+        let initialValues = []
+        images.forEach((img) => {
+            initialValues.push({
+                uid: img.fileUrlName,
+                name: img.name,
+                status: 'done',
+                url: img.S3Url
+            })
+        })
+
+        return initialValues
+    }    
+    
+    const [fileList, setFileList] = useState(
+        (props.editTrip && props.editTrip.images) ?
+        getInitialImgvalues(props.editTrip.images)
+        : []
+    )
     /**
      * File is object:
      *  {
@@ -240,7 +259,6 @@ const EditTrip = props => {
             url: '',
         }
         */
-    const [fileReader, setFileReader] = useState(new FileReader())
     const myImage = useRef('')
     /**
      * Object of images with rc_uid key
@@ -270,7 +288,9 @@ const EditTrip = props => {
     const handleChange = (info) => {
         const file = info.file
         const fileList = info.fileList
-        if (file.status === 'done'){
+        setFileList(fileList)
+        
+        if (file.status === 'done' || file.status === 'removed'){
             return
         }
 
@@ -279,7 +299,6 @@ const EditTrip = props => {
                 myImage.current = obj.srcElement.result
         }
         reader.readAsArrayBuffer(file.originFileObj);
-        setFileList(fileList)
     }
     const customRequest = async (option) => {
         const { onSuccess, onError, file, action, onProgress } = option
@@ -464,6 +483,7 @@ const EditTrip = props => {
                 <Form.Item
                     label="Photos" >
                     <Upload
+                        fileList={fileList}
                         action={handleUpload}
                         customRequest={customRequest}
                         listType="picture-card"
