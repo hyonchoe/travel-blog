@@ -23,13 +23,13 @@ const EditTrip = props => {
         country: '',
         fmtAddr: '',
     })
-    const [disableDelBtns, setDisableDelBtns] = useState({
-        loc0: true,
-        loc1: true,
-        loc2: true,
-    })
-    const [modalVisible, setModalVisible] = useState(false)        
-    const [locFieldName, setLocFieldName] = useState('')
+    const [disableDelBtns, setDisableDelBtns] = useState([
+        (props.editTrip && props.editTrip.locations && props.editTrip.locations.length > 0) ? false : true,
+        (props.editTrip && props.editTrip.locations && props.editTrip.locations.length > 1) ? false : true,
+        (props.editTrip && props.editTrip.locations && props.editTrip.locations.length > 2) ? false : true,
+    ])
+    const [modalVisible, setModalVisible] = useState(false)
+    const [locFieldNameIndex, setLocFieldNameIndex] = useState(-1)
 
     const latLngDelim = ','
     const hiddenSuffix = '_hidden'
@@ -48,16 +48,6 @@ const EditTrip = props => {
             latLng: 'loc2' + hiddenSuffix,
         },
     ]
-    /*
-    const locations = {
-        loc0: 'loc0',
-        loc0Hidden: 'loc0' + hiddenSuffix,
-        loc1: 'loc1',
-        loc1Hidden: 'loc1' + hiddenSuffix,
-        loc2: 'loc2',
-        loc2Hidden: 'loc2' + hiddenSuffix,
-    }
-    */
 
     const getInitialMapCenter = () => {
         return {
@@ -82,40 +72,39 @@ const EditTrip = props => {
 
     const handleModalOk = () => {
         let value = {}
-        value[locFieldName] = addr.fmtAddr
-        let locFieldNameLatLng = locFieldName + hiddenSuffix
-        value[locFieldNameLatLng] = (markerLatLng.lat) ? markerLatLng.lat + latLngDelim + markerLatLng.lng : null
+        value[locationFldNames[locFieldNameIndex].fmtAddr] = addr.fmtAddr
+        value[locationFldNames[locFieldNameIndex].latLng] = (markerLatLng.lat) ? markerLatLng.lat + latLngDelim + markerLatLng.lng : null
         form.setFieldsValue(value)
-
-        let disableBtnsValue = {}
-        disableBtnsValue[locFieldName] = (form.getFieldValue(locFieldName) === '')
-        setDisableDelBtns({...disableDelBtns, ...disableBtnsValue})
+        
+        let btnDisableValues = disableDelBtns.slice() // copying it
+        btnDisableValues[locFieldNameIndex] = false
+        setDisableDelBtns(btnDisableValues)
 
         setModalVisible(false)
         clearMapStates()
 
-        setLocFieldName('')
+        setLocFieldNameIndex(-1)
     }
     const handleModalCancel = () => {
         setModalVisible(false)
         clearMapStates()
 
-        setLocFieldName('')
+        setLocFieldNameIndex(-1)
     }
     const onLocSelected = (locAddrInfo, locLatLngInfo) => {
         setAddr(locAddrInfo)
         setMarkerLatLng(locLatLngInfo)
         setMapCenter(locLatLngInfo)
     }
-    const clearLocation = (curLocFmtAddrFldName, curLocLatLngFldName) => {
+    const clearLocation = (curLocFldIndex) => {
         let reset = {}
-        reset[curLocFmtAddrFldName]=''
-        reset[curLocLatLngFldName]=''
+        reset[locationFldNames[curLocFldIndex].fmtAddr] = ''
+        reset[locationFldNames[curLocFldIndex].latLng] = ''
         form.setFieldsValue(reset)
 
-        let disableBtnsValue = {}
-        disableBtnsValue[curLocFmtAddrFldName] = true
-        setDisableDelBtns({...disableDelBtns, ...disableBtnsValue})
+       let btnDisableValues = disableDelBtns.slice() // copying it
+       btnDisableValues[curLocFldIndex] = true
+       setDisableDelBtns(btnDisableValues)
     }
     const clearMapStates = () => {
         const resetAddr = getInitialAddr()
@@ -127,9 +116,25 @@ const EditTrip = props => {
         setMapCenter(resetMapCenter)
     }
 
-    const onButtonClicked = (curLocFieldName) => {
+    const onButtonClicked = (locFieldNameIndex) => {
         setModalVisible(true)
-        setLocFieldName(curLocFieldName)
+        setLocFieldNameIndex(locFieldNameIndex)
+    }
+
+    const getInitialFormValues = () => {
+        if (props.editTrip){
+            let initialValues = {
+                title: existingTrip.title,
+                dates: [existingTrip.startDate, existingTrip.endDate],
+                details: existingTrip.details,            
+            }
+            const locInitialValues = getInitialLocValues(existingTrip.locations)
+            initialValues = {...initialValues, ...locInitialValues}
+            
+            return initialValues
+        }
+
+        return {}
     }
 
     const getInitialLocValues = (existingLocations) => {
@@ -141,20 +146,6 @@ const EditTrip = props => {
         }
 
         return initialValues
-    }    
-
-    const [form] = Form.useForm()
-    const existingTrip = props.editTrip
-    let btnName = 'Submit'
-    if (existingTrip){
-        let initialValues = {
-            title: existingTrip.title,
-            dates: [existingTrip.startDate, existingTrip.endDate],
-            details: existingTrip.details,            
-        }
-        form.setFieldsValue({...initialValues, ...getInitialLocValues(existingTrip.locations)})
-
-        btnName = 'Update'
     }
 
     const onFinish = values => {
@@ -342,10 +333,15 @@ const EditTrip = props => {
     }
     //----------------------------------------------------------
 
+    const [form] = Form.useForm()
+    const existingTrip = props.editTrip
+    let btnName = (existingTrip) ? 'Update' : 'Submit'
+
     return (
         <Form
             form={form}
             {...layout}
+            initialValues={getInitialFormValues()}
             layout="horizontal"
             onFinish={onFinish} >
                 <Form.Item
@@ -399,10 +395,10 @@ const EditTrip = props => {
                         </Form.Item>
                         <CloseCircleOutlined
                             className="dynamic-delete-button"
-                            disabled={disableDelBtns.loc0}
+                            disabled={disableDelBtns[0]}
                             style={{ margin: '0 8px' }}
-                            onClick={() => clearLocation(locationFldNames[0].fmtAddr, locationFldNames[0].latLng)} />
-                        <Button type="link" onClick={() => onButtonClicked(locationFldNames[0].fmtAddr)}>Select location</Button>
+                            onClick={() => clearLocation(0)} />
+                        <Button type="link" onClick={() => onButtonClicked(0)}>Select location</Button>
                     </Form.Item>
                     <Form.Item 
                         name={locationFldNames[0].latLng}
@@ -420,11 +416,11 @@ const EditTrip = props => {
                         </Form.Item>
                         <CloseCircleOutlined
                             className="dynamic-delete-button"
-                            disabled={disableDelBtns.loc1}
+                            disabled={disableDelBtns[1]}
                             style={{ margin: '0 8px' }}
-                            onClick={() => clearLocation(locationFldNames[1].fmtAddr, locationFldNames[1].latLng)}
+                            onClick={() => clearLocation(1)}
                         />
-                        <Button type="link" onClick={() => onButtonClicked(locationFldNames[1].fmtAddr)}>Select location</Button>
+                        <Button type="link" onClick={() => onButtonClicked(1)}>Select location</Button>
                     </Form.Item>
                     <Form.Item 
                         name={locationFldNames[1].latLng}
@@ -442,11 +438,11 @@ const EditTrip = props => {
                         </Form.Item>
                         <CloseCircleOutlined
                             className="dynamic-delete-button"
-                            disabled={disableDelBtns.loc2}
+                            disabled={disableDelBtns[2]}
                             style={{ margin: '0 8px' }}
-                            onClick={() => clearLocation(locationFldNames[2].fmtAddr, locationFldNames[2].latLng)}
+                            onClick={() => clearLocation(2)}
                         />
-                        <Button type="link" onClick={() => onButtonClicked(locationFldNames[2].fmtAddr)}>Select location</Button>
+                        <Button type="link" onClick={() => onButtonClicked(2)}>Select location</Button>
                     </Form.Item>
                     <Form.Item 
                         name={locationFldNames[2].latLng}
