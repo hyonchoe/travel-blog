@@ -114,15 +114,50 @@ const EditTrip = props => {
         setLocFieldName(curLocFieldName)
     }
 
+    const getInitialLocValues = (existingLocations) => {
+        let initialValues = {}
+        const tempMapping = [
+            {
+                fmtAddr: locations.loc0,
+                latLng: locations.loc0Hidden,
+            },
+            {
+                fmtAddr: locations.loc1,
+                latLng: locations.loc1Hidden,
+            },
+            {
+                fmtAddr: locations.loc2,
+                latLng: locations.loc2Hidden,
+            },
+        ]
+
+        for(let i=0; i<existingLocations.length; i++){
+            initialValues[tempMapping[i].fmtAddr] = existingLocations[i].fmtAddr
+            initialValues[tempMapping[i].latLng] = existingLocations[i].latLng[0] + latLngDelim + existingLocations[i].latLng[1]
+        }
+
+        return initialValues
+    }    
+
     const [form] = Form.useForm()
     const existingTrip = props.editTrip
     let btnName = 'Submit'
     if (existingTrip){
+        let initialValues = {
+            title: existingTrip.title,
+            dates: [existingTrip.startDate, existingTrip.endDate],
+            details: existingTrip.details,            
+        }
+        /*
         form.setFieldsValue({
             title: existingTrip.title,
             dates: [existingTrip.startDate, existingTrip.endDate],
             details: existingTrip.details,
-        })
+            
+        })*/
+
+        form.setFieldsValue({...initialValues, ...getInitialLocValues(existingTrip.locations)})
+
         btnName = 'Update'
     }
 
