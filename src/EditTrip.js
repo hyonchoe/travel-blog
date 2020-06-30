@@ -225,6 +225,7 @@ const EditTrip = props => {
     }
 
     // TODO: UPLOAD ----------------------------------------------------------
+    const [fileReader, setFileReader] = useState(new FileReader())
     const [previewInfo, setPreviewInfo] = useState({
         previewVisible: false,
         previewImage: '',
@@ -287,18 +288,22 @@ const EditTrip = props => {
 
     const handleChange = (info) => {
         const file = info.file
-        const fileList = info.fileList
-        setFileList(fileList)
+        const curFileList = info.fileList
+        setFileList(curFileList)
         
         if (file.status === 'done' || file.status === 'removed'){
+            if(file.status === 'done'){
+                fileReader.onloadend = null
+            }
             return
         }
 
-        const reader = new FileReader()
-        reader.onloadend = (obj) => {
+        if (!fileReader.onloadend){
+            fileReader.onloadend = (obj) => {
                 myImage.current = obj.srcElement.result
+            }
+            fileReader.readAsArrayBuffer(file.originFileObj);
         }
-        reader.readAsArrayBuffer(file.originFileObj);
     }
     const customRequest = async (option) => {
         const { onSuccess, onError, file, action, onProgress } = option
