@@ -261,6 +261,9 @@ const EditTrip = props => {
         await new Promise(resolve => waitUntilImageLoaded(resolve))
         const type = 'image/jpeg'
         axios.put(url, myImage.current, {
+            onUploadProgress: e => {
+                onProgress({ percent: (e.loaded / e.total) * 100 })
+            },
             headers: {
                 'Content-Type': type,
             },
@@ -284,7 +287,6 @@ const EditTrip = props => {
         }, 100)
     }
 
-    //TODO
     const handleUpload = async (file) => {
         const fileName = file.name
         const fileType = file.type
@@ -304,7 +306,7 @@ const EditTrip = props => {
             console.log("handleUpload "+err)
         }
         
-        // TODO: error handling?
+        // TODO: error handling
         return signedUrl
     }
     //----------------------------------------------------------
