@@ -51,22 +51,19 @@ const UploadTest = () => {
         })
     }
 
-    /*
-    const handleChange = ({ fileList }) => {
-        setFileList(fileList)
-    }
-    */
    const handleChange = (info) => {
-        console.log("handleChange: "+info)
-       if (!fileReader.onloadend) {
-           fileReader.onloadend = (obj) => {
-                console.log("fileReader onloadend: "+obj)
+        const file = info.file
+        const fileList = info.fileList
+        if (file.status === 'done'){
+            return
+        }
+
+        const reader = new FileReader()
+        reader.onloadend = (obj) => {
                 myImage.current = obj.srcElement.result
-                console.log("fileReader onloadend: "+ myImage.current)
-           }
-           //fileReader.readAsDataURL(info.file.originFileObj);
-           fileReader.readAsArrayBuffer(info.file.originFileObj);
-       }
+        }
+        reader.readAsArrayBuffer(file.originFileObj);
+        setFileList(fileList)
    }
    const customRequest = async (option) => {
         const { onSuccess, onError, file, action, onProgress } = option
@@ -74,7 +71,6 @@ const UploadTest = () => {
         
         console.log("customRequest: " + url)
 
-        //await waitUntilImageLoaded()
         await new Promise(resolve => waitUntilImageLoaded(resolve))
         const type = 'image/jpeg'
         axios.put(url, myImage.current, {
@@ -84,9 +80,11 @@ const UploadTest = () => {
         })
             .then(response => {
                 onSuccess(response.body)
+                myImage.current = ''
             })
             .catch(error => {
                 onError(error)
+                myImage.current = ''
             })
     }
     const waitUntilImageLoaded = (resolve) => {
@@ -96,7 +94,7 @@ const UploadTest = () => {
             } else {
                 waitUntilImageLoaded(resolve)
             }
-        }, 10)
+        }, 100)
     }
 
     //TODO
@@ -126,10 +124,7 @@ const UploadTest = () => {
                 action={handleUpload}
                 customRequest={customRequest}
                 listType="picture-card"
-                //fileList={fileList}
-                //method="PUT"
-                //headers={{ 'content-type': 'image/jpeg' }}
-                //onPreview={handlePreview}
+                onPreview={handlePreview}
                 onChange={handleChange} >
                 { fileList.length >=2 ? null : <UploadButton /> }
             </Upload>
