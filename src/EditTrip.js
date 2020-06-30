@@ -156,21 +156,27 @@ const EditTrip = props => {
         if (values[locationFldNames[0].latLng]){
             locationData[counter] = {
                 fmtAddr: values[locationFldNames[0].fmtAddr],
-                latLng: values[locationFldNames[0].latLng].split(latLngDelim),
+                latLng: values[locationFldNames[0].latLng].split(latLngDelim).map((coordinate) =>{
+                    return parseFloat(coordinate)
+                }),
             }
             counter++
         }
         if (values[locationFldNames[1].latLng]){
             locationData[counter] = {
                 fmtAddr: values[locationFldNames[1].fmtAddr],
-                latLng: values[locationFldNames[1].latLng].split(latLngDelim),                
+                latLng: values[locationFldNames[1].latLng].split(latLngDelim).map((coordinate) =>{
+                    return parseFloat(coordinate)
+                }),
             }
             counter++
         }
         if (values[locationFldNames[2].latLng]){
             locationData[counter] = {
                 fmtAddr: values[locationFldNames[2].fmtAddr],
-                latLng: values[locationFldNames[2].latLng].split(latLngDelim),
+                latLng: values[locationFldNames[2].latLng].split(latLngDelim).map((coordinate) =>{
+                    return parseFloat(coordinate)
+                }),
             }
             counter++
         }
