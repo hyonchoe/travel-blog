@@ -26,10 +26,16 @@ genSignedUrlPut = (name, type) => {
             console.log(err)
             reject(err)
           }
-          const pendingFileUrl = `https://${BUCKET_NAME}.s3.${BUCKET_REGION}.amazonaws.com/${name}`
-          resolve({ signedUrl: url, pendingFileUrl: pendingFileUrl })
+          resolve({ 
+            signedUrl: url,
+            fileUrlName: name,
+          })
         })
       })
 }
 
-module.exports = { genSignedUrlPut }
+getImageS3URL = (name) => {
+  return `https://${BUCKET_NAME}.s3.${BUCKET_REGION}.amazonaws.com/${name}`
+}
+
+module.exports = { genSignedUrlPut, getImageS3URL }

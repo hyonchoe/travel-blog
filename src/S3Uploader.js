@@ -15,7 +15,7 @@ const getBase64 = (file) => {
     });
   }
 
-const UploadTest = () => {
+const S3Uploader = () => {
     const [previewInfo, setPreviewInfo] = useState({
         previewVisible: false,
         previewImage: '',
@@ -149,4 +149,4 @@ const UploadButton = () => {
     )
 }
 
-export default UploadTest
+export default S3Uploader

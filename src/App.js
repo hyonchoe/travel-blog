@@ -9,7 +9,7 @@ import MyMapContainer from './MyMapContainer.js'
 import tripService from './services/tripService.js'
 import './App.css'
 
-import UploadTest from './UploadTest.js'
+import S3Uploader from './S3Uploader.js'
 
 const { Header, Content, Footer } = Layout
 
@@ -140,7 +140,7 @@ class App extends React.Component {
                                         </Route>
 
                                         <Route path="/upload">
-                                            <UploadTest />
+                                            <S3Uploader />
                                         </Route>
                                     </Switch>                                    
                         </Content>

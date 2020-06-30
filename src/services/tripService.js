@@ -49,11 +49,10 @@ export default {
     },
 
     //TODO
-    getS3SignedUrl: async (fileName, fileType) => {
+    getS3SignedUrl: async (fileType) => {
         try {
             let res = await axios.get(`/get-signed-url`, {
                 params: {
-                    name: fileName,
                     type: fileType,
                 }
             })

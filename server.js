@@ -4,7 +4,7 @@ const moment = require('moment')
 const { MongoClient } = require('mongodb')
 const { response } = require('express')
 const ObjectId = require("mongodb").ObjectID
-const { genSignedUrlPut } = require('./S3SignedURLs')
+const { genSignedUrlPut, getImageS3URL } = require('./S3SignedURLs')
 require('dotenv').config()
 
 const app = express()
@@ -33,20 +33,15 @@ app.get('/trips', (req, res) => {
             if (error){
                 return res.status(500).send(error)
             }
-            const pic1 = "https://travelblog-media.s3.us-east-2.amazonaws.com/upload_test2.jpg"
-            const pic2 = "https://travelblog-media.s3.us-east-2.amazonaws.com/upload_test.jpg"
-            const pictures = [pic1, pic2]
+
             result.forEach((trip) => {
-                trip.pictures = pictures
+                const tripImages = trip.images
+                if (tripImages && tripImages.length > 0) {
+                    tripImages.forEach((imgInfo) => {
+                        imgInfo.S3Url = getImageS3URL(imgInfo.fileUrlName)
+                    })
+                }
             })
-            /*
-            array of objects
-                [
-                    {
-                        _id, title, startDate, endDate, dtails, locations, PICTURES
-                    }
-                ]
-            */
 
             res.send(result)
         })
@@ -61,13 +56,13 @@ app.post('/trips', (req, res) => {
         loc.latLng[0] = parseFloat(loc.latLng[0])
         loc.latLng[1] = parseFloat(loc.latLng[1])
     })
-
     const newTrip = {
         title: req.body.title,
         startDate: req.body.startDate,
         endDate: req.body.endDate,
         details: req.body.details,
         locations: tripLocations,
+        images: req.body.images,
     }
 
     mgClient.connect((error, client) => {
@@ -132,10 +127,10 @@ app.delete('/trips/:tripId', (req, res) => {
 // Generate S3 signed URL for photo upload
 app.get('/get-signed-url', (req, res) => {
     //TODO: Can add some validation for allowed file type check here
-    const fileName = req.query.name
     const fileType = req.query.type
+    const urlFileName = new ObjectId().toString()
 
-    genSignedUrlPut(fileName, fileType)
+    genSignedUrlPut(urlFileName, fileType)
         .then(urlInfo => {
             res.send(urlInfo)
         })

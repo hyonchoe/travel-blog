@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
-import { Button, Input, DatePicker, Form, Space, Modal  } from 'antd'
-import { CloseCircleOutlined } from '@ant-design/icons';
+import React, { useState, useRef } from 'react'
+import { Button, Input, DatePicker, Form, Space, Modal, Upload  } from 'antd'
+import { CloseCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import './EditTrip.css'
 import MyMapContainer from './MyMapContainer.js'
+
+import axios from 'axios'
+import tripService from './services/tripService.js'
 
 const EditTrip = props => {
     const [markerLatLng, setMarkerLatLng] = useState({
@@ -127,6 +130,7 @@ const EditTrip = props => {
         let counter = 0
         let locationData = []
         
+        // Get location data
         if (values[locations.loc0Hidden]){
             locationData[counter] = {
                 fmtAddr: values[locations.loc0],
@@ -149,12 +153,27 @@ const EditTrip = props => {
             counter++
         }
 
+        // Get image upload data
+        let imageInfoData = []
+        if(fileList){
+            fileList.forEach((file) => {
+                if(nameToUrlName.hasOwnProperty(file.uid)){
+                    const curFileNameInfo = nameToUrlName[file.uid]
+                    imageInfoData.push({
+                        name: curFileNameInfo.name,
+                        fileUrlName: curFileNameInfo.fileUrlName,
+                    })
+                }
+            })
+        }
+
         const tripData = {
             title: values.title,
             startDate: values.dates[0],
             endDate: values.dates[1],
             details: values.details,
             locations: locationData,
+            images: imageInfoData,
         }
         
         if (props.editTrip){
@@ -175,6 +194,120 @@ const EditTrip = props => {
     const tailLayout = {
         wrapperCol: { offset: 8, span: 12 }
     }
+
+    // TODO: UPLOAD ----------------------------------------------------------
+    const [previewInfo, setPreviewInfo] = useState({
+        previewVisible: false,
+        previewImage: '',
+        privewTitle: '',
+    })
+    const [fileList, setFileList] = useState([]) 
+    /**
+     * File is object:
+     *  {
+            uid: '',
+            name: '',
+            stats: '',
+            url: '',
+        }
+        */
+    const [fileReader, setFileReader] = useState(new FileReader())
+    const myImage = useRef('')
+    /**
+     * Object of images with rc_uid key
+     * { 
+     *      rc_uid: {name: '', fileUrlName: ''},
+     *      ...
+     * }
+     */
+    const [nameToUrlName, setNameToUrlName] = useState({})
+    
+    const handleCancel = () => {
+        setPreviewInfo({ previewVisible: false })
+    }
+
+    const handlePreview = async (file) => {
+        if (!file.url && !file.preview) {
+            file.preview = await getBase64(file.originFileObj)
+        }
+
+        setPreviewInfo({
+            previewImage: file.url || file.preview,
+            previewVisible: true,
+            previewTitle: file.name || file.url.substring(file.url.lastIndexOf('/')+1),
+        })
+    }
+
+    const handleChange = (info) => {
+        const file = info.file
+        const fileList = info.fileList
+        if (file.status === 'done'){
+            return
+        }
+
+        const reader = new FileReader()
+        reader.onloadend = (obj) => {
+                myImage.current = obj.srcElement.result
+        }
+        reader.readAsArrayBuffer(file.originFileObj);
+        setFileList(fileList)
+    }
+    const customRequest = async (option) => {
+        const { onSuccess, onError, file, action, onProgress } = option
+        const url = action
+        
+        console.log("customRequest: " + url)
+
+        await new Promise(resolve => waitUntilImageLoaded(resolve))
+        const type = 'image/jpeg'
+        axios.put(url, myImage.current, {
+            headers: {
+                'Content-Type': type,
+            },
+        })
+            .then(response => {
+                onSuccess(response.body)
+                myImage.current = ''
+            })
+            .catch(error => {
+                onError(error)
+                myImage.current = ''
+            })
+    }
+    const waitUntilImageLoaded = (resolve) => {
+        setTimeout( () => {
+            if (myImage.current){
+                resolve()
+            } else {
+                waitUntilImageLoaded(resolve)
+            }
+        }, 100)
+    }
+
+    //TODO
+    const handleUpload = async (file) => {
+        const fileName = file.name
+        const fileType = file.type
+        let signedUrl = ''
+
+        try{
+            const urlInfo = await tripService.getS3SignedUrl(fileType)
+            signedUrl = urlInfo.signedUrl
+            const fileUID = file.uid
+            const fileNameInfo = {
+                name: fileName,
+                fileUrlName: urlInfo.fileUrlName,
+            }
+            setNameToUrlName({...nameToUrlName,  [fileUID]: fileNameInfo })
+            
+        } catch (err) {
+            console.log("handleUpload "+err)
+        }
+        
+        // TODO: error handling?
+        return signedUrl
+    }
+    //----------------------------------------------------------
 
     return (
         <Form
@@ -289,10 +422,30 @@ const EditTrip = props => {
                         <Input readOnly={true} style={{ display: 'none' }} />
                     </Form.Item>
                 </Form.Item>
+                
+                {/* TODO: UPLOAD */}
+                <Form.Item
+                    label="Photos" >
+                    <Upload
+                        action={handleUpload}
+                        customRequest={customRequest}
+                        listType="picture-card"
+                        onPreview={handlePreview}
+                        onChange={handleChange} >
+                        { fileList.length >=2 ? null : <UploadButton /> }
+                    </Upload>
+                    <Modal
+                        visible={previewInfo.previewVisible}
+                        title={previewInfo.previewTitle}
+                        footer={null}
+                        onCancel={handleCancel}
+                        >
+                        <img alt="example" style={{ width: '100%' }} src={previewInfo.previewImage} />
+                    </Modal>
+                </Form.Item>
 
                 <Form.Item
-                    {...tailLayout}
-                >
+                    {...tailLayout} >
                         <Space>
                             <Button type="primary" htmlType="submit">{btnName}</Button>
                             {existingTrip && 
@@ -323,5 +476,22 @@ const EditTrip = props => {
         </Form>
     )
 }
+
+const UploadButton = () => {
+    return (
+        <div>
+            <PlusOutlined />
+            <div className="ant-upload-text">Upload</div>
+        </div>
+    )
+}
+const getBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
+  }
 
 export default EditTrip

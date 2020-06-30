@@ -137,7 +137,7 @@ const TripTabContent = (props) => {
             break
 
         case 'pictures':
-            contentComponent = <PictureCarousel pics={props.curTrip.pictures}/>
+            contentComponent = <PictureCarousel images={props.curTrip.images}/>
             break
 
         case 'videos':

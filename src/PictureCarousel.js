@@ -8,13 +8,13 @@ const PictureCarousel = (props) => {
         console.log(a, b, c)
     }
 
-    const divCarouselImages = (props.pics) ? 
-        props.pics.map((picUrl) => {
+    const divCarouselImages = (props.images) ? 
+        props.images.map((imgInfo) => {
             return ( 
                 <div>
                     <img 
-                        src={picUrl}
-                        alt="image"
+                        src={imgInfo.S3Url}
+                        alt={imgInfo.name}
                         className="carouselPicture" />
                 </div>
             )
