@@ -33,6 +33,22 @@ const EditTrip = props => {
 
     const latLngDelim = ','
     const hiddenSuffix = '_hidden'
+    
+    const locationFldNames = [
+        {
+            fmtAddr: 'loc0',
+            latLng: 'loc0' + hiddenSuffix,
+        },
+        {
+            fmtAddr: 'loc1',
+            latLng: 'loc1' + hiddenSuffix,
+        },
+        {
+            fmtAddr: 'loc2',
+            latLng: 'loc2' + hiddenSuffix,
+        },
+    ]
+    /*
     const locations = {
         loc0: 'loc0',
         loc0Hidden: 'loc0' + hiddenSuffix,
@@ -41,6 +57,7 @@ const EditTrip = props => {
         loc2: 'loc2',
         loc2Hidden: 'loc2' + hiddenSuffix,
     }
+    */
 
     const getInitialMapCenter = () => {
         return {
@@ -90,13 +107,14 @@ const EditTrip = props => {
         setMarkerLatLng(locLatLngInfo)
         setMapCenter(locLatLngInfo)
     }
-    const clearLocation = (curLocFieldName) => {
+    const clearLocation = (curLocFmtAddrFldName, curLocLatLngFldName) => {
         let reset = {}
-        reset[curLocFieldName]=''
+        reset[curLocFmtAddrFldName]=''
+        reset[curLocLatLngFldName]=''
         form.setFieldsValue(reset)
 
         let disableBtnsValue = {}
-        disableBtnsValue[curLocFieldName] = true
+        disableBtnsValue[curLocFmtAddrFldName] = true
         setDisableDelBtns({...disableDelBtns, ...disableBtnsValue})
     }
     const clearMapStates = () => {
@@ -116,24 +134,10 @@ const EditTrip = props => {
 
     const getInitialLocValues = (existingLocations) => {
         let initialValues = {}
-        const tempMapping = [
-            {
-                fmtAddr: locations.loc0,
-                latLng: locations.loc0Hidden,
-            },
-            {
-                fmtAddr: locations.loc1,
-                latLng: locations.loc1Hidden,
-            },
-            {
-                fmtAddr: locations.loc2,
-                latLng: locations.loc2Hidden,
-            },
-        ]
 
         for(let i=0; i<existingLocations.length; i++){
-            initialValues[tempMapping[i].fmtAddr] = existingLocations[i].fmtAddr
-            initialValues[tempMapping[i].latLng] = existingLocations[i].latLng[0] + latLngDelim + existingLocations[i].latLng[1]
+            initialValues[locationFldNames[i].fmtAddr] = existingLocations[i].fmtAddr
+            initialValues[locationFldNames[i].latLng] = existingLocations[i].latLng[0] + latLngDelim + existingLocations[i].latLng[1]
         }
 
         return initialValues
@@ -148,14 +152,6 @@ const EditTrip = props => {
             dates: [existingTrip.startDate, existingTrip.endDate],
             details: existingTrip.details,            
         }
-        /*
-        form.setFieldsValue({
-            title: existingTrip.title,
-            dates: [existingTrip.startDate, existingTrip.endDate],
-            details: existingTrip.details,
-            
-        })*/
-
         form.setFieldsValue({...initialValues, ...getInitialLocValues(existingTrip.locations)})
 
         btnName = 'Update'
@@ -166,24 +162,24 @@ const EditTrip = props => {
         let locationData = []
         
         // Get location data
-        if (values[locations.loc0Hidden]){
+        if (values[locationFldNames[0].latLng]){
             locationData[counter] = {
-                fmtAddr: values[locations.loc0],
-                latLng: values[locations.loc0Hidden].split(latLngDelim),
+                fmtAddr: values[locationFldNames[0].fmtAddr],
+                latLng: values[locationFldNames[0].latLng].split(latLngDelim),
             }
             counter++
         }
-        if (values[locations.loc1Hidden]){
+        if (values[locationFldNames[1].latLng]){
             locationData[counter] = {
-                fmtAddr: values[locations.loc1],
-                latLng: values[locations.loc1Hidden].split(latLngDelim),                
+                fmtAddr: values[locationFldNames[1].fmtAddr],
+                latLng: values[locationFldNames[1].latLng].split(latLngDelim),                
             }
             counter++
         }
-        if (values[locations.loc2Hidden]){
+        if (values[locationFldNames[2].latLng]){
             locationData[counter] = {
-                fmtAddr: values[locations.loc2],
-                latLng: values[locations.loc2Hidden].split(latLngDelim),
+                fmtAddr: values[locationFldNames[2].fmtAddr],
+                latLng: values[locationFldNames[2].latLng].split(latLngDelim),
             }
             counter++
         }
@@ -396,7 +392,7 @@ const EditTrip = props => {
                     <Form.Item
                         style={{display: 'block', margin: '0'}} >
                         <Form.Item
-                            name={locations.loc0}
+                            name={locationFldNames[0].fmtAddr}
                             style={{ display: 'inline-block' }}
                              >
                             <Input readOnly={true} placeholder='Where did you go?' />
@@ -405,11 +401,11 @@ const EditTrip = props => {
                             className="dynamic-delete-button"
                             disabled={disableDelBtns.loc0}
                             style={{ margin: '0 8px' }}
-                            onClick={() => clearLocation(locations.loc0)} />
-                        <Button type="link" onClick={() => onButtonClicked(locations.loc0)}>Select location</Button>
+                            onClick={() => clearLocation(locationFldNames[0].fmtAddr, locationFldNames[0].latLng)} />
+                        <Button type="link" onClick={() => onButtonClicked(locationFldNames[0].fmtAddr)}>Select location</Button>
                     </Form.Item>
                     <Form.Item 
-                        name={locations.loc0Hidden}
+                        name={locationFldNames[0].latLng}
                         noStyle
                         style={{ display: 'none' }} >
                         <Input readOnly={true} style={{ display: 'none' }} />
@@ -418,7 +414,7 @@ const EditTrip = props => {
                     <Form.Item
                         style={{display: 'block', margin: '0'}} >
                         <Form.Item
-                            name={locations.loc1}
+                            name={locationFldNames[1].fmtAddr}
                             style={{ display: 'inline-block' }} >
                             <Input readOnly={true} placeholder='Where did you go?' />
                         </Form.Item>
@@ -426,12 +422,12 @@ const EditTrip = props => {
                             className="dynamic-delete-button"
                             disabled={disableDelBtns.loc1}
                             style={{ margin: '0 8px' }}
-                            onClick={() => clearLocation(locations.loc1)}
+                            onClick={() => clearLocation(locationFldNames[1].fmtAddr, locationFldNames[1].latLng)}
                         />
-                        <Button type="link" onClick={() => onButtonClicked(locations.loc1)}>Select location</Button>
+                        <Button type="link" onClick={() => onButtonClicked(locationFldNames[1].fmtAddr)}>Select location</Button>
                     </Form.Item>
                     <Form.Item 
-                        name={locations.loc1Hidden}
+                        name={locationFldNames[1].latLng}
                         noStyle
                         style={{ display: 'none' }} >
                         <Input readOnly={true} style={{ display: 'none' }} />
@@ -440,7 +436,7 @@ const EditTrip = props => {
                     <Form.Item
                         style={{display: 'block', margin: '0'}} >
                         <Form.Item
-                            name={locations.loc2}
+                            name={locationFldNames[2].fmtAddr}
                             style={{ display: 'inline-block' }} >
                             <Input readOnly={true} placeholder='Where did you go?' />
                         </Form.Item>
@@ -448,12 +444,12 @@ const EditTrip = props => {
                             className="dynamic-delete-button"
                             disabled={disableDelBtns.loc2}
                             style={{ margin: '0 8px' }}
-                            onClick={() => clearLocation(locations.loc2)}
+                            onClick={() => clearLocation(locationFldNames[2].fmtAddr, locationFldNames[2].latLng)}
                         />
-                        <Button type="link" onClick={() => onButtonClicked(locations.loc2)}>Select location</Button>
+                        <Button type="link" onClick={() => onButtonClicked(locationFldNames[2].fmtAddr)}>Select location</Button>
                     </Form.Item>
                     <Form.Item 
-                        name={locations.loc2Hidden}
+                        name={locationFldNames[2].latLng}
                         noStyle
                         style={{ display: 'none' }} >
                         <Input readOnly={true} style={{ display: 'none' }} />
