@@ -4,7 +4,7 @@ const moment = require('moment')
 const { MongoClient } = require('mongodb')
 const { response } = require('express')
 const ObjectId = require("mongodb").ObjectID
-const { genSignedUrlPut, getImageS3URL, deleteS3Images, copyToPermanentBucket } = require('./S3SignedURLs')
+const { genSignedUrlPut, getImageS3URL, deleteS3Images, copyToPermanentBucket } = require('./S3Service')
 require('dotenv').config()
 
 const app = express()
