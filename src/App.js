@@ -1,8 +1,8 @@
 import React from 'react'
 import { Switch, Route, Router, Link, useLocation } from 'react-router-dom'
 import { Layout, Menu, Modal, Button, Upload } from 'antd'
-
 import history from './history'
+
 import Home from './Home.js'
 import EditTrip from './EditTrip.js'
 import MyMapContainer from './MyMapContainer.js'
@@ -13,21 +13,6 @@ const { Header, Content, Footer } = Layout
 
 class App extends React.Component {
     state = {
-        /**
-           trips:
-                [
-                    {
-                    _id: '', (assigned from MongoDB)
-                        title: '',
-                    startDate: null (string), TODO: should be date object
-                    endDate: null (string), TODO: should be date object
-                    details: '',
-                    locations: null (array),
-                    pictures: null (array),
-                    },
-                    ...
-                ]
-         */        
         trips: [],
         editTripId: null,
         modalVisible: false,
