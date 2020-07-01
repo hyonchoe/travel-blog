@@ -23,7 +23,7 @@ const deleteS3Images = (names) => {
     s3.deleteObjects(params, (err, result) => {
       if (err) {
         console.log(err)
-        reject(err)
+        resolve(err) // From end user point of view, failure to delete on S3 is fine
       }
       resolve(result)
     })

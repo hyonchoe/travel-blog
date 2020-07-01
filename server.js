@@ -68,7 +68,7 @@ app.delete('/trips/:tripId', async (req, res) => {
             const imagesToRemove = result.value.images.map((img) => {
                 return { Key: img.fileUrlName }
             })
-            await deleteS3Images(imagesToRemove)
+            deleteS3Images(imagesToRemove)
         }
 
         res.send(result)
@@ -145,7 +145,7 @@ app.put('/trips/:tripId', async (req, res) => {
         }
         // Delete existing images that are removed by the user
         if (imagesToRemove.length > 0){
-            await deleteS3Images(imagesToRemove)
+            deleteS3Images(imagesToRemove)
         }
         // Update trip information in the DB
         result = await client.db("trips").collection("tripInfo").updateOne({"_id": ObjectId(tripId)}, { $set: updatedTrip })
