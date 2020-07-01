@@ -67,7 +67,6 @@ const copyToPermanentBucket = (name) => {
         console.log(err)
         reject(err)
       }
-      console.log("inside promise: " + result)
       resolve(result)
     })
   })
