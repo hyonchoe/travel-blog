@@ -9,8 +9,6 @@ import MyMapContainer from './MyMapContainer.js'
 import tripService from './services/tripService.js'
 import './App.css'
 
-import S3Uploader from './S3Uploader.js'
-
 const { Header, Content, Footer } = Layout
 
 class App extends React.Component {
@@ -137,10 +135,6 @@ class App extends React.Component {
                                                 handleSubmit={this.handleSubmit}
                                                 handleCancel={this.handleCancel}
                                                 />
-                                        </Route>
-
-                                        <Route path="/upload">
-                                            <S3Uploader />
                                         </Route>
                                     </Switch>                                    
                         </Content>
