@@ -4,7 +4,7 @@ const moment = require('moment')
 const { MongoClient } = require('mongodb')
 const { response } = require('express')
 const ObjectId = require("mongodb").ObjectID
-const { genSignedUrlPut, getImageS3URL } = require('./S3SignedURLs')
+const { genSignedUrlPut, getImageS3URL, deleteS3Images } = require('./S3SignedURLs')
 require('dotenv').config()
 
 const app = express()
@@ -97,11 +97,6 @@ app.put('/trips/:tripId', (req, res) => {
      * TODO:
      * Just like create request, figure out which ones to move to permanent bucket.
      */
-    /**
-     * TODO:
-     * Figure out which images are no longer referenced, and delete from S3.
-     * (This is when user deletes the previously already uploaded image)
-     */
     
     const updatedTrip = {
         title: req.body.title,
@@ -117,29 +112,23 @@ app.put('/trips/:tripId', (req, res) => {
         if(error){
             throw error
         }
-        client.db("trips").collection("tripInfo").findOne({"_id": ObjectId(tripId)}, {projection: {_id:0 , images:1}}, (error, result) => {
-            if (error){
-                return res.status(500).send(error)
-            }
-            console.log(result)
-            if (result){
-                existingImages = result.images
-                let imagesToRemove = getImagesToRemove(existingImages,  tripImages)
-                console.log(imagesToRemove)
-            } else {
-                // didn't find the trip
-            }
-        })
 
-        //NOTE: putting result here doesn't work b/c making call to DB is asynchronous,
-        // and needs to be inside that bracket
-
-        client.db("trips").collection("tripInfo").updateOne({"_id": ObjectId(tripId)}, { $set: updatedTrip }, (error, result) => {
+        client.db("trips").collection("tripInfo").findOneAndUpdate({"_id": ObjectId(tripId)}, { $set: updatedTrip }, { projection: {_id:0, images:1} }, (error, result) => {
             if (error) {
                 throw error
             }
+            if (result.value){
+                console.log(result)
+                let imagesToRemove = getImagesToRemove(result.value.images,  tripImages)
+                console.log(imagesToRemove)
+                if (imagesToRemove.length > 0){
+                    deleteS3Images(imagesToRemove)
+                }
+            } else {
+                // didn't find the trip
+            }
             res.send(result)
-        })
+        })        
     })
 })
 
@@ -150,7 +139,7 @@ const getImagesToRemove = (existingImages, updatedImages) => {
     })
     existingImages.forEach((img) => {
         if (!updatedImagesUrlNames.includes(img.fileUrlName)){
-            remove.push(img.fileUrlName)
+            remove.push({ Key: img.fileUrlName })
         }
     })
 

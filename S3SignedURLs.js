@@ -12,6 +12,22 @@ const s3 = new AWS.S3({
     signatureVersion: 'v4',
 })
 
+const deleteS3Images = (names) => {
+  return new Promise((resolve, reject) => {
+    const params = {
+      Bucket: BUCKET_NAME,
+      Delete: { Objects: names },
+    }
+    s3.deleteObjects(params, (err, result) => {
+      if (err) {
+        console.log(err)
+        reject(err)
+      }
+      resolve(result)
+    })
+  })
+}
+
 const genSignedUrlPut = (name, type) => {
     return new Promise((resolve, reject) => {
         const params = { 
@@ -39,4 +55,4 @@ const getImageS3URL = (name) => {
   return `https://${BUCKET_NAME}.s3.${BUCKET_REGION}.amazonaws.com/${name}`
 }
 
-module.exports = { genSignedUrlPut, getImageS3URL }
+module.exports = { genSignedUrlPut, getImageS3URL, deleteS3Images }
