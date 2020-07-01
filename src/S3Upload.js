@@ -36,11 +36,7 @@ const S3Upload = (props) => {
 
         return initialValues
     }   
-    const [fileList, setFileList] = useState(
-        (props.editTrip && props.editTrip.images) ?
-        getInitialImgValues(props.editTrip.images)
-        : []
-    )
+    const [fileList, setFileList] = useState(getInitialImgValues(props.images))
     /**
      * Object of images with rc_uid key
      * { 
@@ -62,12 +58,8 @@ const S3Upload = (props) => {
     }
     const getInitialValues = () => {
         return {
-            fileList: (props.editTrip && props.editTrip.images) ?
-                        getInitialImgValues(props.editTrip.images)
-                        : [],
-            nameToUrlNameMap: (props.editTrip && props.editTrip.images) ?
-                        getInitialNameToUrlMapping(props.editTrip.images)
-                        : {},
+            fileList: getInitialImgValues(props.images),
+            nameToUrlNameMap: getInitialNameToUrlMapping(props.images),
         }
     }
 
