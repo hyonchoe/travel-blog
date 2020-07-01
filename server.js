@@ -21,107 +21,90 @@ const uri = `mongodb+srv://${dbusername}:${dbpassword}@travelblog-ugmhk.mongodb.
 app.listen(port, () => console.log(`Listening on port ${port}`))
 
 // Create a trip (POST)
-app.post('/trips', (req, res) => {
+app.post('/trips', async (req, res) => {
     const mgClient = new MongoClient(uri, { useUnifiedTopology: true })
     const tripLocations = req.body.locations
-    processTripLocData(tripLocations)
-    
     const tripImages = req.body.images
-    
-    for(let i=0; i <tripImages.length; i++){
-        copyToPermanentBucket(tripImages[i].fileUrlName)
-            .then(response => {
-                if (i == tripImages.length-1){
-                    const newTrip = {
-                        title: req.body.title,
-                        startDate: req.body.startDate,
-                        endDate: req.body.endDate,
-                        details: req.body.details,
-                        locations: tripLocations,
-                        images: req.body.images,
-                    }
-                
-                    mgClient.connect((error, client) => {
-                        if(error){
-                            throw error
-                        }
-                
-                        client.db("trips").collection("tripInfo").insertOne(newTrip, (error, result) => {
-                            if (error){
-                                throw error
-                            }
-                            res.send(result)
-                        })
-                    })
-                }
-            })
-            .catch(error => {
-                console.log(error)
-                res.send(error)
-            })
+
+    processTripLocData(tripLocations)
+
+    const newTrip = {
+        title: req.body.title,
+        startDate: req.body.startDate,
+        endDate: req.body.endDate,
+        details: req.body.details,
+        locations: tripLocations,
+        images: tripImages,
+    }
+
+    try {
+        const client = await mgClient.connect()
+        // Copy over user submitted images from temp bucket to permanent bucket
+        for(let i=0; i <tripImages.length; i++){
+            await copyToPermanentBucket(tripImages[i].fileUrlName)
+        }
+        // Insert new trip information to the DB
+        let result = await client.db("trips").collection("tripInfo").insertOne(newTrip)
+
+        res.send(result)
+    } catch (error){
+        console.log(error)
+
+        res.send(error)
     }
 })
 
 // Delete existing trip (DEL)
-app.delete('/trips/:tripId', (req, res) => {
+app.delete('/trips/:tripId', async (req, res) => {
     const mgClient = new MongoClient(uri, { useUnifiedTopology: true })
     const tripId = req.params.tripId
 
-    mgClient.connect((error, client) => {
-        if(error){
-            console.log(error)
-            res.send(error)
-            throw error
+    try {
+        const client = await mgClient.connect()
+        // Delete trip from DB
+        let result = await client.db("trips").collection("tripInfo").findOneAndDelete({"_id": ObjectId(tripId)})
+        // If there are images to remove from S3, remove them
+        if (result.value && result.value.images && result.value.images.length > 0){
+            const imagesToRemove = result.value.images.map((img) => {
+                return { Key: img.fileUrlName }
+            })
+            await deleteS3Images(imagesToRemove)
         }
 
-        client.db("trips").collection("tripInfo").findOneAndDelete({"_id": ObjectId(tripId)}, (error, result) => {
-            if (error) {
-                console.log(error)
-                res.send(error)
-                throw error
-            }
-            
-            if (result.value && result.value.images && result.value.images.length > 0){
-                const imagesToRemove = result.value.images.map((img) => {
-                    return { Key: img.fileUrlName }
-                })
-                deleteS3Images(imagesToRemove)
-            }
-            res.send(result)
-        })
-    })
+        res.send(result)
+    } catch (error){
+        console.log(error)
+        
+        res.send(error)
+    }
 })
 
 // Get existing trips (GET)
-app.get('/trips', (req, res) => {
+app.get('/trips', async (req, res) => {
     const mgClient = new MongoClient(uri, { useUnifiedTopology: true })
 
-    mgClient.connect((error, client) => {
-        if(error){
-            res.send(error)
-            throw error
-        }
-
-        client.db("trips").collection("tripInfo").find().toArray((error, result) => {
-            if (error){
-                res.send(error)
-                throw error
+    try {
+        const client = await mgClient.connect()
+        // Find all existing trips
+        const result = await client.db("trips").collection("tripInfo").find({}).toArray()
+        // Populate S3Url for trips' images 
+        result.forEach((trip) => {
+            const tripImages = trip.images
+            if (tripImages && tripImages.length > 0) {
+                tripImages.forEach((imgInfo) => {
+                    if (!imgInfo.S3Url){
+                        imgInfo.S3Url = getImageS3URL(imgInfo.fileUrlName)
+                    }
+                })
             }
-
-            result.forEach((trip) => {
-                const tripImages = trip.images
-                if (tripImages && tripImages.length > 0) {
-                    tripImages.forEach((imgInfo) => {
-                        if (!imgInfo.S3Url){
-                            imgInfo.S3Url = getImageS3URL(imgInfo.fileUrlName)
-                        }
-                    })
-                }
-            })
-
-            res.send(result)
         })
-    })
+
+        res.send(result)
+    } catch (error) {
+        console.log(error)
+
+        res.send(error)
+    }
 })
 
 // Update existing trip (PUT)
@@ -164,30 +147,32 @@ app.put('/trips/:tripId', async (req, res) => {
         if (imagesToRemove.length > 0){
             await deleteS3Images(imagesToRemove)
         }
-
         // Update trip information in the DB
         result = await client.db("trips").collection("tripInfo").updateOne({"_id": ObjectId(tripId)}, { $set: updatedTrip })
+
         res.send(result)
     } catch (error){
         console.log(error)
+
         res.send(error)
     }
 })
 
 // Generate S3 signed URL for photo upload
-app.get('/get-signed-url', (req, res) => {
+app.get('/get-signed-url', async (req, res) => {
     //TODO: Can add some validation for allowed file type check here
     const fileType = req.query.type
     const urlFileName = new ObjectId().toString()
 
-    genSignedUrlPut(urlFileName, fileType)
-        .then(urlInfo => {
-            res.send(urlInfo)
-        })
-        .catch(err => {
-            console.log(err)
-            res.send(err)
-        })
+    try {
+        const urlInfo = await genSignedUrlPut(urlFileName, fileType)
+        
+        res.send(urlInfo)
+    } catch (error) {
+        console.log(err)
+
+        res.send(err)        
+    }
 })
 
 const getImagesToRemove = (existingImages, updatedImages) => {
