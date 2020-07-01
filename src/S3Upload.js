@@ -60,12 +60,6 @@ const S3Upload = (props) => {
 
         return mapping
     }
-    //TODO: don't think i need this one 'nameToUrlName' tracked separately here
-    const [nameToUrlName, setNameToUrlName] = useState(
-        (props.editTrip && props.editTrip.images) ?
-        getInitialNameToUrlMapping(props.editTrip.images)
-        : {}
-    )
     const getInitialValues = () => {
         return {
             fileList: (props.editTrip && props.editTrip.images) ?
@@ -163,8 +157,8 @@ const S3Upload = (props) => {
                 fileUrlName: urlInfo.fileUrlName,
                 pendingFileUrl: urlInfo.pendingFileUrl,
             }
-            const updatedNameToUrlName = {...nameToUrlName,  [fileUID]: fileNameInfo }
-            setNameToUrlName(updatedNameToUrlName)
+            const curNameToUrlName = props.form.getFieldValue(props.fieldName).nameToUrlNameMap
+            const updatedNameToUrlName = {...curNameToUrlName,  [fileUID]: fileNameInfo }
             
             props.form.setFieldsValue({
                 [props.fieldName]: {
