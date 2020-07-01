@@ -7,11 +7,8 @@ import LocationSelect from './LocationSelect.js';
 import S3Upload from './S3Upload.js'
 
 const EditTrip = props => {
-    const uploadFldName = 'files'
-    
     const latLngDelim = ','
     const hiddenSuffix = '_hidden'
-    
     const locationFldNames = [
         {
             fmtAddr: 'loc0',
@@ -25,17 +22,18 @@ const EditTrip = props => {
             fmtAddr: 'loc2',
             latLng: 'loc2' + hiddenSuffix,
         },
-    ]
+    ]    
+    const uploadFldName = 'files'
 
     const getInitialFormValues = () => {
+        // Initial values for location and upload images are handled
+        // inside own component        
         if (props.editTrip){
             let initialValues = {
                 title: existingTrip.title,
                 dates: [existingTrip.startDate, existingTrip.endDate],
                 details: existingTrip.details,            
             }
-            const locInitialValues = getInitialLocValues(existingTrip.locations)
-            initialValues = {...initialValues, ...locInitialValues}
             
             return initialValues
         }
@@ -43,22 +41,10 @@ const EditTrip = props => {
         return {}
     }
 
-    const getInitialLocValues = (existingLocations) => {
-        let initialValues = {}
-
-        for(let i=0; i<existingLocations.length; i++){
-            initialValues[locationFldNames[i].fmtAddr] = existingLocations[i].fmtAddr
-            initialValues[locationFldNames[i].latLng] = existingLocations[i].latLng[0] + latLngDelim + existingLocations[i].latLng[1]
-        }
-
-        return initialValues
-    }
-
     const onFinish = values => {
+        // Get location data
         let counter = 0
         let locationData = []
-        
-        // Get location data
         if (values[locationFldNames[0].latLng]){
             locationData[counter] = {
                 fmtAddr: values[locationFldNames[0].fmtAddr],
@@ -136,6 +122,7 @@ const EditTrip = props => {
 
     const [form] = Form.useForm()
     const existingTrip = props.editTrip
+    const existingTripLocations = (props.editTrip && props.editTrip.locations) ? props.editTrip.locations : []
     let btnName = (existingTrip) ? 'Update' : 'Submit'
 
     return (
@@ -184,9 +171,16 @@ const EditTrip = props => {
                         autoSize={ {minRows:4, maxRows:20} } />
                 </Form.Item>
 
-                <LocationSelect form={form} editTrip={existingTrip} />
+                <LocationSelect
+                    form={form}
+                    existingTripLocations={existingTripLocations}
+                    fieldNames={locationFldNames}
+                    latLngDelim={latLngDelim} />
 
-                <S3Upload form={form} fieldName={uploadFldName} editTrip={existingTrip} />
+                <S3Upload
+                    form={form}
+                    fieldName={uploadFldName}
+                    editTrip={existingTrip} />
 
                 <Form.Item
                     {...tailLayout} >

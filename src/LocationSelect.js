@@ -21,29 +21,12 @@ const LocationSelect = (props) => {
         fmtAddr: '',
     })
     const [disableDelBtns, setDisableDelBtns] = useState([
-        (props.editTrip && props.editTrip.locations && props.editTrip.locations.length > 0) ? false : true,
-        (props.editTrip && props.editTrip.locations && props.editTrip.locations.length > 1) ? false : true,
-        (props.editTrip && props.editTrip.locations && props.editTrip.locations.length > 2) ? false : true,
+        (props.existingTripLocations.length > 0) ? false : true,
+        (props.existingTripLocations.length > 1) ? false : true,
+        (props.existingTripLocations.length > 2) ? false : true,
     ])
     const [modalVisible, setModalVisible] = useState(false)
     const [locFieldNameIndex, setLocFieldNameIndex] = useState(-1)
-    
-    const latLngDelim = ','
-    const hiddenSuffix = '_hidden'
-    const locationFldNames = [
-        {
-            fmtAddr: 'loc0',
-            latLng: 'loc0' + hiddenSuffix,
-        },
-        {
-            fmtAddr: 'loc1',
-            latLng: 'loc1' + hiddenSuffix,
-        },
-        {
-            fmtAddr: 'loc2',
-            latLng: 'loc2' + hiddenSuffix,
-        },
-    ]    
 
     const getInitialMapCenter = () => {
         return {
@@ -67,8 +50,8 @@ const LocationSelect = (props) => {
     }
     const handleModalOk = () => {
         let value = {}
-        value[locationFldNames[locFieldNameIndex].fmtAddr] = addr.fmtAddr
-        value[locationFldNames[locFieldNameIndex].latLng] = (markerLatLng.lat) ? markerLatLng.lat + latLngDelim + markerLatLng.lng : null
+        value[props.fieldNames[locFieldNameIndex].fmtAddr] = addr.fmtAddr
+        value[props.fieldNames[locFieldNameIndex].latLng] = (markerLatLng.lat) ? markerLatLng.lat + props.latLngDelim + markerLatLng.lng : null
         props.form.setFieldsValue(value)
         
         let btnDisableValues = disableDelBtns.slice() // copying it
@@ -93,8 +76,8 @@ const LocationSelect = (props) => {
     }
     const clearLocation = (curLocFldIndex) => {
         let reset = {}
-        reset[locationFldNames[curLocFldIndex].fmtAddr] = ''
-        reset[locationFldNames[curLocFldIndex].latLng] = ''
+        reset[props.fieldNames[curLocFldIndex].fmtAddr] = ''
+        reset[props.fieldNames[curLocFldIndex].latLng] = ''
         props.form.setFieldsValue(reset)
 
        let btnDisableValues = disableDelBtns.slice() // copying it
@@ -115,6 +98,21 @@ const LocationSelect = (props) => {
         setLocFieldNameIndex(locFieldNameIndex)
     }
 
+    const getInitialValueFmtAddr = (locFldIndex) => {
+        const locations = props.existingTripLocations
+        if (locations.length > locFldIndex){
+            return locations[locFldIndex].fmtAddr
+        }
+        return ''
+    }
+    const getInitialValueLatLng = (locFldIndex) => {
+        const locations = props.existingTripLocations
+        if (locations.length > locFldIndex){
+            return locations[locFldIndex].latLng[0] + props.latLngDelim + locations[locFldIndex].latLng[1]
+        }
+        return ''
+    }    
+
     return (
         <Form.Item
         label="Location (up to three)" >
@@ -122,7 +120,8 @@ const LocationSelect = (props) => {
             <Form.Item
                 style={{display: 'block', margin: '0'}} >
                 <Form.Item
-                    name={locationFldNames[0].fmtAddr}
+                    name={props.fieldNames[0].fmtAddr}
+                    initialValue={getInitialValueFmtAddr(0)}
                     style={{ display: 'inline-block' }}
                     >
                     <Input readOnly={true} placeholder='Where did you go?' />
@@ -135,7 +134,8 @@ const LocationSelect = (props) => {
                 <Button type="link" onClick={() => onButtonClicked(0)}>Select location</Button>
             </Form.Item>
             <Form.Item 
-                name={locationFldNames[0].latLng}
+                name={props.fieldNames[0].latLng}
+                initialValue={getInitialValueLatLng(0)}
                 noStyle
                 style={{ display: 'none' }} >
                 <Input readOnly={true} style={{ display: 'none' }} />
@@ -144,7 +144,8 @@ const LocationSelect = (props) => {
             <Form.Item
                 style={{display: 'block', margin: '0'}} >
                 <Form.Item
-                    name={locationFldNames[1].fmtAddr}
+                    name={props.fieldNames[1].fmtAddr}
+                    initialValue={getInitialValueFmtAddr(1)}
                     style={{ display: 'inline-block' }} >
                     <Input readOnly={true} placeholder='Where did you go?' />
                 </Form.Item>
@@ -157,7 +158,8 @@ const LocationSelect = (props) => {
                 <Button type="link" onClick={() => onButtonClicked(1)}>Select location</Button>
             </Form.Item>
             <Form.Item 
-                name={locationFldNames[1].latLng}
+                name={props.fieldNames[1].latLng}
+                initialValue={getInitialValueLatLng(1)}
                 noStyle
                 style={{ display: 'none' }} >
                 <Input readOnly={true} style={{ display: 'none' }} />
@@ -166,7 +168,8 @@ const LocationSelect = (props) => {
             <Form.Item
                 style={{display: 'block', margin: '0'}} >
                 <Form.Item
-                    name={locationFldNames[2].fmtAddr}
+                    name={props.fieldNames[2].fmtAddr}
+                    initialValue={getInitialValueFmtAddr(2)}
                     style={{ display: 'inline-block' }} >
                     <Input readOnly={true} placeholder='Where did you go?' />
                 </Form.Item>
@@ -179,7 +182,8 @@ const LocationSelect = (props) => {
                 <Button type="link" onClick={() => onButtonClicked(2)}>Select location</Button>
             </Form.Item>
             <Form.Item 
-                name={locationFldNames[2].latLng}
+                name={props.fieldNames[2].latLng}
+                initialValue={getInitialValueLatLng(2)}
                 noStyle
                 style={{ display: 'none' }} >
                 <Input readOnly={true} style={{ display: 'none' }} />
