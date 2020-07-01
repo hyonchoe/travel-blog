@@ -115,7 +115,7 @@ const S3Upload = (props) => {
         const url = action
 
         await new Promise(resolve => waitUntilImageLoaded(resolve))
-        const type = 'image/jpeg'
+        const type = file.type
         axios.put(url, myImage.current, {
             onUploadProgress: e => {
                 onProgress({ percent: (e.loaded / e.total) * 100 })
@@ -126,10 +126,11 @@ const S3Upload = (props) => {
         })
             .then(response => {
                 onSuccess(response.body)
-                myImage.current = ''
             })
             .catch(error => {
                 onError(error)
+            })
+            .finally(() => {
                 myImage.current = ''
             })
     }
@@ -193,7 +194,7 @@ const S3Upload = (props) => {
                 footer={null}
                 onCancel={handleCancel}
                 >
-                <img alt="example" style={{ width: '100%' }} src={previewInfo.previewImage} />
+                <img alt="preview" style={{ width: '100%' }} src={previewInfo.previewImage} />
             </Modal>
         </Form.Item>
     )
