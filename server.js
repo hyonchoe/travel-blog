@@ -26,6 +26,10 @@ app.post('/trips', async (req, res) => {
     const tripLocations = req.body.locations
     const tripImages = req.body.images
 
+    // No need to save S3Url to database
+    tripImages.forEach((img) => {
+        delete img.S3Url
+    })
     processTripLocData(tripLocations)
 
     const newTrip = {
@@ -92,9 +96,7 @@ app.get('/trips', async (req, res) => {
             const tripImages = trip.images
             if (tripImages && tripImages.length > 0) {
                 tripImages.forEach((imgInfo) => {
-                    if (!imgInfo.S3Url){
-                        imgInfo.S3Url = getImageS3URL(imgInfo.fileUrlName)
-                    }
+                    imgInfo.S3Url = getImageS3URL(imgInfo.fileUrlName)
                 })
             }
         })
@@ -114,6 +116,10 @@ app.put('/trips/:tripId', async (req, res) => {
     const tripLocations = req.body.locations
     const tripImages = req.body.images
     
+    // No need to save S3Url to database
+    tripImages.forEach((img) => {
+        delete img.S3Url
+    })    
     processTripLocData(tripLocations)
     
     const updatedTrip = {
