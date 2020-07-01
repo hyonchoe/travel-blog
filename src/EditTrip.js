@@ -1,9 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Button, Input, DatePicker, Form, Space  } from 'antd'
 
-import './EditTrip.css'
-
-import LocationSelect from './LocationSelect.js';
+import LocationSelect from './LocationSelect.js'
 import S3Upload from './S3Upload.js'
 
 const EditTrip = props => {
@@ -24,6 +22,13 @@ const EditTrip = props => {
         },
     ]    
     const uploadFldName = 'files'
+    const layout = {
+        labelCol: { span: 8 },
+        wrapperCol: { span: 10, },
+    }
+    const tailLayout = {
+        wrapperCol: { offset: 8, span: 12 }
+    }    
 
     const getInitialFormValues = () => {
         // Initial values for location and upload images are handled
@@ -110,14 +115,6 @@ const EditTrip = props => {
     }
     const onCancel = () => {
         props.handleCancel()
-    }
-
-    const layout = {
-        labelCol: { span: 8 },
-        wrapperCol: { span: 10, },
-    }
-    const tailLayout = {
-        wrapperCol: { offset: 8, span: 12 }
     }
 
     const [form] = Form.useForm()

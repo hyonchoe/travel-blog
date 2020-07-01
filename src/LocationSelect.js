@@ -3,6 +3,7 @@ import { Form, Input, Button, Modal } from 'antd'
 import { CloseCircleOutlined } from '@ant-design/icons';
 
 import MyMapContainer from './MyMapContainer.js'
+import './LocationSelect.css'
 
 const LocationSelect = (props) => {
     const [markerLatLng, setMarkerLatLng] = useState({
