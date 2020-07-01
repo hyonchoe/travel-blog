@@ -232,7 +232,7 @@ const EditTrip = props => {
         privewTitle: '',
     })
     
-    const getInitialImgvalues = (images) => {
+    const getInitialImgValues = (images) => {
         let initialValues = []
         images.forEach((img) => {
             initialValues.push({
@@ -248,7 +248,7 @@ const EditTrip = props => {
     
     const [fileList, setFileList] = useState(
         (props.editTrip && props.editTrip.images) ?
-        getInitialImgvalues(props.editTrip.images)
+        getInitialImgValues(props.editTrip.images)
         : []
     )
     /**
@@ -261,6 +261,7 @@ const EditTrip = props => {
         }
         */
     const myImage = useRef('')
+
     /**
      * Object of images with rc_uid key
      * { 
@@ -268,7 +269,24 @@ const EditTrip = props => {
      *      ...
      * }
      */
-    const [nameToUrlName, setNameToUrlName] = useState({})
+    // TODO:
+    const getInitialNameToUrlMapping = (images) => {
+        let mapping = {}
+        images.forEach((img) => {
+            mapping[img.fileUrlName] = { 
+                name: img.name,
+                fileUrlName: img.fileUrlName,
+                pendingFileUrl: img.S3Url,
+            }
+        })
+
+        return mapping
+    }
+    const [nameToUrlName, setNameToUrlName] = useState(
+        (props.editTrip && props.editTrip.images) ?
+        getInitialNameToUrlMapping(props.editTrip.images)
+        : {}
+    )
     
     const handleCancel = () => {
         setPreviewInfo({ previewVisible: false })

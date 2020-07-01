@@ -99,8 +99,8 @@ class App extends React.Component {
         const tripEditId = this.state.editTripId
         const modalVisible = this.state.modalVisible
         const tripLocations = this.state.tripLocationsForMap
-        const mapCenterLat = (tripLocations) ? tripLocations[0].latLng[0] : null
-        const mapCenterLng = (tripLocations) ? tripLocations[0].latLng[1] : null
+        const mapCenterLat = (tripLocations && tripLocations.length>0) ? tripLocations[0].latLng[0] : null
+        const mapCenterLng = (tripLocations && tripLocations.length>0) ? tripLocations[0].latLng[1] : null
 
         let tripToEdit = null
         for(let i=0; tripEditId!== null && i<trips.length; i++){

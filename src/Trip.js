@@ -19,7 +19,7 @@ class Trip extends React.Component {
         */
     }
     onGlobeClicked = (curTrip) => {
-        if (curTrip.locations){
+        if (curTrip.locations && curTrip.locations.length>0){
             this.props.launchMapModal(curTrip.title, curTrip.locations)
         }
     }

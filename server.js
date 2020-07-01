@@ -38,7 +38,9 @@ app.get('/trips', (req, res) => {
                 const tripImages = trip.images
                 if (tripImages && tripImages.length > 0) {
                     tripImages.forEach((imgInfo) => {
-                        imgInfo.S3Url = getImageS3URL(imgInfo.fileUrlName)
+                        if (!imgInfo.S3Url){
+                            imgInfo.S3Url = getImageS3URL(imgInfo.fileUrlName)
+                        }
                     })
                 }
             })
@@ -53,6 +55,12 @@ app.post('/trips', (req, res) => {
     const mgClient = new MongoClient(uri, { useUnifiedTopology: true })
     const tripLocations = req.body.locations
     processTripLocData(tripLocations)
+    
+    /**
+     * TODO:
+     * Add processing on received images information to determine which images on S3
+     * storage to move to permanent bucket vs keep in the temp bucket once that's setup
+     */
     
     const newTrip = {
         title: req.body.title,
@@ -82,7 +90,18 @@ app.put('/trips/:tripId', (req, res) => {
     const mgClient = new MongoClient(uri, { useUnifiedTopology: true })
     const tripId = req.params.tripId
     const tripLocations = req.body.locations
+    const tripImages = req.body.images
     processTripLocData(tripLocations)
+
+    /**
+     * TODO:
+     * Just like create request, figure out which ones to move to permanent bucket.
+     */
+    /**
+     * TODO:
+     * Figure out which images are no longer referenced, and delete from S3.
+     * (This is when user deletes the previously already uploaded image)
+     */
     
     const updatedTrip = {
         title: req.body.title,
@@ -90,12 +109,30 @@ app.put('/trips/:tripId', (req, res) => {
         endDate: req.body.endDate,
         details:req.body.details,
         locations: tripLocations,
+        images: tripImages,
     }
 
+    let existingImages = null
     mgClient.connect((error, client) => {
         if(error){
             throw error
         }
+        client.db("trips").collection("tripInfo").findOne({"_id": ObjectId(tripId)}, {projection: {_id:0 , images:1}}, (error, result) => {
+            if (error){
+                return res.status(500).send(error)
+            }
+            console.log(result)
+            if (result){
+                existingImages = result.images
+                let imagesToRemove = getImagesToRemove(existingImages,  tripImages)
+                console.log(imagesToRemove)
+            } else {
+                // didn't find the trip
+            }
+        })
+
+        //NOTE: putting result here doesn't work b/c making call to DB is asynchronous,
+        // and needs to be inside that bracket
 
         client.db("trips").collection("tripInfo").updateOne({"_id": ObjectId(tripId)}, { $set: updatedTrip }, (error, result) => {
             if (error) {
@@ -105,6 +142,20 @@ app.put('/trips/:tripId', (req, res) => {
         })
     })
 })
+
+const getImagesToRemove = (existingImages, updatedImages) => {
+    let remove = []
+    let updatedImagesUrlNames = updatedImages.map((img) => {
+        return img.fileUrlName
+    })
+    existingImages.forEach((img) => {
+        if (!updatedImagesUrlNames.includes(img.fileUrlName)){
+            remove.push(img.fileUrlName)
+        }
+    })
+
+    return remove
+}
 
 // Delete existing trip (DEL)
 app.delete('/trips/:tripId', (req, res) => {
