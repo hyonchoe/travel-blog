@@ -1,6 +1,6 @@
 import React from 'react'
 import TripList from './TripList.js'
-import { Empty, Skeleton, Row, Col } from 'antd'
+import { Empty, Skeleton, Row, Col, BackTop } from 'antd'
 
 class Home extends React.Component {    
     render() {
@@ -12,6 +12,7 @@ class Home extends React.Component {
         
         return (
           <div className="homeContainer">
+          <BackTop />
           <Row
             gutter={[8, 16]}
             justify="center" >
