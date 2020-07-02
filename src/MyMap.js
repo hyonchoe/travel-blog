@@ -37,6 +37,10 @@ const MyMap = withScriptjs(withGoogleMap((props) =>{
   }
 
   const onPlaceSelected = (place) => {
+    if (!place.address_components || !place.geometry){
+        return
+    }
+
     const addrComponents = place.address_components
     const latLngInfo = place.geometry.location
     const newLat = latLngInfo.lat()
