@@ -87,6 +87,9 @@ class App extends React.Component {
         message.success(`Trip "${updatedTrip.title}" updated successfully`)
     }
     handleCancel = () => {
+        this.setState({
+            editTripId: null,
+        })
         history.push('/')
     }
     launchMapModal = (tripTitle, tripLocations) => {

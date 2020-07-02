@@ -12,27 +12,29 @@ class Home extends React.Component {
         
         return (
           <div className="homeContainer">
-            { trips.length > 0 && 
-            <TripList
-              tripData={trips}
-              deleteTrip={handleDeleteTrip}
-              editTrip={handleEditTrip}
-              launchMapModal={handleLaunchMapModal} />
-            }
-            { trips.length === 0 && loadingData && 
-            <Row
-              gutter={[8, 16]}
-              justify="center" >
-              <Col span={4} />
-              <Col span={16}>
-                <Skeleton active loading={loadingData} />
-              </Col>
-              <Col span={4} />
-            </Row>
-            }
-            { trips.length === 0 && !loadingData &&
-            <Empty />
-            }
+          <Row
+            gutter={[8, 16]}
+            justify="center" >
+            <Col span={4} />
+            <Col span={16}>
+              { trips.length > 0 && 
+              <TripList
+                tripData={trips}
+                deleteTrip={handleDeleteTrip}
+                editTrip={handleEditTrip}
+                launchMapModal={handleLaunchMapModal} />
+              }
+              { trips.length === 0 && loadingData && 
+              
+                  <Skeleton active loading={loadingData} />
+              
+              }
+              { trips.length === 0 && !loadingData &&
+              <Empty />
+              }
+            </Col>
+            <Col span={4} />
+          </Row>
           </div>
           )
       }    
