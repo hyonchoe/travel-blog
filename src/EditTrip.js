@@ -123,8 +123,7 @@ const EditTrip = props => {
                             required: true,
                             message: 'Please input your trip title.',
                         },
-                    ]}
-                    >
+                    ]} >
                     <Input />
                 </Form.Item>
 
@@ -168,9 +167,7 @@ const EditTrip = props => {
                     {...tailLayout} >
                         <Space>
                             <Button type="primary" htmlType="submit">{btnName}</Button>
-                            {existingTrip && 
-                                <Button type="link" onClick={onCancel}>Cancel</Button>
-                            }
+                            <Button type="link" onClick={onCancel}>Cancel</Button>
                         </Space>
                 </Form.Item>
         </Form>

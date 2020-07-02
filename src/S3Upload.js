@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react'
 import axios from 'axios'
 import { PlusOutlined } from '@ant-design/icons';
-import { Form, Modal, Upload  } from 'antd'
+import { Form, Modal, Upload, message  } from 'antd'
 
 import tripService from './services/tripService.js'
 
@@ -164,12 +164,40 @@ const S3Upload = (props) => {
         // TODO: error handling
         return signedUrl
     }
+    const uploadInProgressMsg = () => {
+        message.error('File upload is not completed yet.')
+    }
 
     return (
         <Form.Item
             label="Photos"
             name={props.fieldName}
             initialValue={getInitialValues()}
+            rules={[
+                ({ getFieldValue }) => ({
+                    validator(rule, value) {
+                        const curFileList = value.fileList
+                        let uploadInProgress = false
+                        if(curFileList){
+                            console.log(curFileList.length)
+                            for(let i=0; i<curFileList.length; i++){
+                                console.log(curFileList[i].status)
+                                if(curFileList[i].status === 'uploading'){
+                                    uploadInProgress = true
+                                    break
+                                }
+                            }
+                        }
+
+                        if (uploadInProgress){
+                            uploadInProgressMsg()
+                            return Promise.reject('')
+                            
+                        }
+                        return Promise.resolve()
+                    }
+                })
+            ]}
              >
             <Upload
                 fileList={fileList}
