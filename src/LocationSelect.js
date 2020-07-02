@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Form, Input, Button, Modal } from 'antd'
-import { CloseCircleOutlined } from '@ant-design/icons';
+import { CloseCircleOutlined, PlusOutlined } from '@ant-design/icons';
 
 import MyMapContainer from './MyMapContainer.js'
 import './LocationSelect.css'
@@ -21,11 +21,6 @@ const LocationSelect = (props) => {
         country: '',
         fmtAddr: '',
     })
-    const [disableDelBtns, setDisableDelBtns] = useState([
-        (props.existingTripLocations.length > 0) ? false : true,
-        (props.existingTripLocations.length > 1) ? false : true,
-        (props.existingTripLocations.length > 2) ? false : true,
-    ])
     const [modalVisible, setModalVisible] = useState(false)
     const [locFieldNameIndex, setLocFieldNameIndex] = useState(-1)
 
@@ -49,47 +44,45 @@ const LocationSelect = (props) => {
             lng: null,
         }
     }
+    const listName = props.listName
+    const fmtAddrFldName = 'fmtAddr'
+    const latLngFldName = 'latLng'
+    const cityFldName = 'city'
+    const stateFldName = 'state'
+    const countryFldName = 'country'
+    const maxLocationCount = 5
+    const layout = {
+        labelCol: { span: 8 },
+        wrapperCol: { span: 10, },
+    }
+    const tailLayout = {
+        wrapperCol: { offset: 8, span: 10 }
+    }    
+
     const handleModalOk = () => {
-        let value = {}
-        value[props.fieldNames[locFieldNameIndex].fmtAddr] = addr.fmtAddr
-        value[props.fieldNames[locFieldNameIndex].latLng] = (markerLatLng.lat) ? markerLatLng.lat + props.latLngDelim + markerLatLng.lng : null
-        value[props.fieldNames[locFieldNameIndex].city] = addr.city
-        value[props.fieldNames[locFieldNameIndex].state] = addr.state
-        value[props.fieldNames[locFieldNameIndex].country] = addr.country
-        props.form.setFieldsValue(value)
-        
-        let btnDisableValues = disableDelBtns.slice() // copying it
-        btnDisableValues[locFieldNameIndex] = false
-        setDisableDelBtns(btnDisableValues)
+        const updatedValues = props.form.getFieldValue(listName).slice()
+        updatedValues[locFieldNameIndex] = {
+            fmtAddr: addr.fmtAddr,
+            latLng: (markerLatLng.lat) ? markerLatLng.lat + props.latLngDelim + markerLatLng.lng : null,
+            city: addr.city,
+            state: addr.state,
+            country: addr.country,
+        }
+        props.form.setFieldsValue({locationList: updatedValues})
 
         setModalVisible(false)
         clearMapStates()
-
         setLocFieldNameIndex(-1)
     }
     const handleModalCancel = () => {
         setModalVisible(false)
         clearMapStates()
-
         setLocFieldNameIndex(-1)
     }
     const onLocSelected = (locAddrInfo, locLatLngInfo) => {
         setAddr(locAddrInfo)
         setMarkerLatLng(locLatLngInfo)
         setMapCenter(locLatLngInfo)
-    }
-    const clearLocation = (curLocFldIndex) => {
-        let reset = {}
-        reset[props.fieldNames[curLocFldIndex].fmtAddr] = ''
-        reset[props.fieldNames[curLocFldIndex].latLng] = ''
-        reset[props.fieldNames[curLocFldIndex].city] = ''
-        reset[props.fieldNames[curLocFldIndex].state] = ''
-        reset[props.fieldNames[curLocFldIndex].country] = ''
-        props.form.setFieldsValue(reset)
-
-       let btnDisableValues = disableDelBtns.slice() // copying it
-       btnDisableValues[curLocFldIndex] = true
-       setDisableDelBtns(btnDisableValues)
     }
     const clearMapStates = () => {
         const resetAddr = getInitialAddr()
@@ -100,9 +93,9 @@ const LocationSelect = (props) => {
         setMarkerLatLng(resetMarker)
         setMapCenter(resetMapCenter)
     }
-    const onButtonClicked = (locFieldNameIndex) => {
+    const onButtonClicked = (locFieldIndex) => {
         setModalVisible(true)
-        setLocFieldNameIndex(locFieldNameIndex)
+        setLocFieldNameIndex(locFieldIndex)
     }
 
     const getInitialValueFmtAddr = (locFldIndex) => {
@@ -139,146 +132,82 @@ const LocationSelect = (props) => {
             return locations[locFldIndex].country
         }
         return ''
-    }    
+    }
 
     return (
-        <Form.Item
-        label="Location (up to three)" >
+        <div>
+            <Form.List name={listName}>
+                {(fields, { add, remove }) => {
+                return (
+                    <div>
+                    {fields.map((field, index) => (
+                        <Form.Item
+                            {...(index === 0 ? layout : tailLayout)}
+                            label={index === 0 ? 'Location' : ''}
+                            key={field.key} >
+                            <Form.Item
+                                {...field}
+                                name={[field.name, fmtAddrFldName]}
+                                fieldKey={[field.fieldKey, fmtAddrFldName]}
+                                noStyle >
+                                <Input placeholder="Where did you go?" readOnly={true} style={{ width: '60%' }} />
+                            </Form.Item>
+                            <Form.Item
+                                {...field}
+                                name={[field.name, latLngFldName]}
+                                fieldKey={[field.fieldKey, latLngFldName]}
+                                style={{ display: 'none' }} >
+                                <Input readOnly={true} />
+                            </Form.Item>
+                            <Form.Item
+                                {...field}
+                                name={[field.name, cityFldName]}
+                                fieldKey={[field.fieldKey, cityFldName]}
+                                style={{ display: 'none' }} >
+                                <Input readOnly={true} />
+                            </Form.Item>
+                            <Form.Item
+                                {...field}
+                                name={[field.name, stateFldName]}
+                                fieldKey={[field.fieldKey, stateFldName]}
+                                style={{ display: 'none' }} >
+                                <Input readOnly={true} />
+                            </Form.Item>
+                            <Form.Item
+                                {...field}
+                                name={[field.name, countryFldName]}
+                                fieldKey={[field.fieldKey, countryFldName]}
+                                style={{ display: 'none' }} >
+                                <Input readOnly={true} />
+                            </Form.Item>
+                            <Button type="link" onClick={() => onButtonClicked(index)}>Select location</Button>
+                            <CloseCircleOutlined
+                                className="dynamic-delete-button"
+                                style={{ margin: '0 8px' }}
+                                onClick={() => {
+                                    remove(field.name);
+                                }} />
+                        </Form.Item>
+                    ))}
 
-            <Form.Item
-                style={{display: 'block', margin: '0'}} >
-                <Form.Item
-                    name={props.fieldNames[0].fmtAddr}
-                    initialValue={getInitialValueFmtAddr(0)}
-                    style={{ display: 'inline-block' }}
-                    >
-                    <Input readOnly={true} placeholder='Where did you go?' />
-                </Form.Item>
-                <CloseCircleOutlined
-                    className="dynamic-delete-button"
-                    disabled={disableDelBtns[0]}
-                    style={{ margin: '0 8px' }}
-                    onClick={() => clearLocation(0)} />
-                <Button type="link" onClick={() => onButtonClicked(0)}>Select location</Button>
-            </Form.Item>
-            <Form.Item 
-                name={props.fieldNames[0].latLng}
-                initialValue={getInitialValueLatLng(0)}
-                noStyle
-                style={{ display: 'none' }} >
-                <Input readOnly={true} style={{ display: 'none' }} />
-            </Form.Item>
-            <Form.Item 
-                name={props.fieldNames[0].city}
-                initialValue={getInitialValueCity(0)}
-                noStyle
-                style={{ display: 'none' }} >
-                <Input readOnly={true} style={{ display: 'none' }} />
-            </Form.Item>
-            <Form.Item 
-                name={props.fieldNames[0].state}
-                initialValue={getInitialValueState(0)}
-                noStyle
-                style={{ display: 'none' }} >
-                <Input readOnly={true} style={{ display: 'none' }} />
-            </Form.Item>
-            <Form.Item 
-                name={props.fieldNames[0].country}
-                initialValue={getInitialValueCountry(0)}
-                noStyle
-                style={{ display: 'none' }} >
-                <Input readOnly={true} style={{ display: 'none' }} />
-            </Form.Item>
-
-            <Form.Item
-                style={{display: 'block', margin: '0'}} >
-                <Form.Item
-                    name={props.fieldNames[1].fmtAddr}
-                    initialValue={getInitialValueFmtAddr(1)}
-                    style={{ display: 'inline-block' }} >
-                    <Input readOnly={true} placeholder='Where did you go?' />
-                </Form.Item>
-                <CloseCircleOutlined
-                    className="dynamic-delete-button"
-                    disabled={disableDelBtns[1]}
-                    style={{ margin: '0 8px' }}
-                    onClick={() => clearLocation(1)}
-                />
-                <Button type="link" onClick={() => onButtonClicked(1)}>Select location</Button>
-            </Form.Item>
-            <Form.Item 
-                name={props.fieldNames[1].latLng}
-                initialValue={getInitialValueLatLng(1)}
-                noStyle
-                style={{ display: 'none' }} >
-                <Input readOnly={true} style={{ display: 'none' }} />
-            </Form.Item>
-            <Form.Item 
-                name={props.fieldNames[1].city}
-                initialValue={getInitialValueCity(1)}
-                noStyle
-                style={{ display: 'none' }} >
-                <Input readOnly={true} style={{ display: 'none' }} />
-            </Form.Item>
-            <Form.Item 
-                name={props.fieldNames[1].state}
-                initialValue={getInitialValueState(1)}
-                noStyle
-                style={{ display: 'none' }} >
-                <Input readOnly={true} style={{ display: 'none' }} />
-            </Form.Item>
-            <Form.Item 
-                name={props.fieldNames[1].country}
-                initialValue={getInitialValueCountry(1)}
-                noStyle
-                style={{ display: 'none' }} >
-                <Input readOnly={true} style={{ display: 'none' }} />
-            </Form.Item>
-
-            <Form.Item
-                style={{display: 'block', margin: '0'}} >
-                <Form.Item
-                    name={props.fieldNames[2].fmtAddr}
-                    initialValue={getInitialValueFmtAddr(2)}
-                    style={{ display: 'inline-block' }} >
-                    <Input readOnly={true} placeholder='Where did you go?' />
-                </Form.Item>
-                <CloseCircleOutlined
-                    className="dynamic-delete-button"
-                    disabled={disableDelBtns[2]}
-                    style={{ margin: '0 8px' }}
-                    onClick={() => clearLocation(2)}
-                />
-                <Button type="link" onClick={() => onButtonClicked(2)}>Select location</Button>
-            </Form.Item>
-            <Form.Item 
-                name={props.fieldNames[2].latLng}
-                initialValue={getInitialValueLatLng(2)}
-                noStyle
-                style={{ display: 'none' }} >
-                <Input readOnly={true} style={{ display: 'none' }} />
-            </Form.Item>
-            <Form.Item 
-                name={props.fieldNames[2].city}
-                initialValue={getInitialValueCity(2)}
-                noStyle
-                style={{ display: 'none' }} >
-                <Input readOnly={true} style={{ display: 'none' }} />
-            </Form.Item>
-            <Form.Item 
-                name={props.fieldNames[2].state}
-                initialValue={getInitialValueState(2)}
-                noStyle
-                style={{ display: 'none' }} >
-                <Input readOnly={true} style={{ display: 'none' }} />
-            </Form.Item>
-            <Form.Item 
-                name={props.fieldNames[2].country}
-                initialValue={getInitialValueCountry(2)}
-                noStyle
-                style={{ display: 'none' }} >
-                <Input readOnly={true} style={{ display: 'none' }} />
-            </Form.Item>
+                    { fields.length < maxLocationCount &&
+                    <Form.Item
+                        {...tailLayout} >
+                        <Button
+                            type="dashed"
+                            onClick={() => {
+                                add()
+                            }}
+                            style={{ width: '60%' }}
+                            >
+                            <PlusOutlined /> Add location
+                        </Button>
+                    </Form.Item>
+                    }
+                    </div>
+                );
+                }}
+            </Form.List>
 
             <Modal
                 title="Search your trip location"
@@ -299,8 +228,7 @@ const LocationSelect = (props) => {
                         markerLng={markerLatLng.lng}
                         onLocSelected={onLocSelected} />
             </Modal>
-
-        </Form.Item>
+        </div>
     )
 }
 

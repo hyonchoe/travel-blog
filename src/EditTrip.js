@@ -5,31 +5,8 @@ import LocationSelect from './LocationSelect.js'
 import S3Upload from './S3Upload.js'
 
 const EditTrip = props => {
+    const listName = 'locationList'
     const latLngDelim = ','
-    const hiddenSuffix = '_hidden'
-    const locationFldNames = [
-        {
-            fmtAddr: 'loc0',
-            latLng: 'loc0' + hiddenSuffix,
-            city: 'loc0city' + hiddenSuffix,
-            state: 'loc0state' + hiddenSuffix,
-            country: 'loc0country' + hiddenSuffix,
-        },
-        {
-            fmtAddr: 'loc1',
-            latLng: 'loc1' + hiddenSuffix,
-            city: 'loc1city' + hiddenSuffix,
-            state: 'loc1state' + hiddenSuffix,
-            country: 'loc1country' + hiddenSuffix,
-        },
-        {
-            fmtAddr: 'loc2',
-            latLng: 'loc2' + hiddenSuffix,
-            city: 'loc2city' + hiddenSuffix,
-            state: 'loc2state' + hiddenSuffix,
-            country: 'loc2country' + hiddenSuffix,
-        },
-    ]    
     const uploadFldName = 'files'
     const layout = {
         labelCol: { span: 8 },
@@ -57,44 +34,21 @@ const EditTrip = props => {
 
     const onFinish = values => {
         // Get location data
-        let counter = 0
-        let locationData = []
-        if (values[locationFldNames[0].latLng]){
-            locationData[counter] = {
-                fmtAddr: values[locationFldNames[0].fmtAddr],
-                latLng: values[locationFldNames[0].latLng].split(latLngDelim).map((coordinate) =>{
-                    return parseFloat(coordinate)
-                }),
-                city: values[locationFldNames[0].city],
-                state: values[locationFldNames[0].state],
-                country: values[locationFldNames[0].country],
+        const locationData = []
+        const locationList = values[listName]
+        locationList.forEach((loc) => {
+            if(loc.latLng){
+                locationData.push({
+                    fmtAddr: loc.fmtAddr,
+                    latLng: loc.latLng.split(latLngDelim).map((coordinate) =>{
+                        return parseFloat(coordinate)
+                    }),
+                    city: loc.city,
+                    state: loc.state,
+                    country: loc.country,
+                })
             }
-            counter++
-        }
-        if (values[locationFldNames[1].latLng]){
-            locationData[counter] = {
-                fmtAddr: values[locationFldNames[1].fmtAddr],
-                latLng: values[locationFldNames[1].latLng].split(latLngDelim).map((coordinate) =>{
-                    return parseFloat(coordinate)
-                }),
-                city: values[locationFldNames[1].city],
-                state: values[locationFldNames[1].state],
-                country: values[locationFldNames[1].country],
-            }
-            counter++
-        }
-        if (values[locationFldNames[2].latLng]){
-            locationData[counter] = {
-                fmtAddr: values[locationFldNames[2].fmtAddr],
-                latLng: values[locationFldNames[2].latLng].split(latLngDelim).map((coordinate) =>{
-                    return parseFloat(coordinate)
-                }),
-                city: values[locationFldNames[2].city],
-                state: values[locationFldNames[2].state],
-                country: values[locationFldNames[2].country],
-            }
-            counter++
-        }
+        })
 
         // Get image upload data
         const imageInfoData = []
@@ -123,7 +77,6 @@ const EditTrip = props => {
             locations: locationData,
             images: imageInfoData,
         }
-        
         if (props.editTrip){
             props.handleUpdate(tripData, props.editTripId)
         }
@@ -189,8 +142,8 @@ const EditTrip = props => {
 
                 <LocationSelect
                     form={form}
+                    listName={listName}
                     existingTripLocations={existingTripLocations}
-                    fieldNames={locationFldNames}
                     latLngDelim={latLngDelim} />
 
                 <S3Upload
