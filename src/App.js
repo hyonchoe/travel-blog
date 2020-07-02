@@ -1,6 +1,6 @@
 import React from 'react'
 import { Switch, Route, Router, Link, useLocation } from 'react-router-dom'
-import { Layout, Menu, Modal, Button, Upload } from 'antd'
+import { Layout, Menu, Modal, Button, message } from 'antd'
 import history from './history'
 
 import Home from './Home.js'
@@ -43,15 +43,24 @@ class App extends React.Component {
         })
 
         history.push('/')
+        message.success(`Trip "${trip.title}" added successfully`)
     }
     handleDeleteTrip = async tripId => {
         const res = await tripService.deleteTrip(tripId)
         console.log(res)
+        
+        let tripTitle = ''
         this.setState({
             trips: this.state.trips.filter((trip) => {
+                if (trip._id === tripId){
+                    tripTitle = trip.title
+                }
+
                 return trip._id !== tripId
             })
         })
+
+        message.success(`Trip "${tripTitle}" removed successfully`)
     }
     handleEditTrip = tripId => {
         this.setState({
@@ -75,6 +84,7 @@ class App extends React.Component {
         })
 
         history.push('/')
+        message.success(`Trip "${updatedTrip.title}" updated successfully`)
     }
     handleCancel = () => {
         history.push('/')
@@ -121,26 +131,26 @@ class App extends React.Component {
                         </Header>
 
                         <Content className="appContent" >
-                                    <Switch>
-                                        <Route path="/" exact>
-                                            <Home
-                                                tripData={trips}
-                                                loadingData={loadingData}
-                                                deleteTrip={this.handleDeleteTrip}
-                                                editTrip={this.handleEditTrip}
-                                                launchMapModal={this.launchMapModal} />
-                                        </Route>                
-                                        <Route path="/addTrip">
-                                            <EditTrip
-                                                editTrip={tripToEdit}
-                                                editTripId={tripEditId}
-                                                showSpin={showSpin}
-                                                handleUpdate={this.handleUpdate}
-                                                handleSubmit={this.handleSubmit}
-                                                handleCancel={this.handleCancel}
-                                                />
-                                        </Route>
-                                    </Switch>                                    
+                            <Switch>
+                                <Route path="/" exact>
+                                    <Home
+                                        tripData={trips}
+                                        loadingData={loadingData}
+                                        deleteTrip={this.handleDeleteTrip}
+                                        editTrip={this.handleEditTrip}
+                                        launchMapModal={this.launchMapModal} />
+                                </Route>
+                                <Route path="/addTrip">
+                                    <EditTrip
+                                        editTrip={tripToEdit}
+                                        editTripId={tripEditId}
+                                        showSpin={showSpin}
+                                        handleUpdate={this.handleUpdate}
+                                        handleSubmit={this.handleSubmit}
+                                        handleCancel={this.handleCancel}
+                                        />
+                                </Route>
+                            </Switch>
                         </Content>
 
                         <Footer className="appFooter">
