@@ -53,6 +53,9 @@ const LocationSelect = (props) => {
         let value = {}
         value[props.fieldNames[locFieldNameIndex].fmtAddr] = addr.fmtAddr
         value[props.fieldNames[locFieldNameIndex].latLng] = (markerLatLng.lat) ? markerLatLng.lat + props.latLngDelim + markerLatLng.lng : null
+        value[props.fieldNames[locFieldNameIndex].city] = addr.city
+        value[props.fieldNames[locFieldNameIndex].state] = addr.state
+        value[props.fieldNames[locFieldNameIndex].country] = addr.country
         props.form.setFieldsValue(value)
         
         let btnDisableValues = disableDelBtns.slice() // copying it
@@ -79,6 +82,9 @@ const LocationSelect = (props) => {
         let reset = {}
         reset[props.fieldNames[curLocFldIndex].fmtAddr] = ''
         reset[props.fieldNames[curLocFldIndex].latLng] = ''
+        reset[props.fieldNames[curLocFldIndex].city] = ''
+        reset[props.fieldNames[curLocFldIndex].state] = ''
+        reset[props.fieldNames[curLocFldIndex].country] = ''
         props.form.setFieldsValue(reset)
 
        let btnDisableValues = disableDelBtns.slice() // copying it
@@ -112,6 +118,27 @@ const LocationSelect = (props) => {
             return locations[locFldIndex].latLng[0] + props.latLngDelim + locations[locFldIndex].latLng[1]
         }
         return ''
+    }
+    const getInitialValueCity = (locFldIndex) => {
+        const locations = props.existingTripLocations
+        if (locations.length > locFldIndex){
+            return locations[locFldIndex].city
+        }
+        return ''
+    }
+    const getInitialValueState = (locFldIndex) => {
+        const locations = props.existingTripLocations
+        if (locations.length > locFldIndex){
+            return locations[locFldIndex].state
+        }
+        return ''
+    }
+    const getInitialValueCountry = (locFldIndex) => {
+        const locations = props.existingTripLocations
+        if (locations.length > locFldIndex){
+            return locations[locFldIndex].country
+        }
+        return ''
     }    
 
     return (
@@ -141,6 +168,27 @@ const LocationSelect = (props) => {
                 style={{ display: 'none' }} >
                 <Input readOnly={true} style={{ display: 'none' }} />
             </Form.Item>
+            <Form.Item 
+                name={props.fieldNames[0].city}
+                initialValue={getInitialValueCity(0)}
+                noStyle
+                style={{ display: 'none' }} >
+                <Input readOnly={true} style={{ display: 'none' }} />
+            </Form.Item>
+            <Form.Item 
+                name={props.fieldNames[0].state}
+                initialValue={getInitialValueState(0)}
+                noStyle
+                style={{ display: 'none' }} >
+                <Input readOnly={true} style={{ display: 'none' }} />
+            </Form.Item>
+            <Form.Item 
+                name={props.fieldNames[0].country}
+                initialValue={getInitialValueCountry(0)}
+                noStyle
+                style={{ display: 'none' }} >
+                <Input readOnly={true} style={{ display: 'none' }} />
+            </Form.Item>
 
             <Form.Item
                 style={{display: 'block', margin: '0'}} >
@@ -165,6 +213,27 @@ const LocationSelect = (props) => {
                 style={{ display: 'none' }} >
                 <Input readOnly={true} style={{ display: 'none' }} />
             </Form.Item>
+            <Form.Item 
+                name={props.fieldNames[1].city}
+                initialValue={getInitialValueCity(1)}
+                noStyle
+                style={{ display: 'none' }} >
+                <Input readOnly={true} style={{ display: 'none' }} />
+            </Form.Item>
+            <Form.Item 
+                name={props.fieldNames[1].state}
+                initialValue={getInitialValueState(1)}
+                noStyle
+                style={{ display: 'none' }} >
+                <Input readOnly={true} style={{ display: 'none' }} />
+            </Form.Item>
+            <Form.Item 
+                name={props.fieldNames[1].country}
+                initialValue={getInitialValueCountry(1)}
+                noStyle
+                style={{ display: 'none' }} >
+                <Input readOnly={true} style={{ display: 'none' }} />
+            </Form.Item>
 
             <Form.Item
                 style={{display: 'block', margin: '0'}} >
@@ -185,6 +254,27 @@ const LocationSelect = (props) => {
             <Form.Item 
                 name={props.fieldNames[2].latLng}
                 initialValue={getInitialValueLatLng(2)}
+                noStyle
+                style={{ display: 'none' }} >
+                <Input readOnly={true} style={{ display: 'none' }} />
+            </Form.Item>
+            <Form.Item 
+                name={props.fieldNames[2].city}
+                initialValue={getInitialValueCity(2)}
+                noStyle
+                style={{ display: 'none' }} >
+                <Input readOnly={true} style={{ display: 'none' }} />
+            </Form.Item>
+            <Form.Item 
+                name={props.fieldNames[2].state}
+                initialValue={getInitialValueState(2)}
+                noStyle
+                style={{ display: 'none' }} >
+                <Input readOnly={true} style={{ display: 'none' }} />
+            </Form.Item>
+            <Form.Item 
+                name={props.fieldNames[2].country}
+                initialValue={getInitialValueCountry(2)}
                 noStyle
                 style={{ display: 'none' }} >
                 <Input readOnly={true} style={{ display: 'none' }} />

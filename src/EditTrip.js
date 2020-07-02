@@ -11,14 +11,23 @@ const EditTrip = props => {
         {
             fmtAddr: 'loc0',
             latLng: 'loc0' + hiddenSuffix,
+            city: 'loc0city' + hiddenSuffix,
+            state: 'loc0state' + hiddenSuffix,
+            country: 'loc0country' + hiddenSuffix,
         },
         {
             fmtAddr: 'loc1',
             latLng: 'loc1' + hiddenSuffix,
+            city: 'loc1city' + hiddenSuffix,
+            state: 'loc1state' + hiddenSuffix,
+            country: 'loc1country' + hiddenSuffix,
         },
         {
             fmtAddr: 'loc2',
             latLng: 'loc2' + hiddenSuffix,
+            city: 'loc2city' + hiddenSuffix,
+            state: 'loc2state' + hiddenSuffix,
+            country: 'loc2country' + hiddenSuffix,
         },
     ]    
     const uploadFldName = 'files'
@@ -56,6 +65,9 @@ const EditTrip = props => {
                 latLng: values[locationFldNames[0].latLng].split(latLngDelim).map((coordinate) =>{
                     return parseFloat(coordinate)
                 }),
+                city: values[locationFldNames[0].city],
+                state: values[locationFldNames[0].state],
+                country: values[locationFldNames[0].country],
             }
             counter++
         }
@@ -65,6 +77,9 @@ const EditTrip = props => {
                 latLng: values[locationFldNames[1].latLng].split(latLngDelim).map((coordinate) =>{
                     return parseFloat(coordinate)
                 }),
+                city: values[locationFldNames[1].city],
+                state: values[locationFldNames[1].state],
+                country: values[locationFldNames[1].country],
             }
             counter++
         }
@@ -74,6 +89,9 @@ const EditTrip = props => {
                 latLng: values[locationFldNames[2].latLng].split(latLngDelim).map((coordinate) =>{
                     return parseFloat(coordinate)
                 }),
+                city: values[locationFldNames[2].city],
+                state: values[locationFldNames[2].state],
+                country: values[locationFldNames[2].country],
             }
             counter++
         }
