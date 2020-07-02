@@ -173,9 +173,8 @@ const S3Upload = (props) => {
             label="Photos"
             name={props.fieldName}
             initialValue={getInitialValues()}
-            rules={[
-                ({ getFieldValue }) => ({
-                    validator(rule, value) {
+            rules={[{
+                validator: (rule, value) => {
                         const curFileList = value.fileList
                         let uploadInProgress = false
                         if(curFileList){
@@ -196,8 +195,7 @@ const S3Upload = (props) => {
                         }
                         return Promise.resolve()
                     }
-                })
-            ]}
+                }]}
              >
             <Upload
                 fileList={fileList}
