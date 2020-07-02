@@ -34,8 +34,8 @@ app.post('/trips', async (req, res) => {
 
     const newTrip = {
         title: req.body.title,
-        startDate: req.body.startDate,
-        endDate: req.body.endDate,
+        startDate: moment(req.body.startDate),
+        endDate: moment(req.body.endDate),
         details: req.body.details,
         locations: tripLocations,
         images: tripImages,
@@ -93,6 +93,8 @@ app.get('/trips', async (req, res) => {
         const result = await client.db("trips").collection("tripInfo").find({}).toArray()
         // Populate S3Url for trips' images 
         result.forEach((trip) => {
+            trip.startDate = moment(trip.startDate)
+            trip.endDate = moment(trip.endDate)            
             const tripImages = trip.images
             if (tripImages && tripImages.length > 0) {
                 tripImages.forEach((imgInfo) => {
@@ -124,9 +126,9 @@ app.put('/trips/:tripId', async (req, res) => {
     
     const updatedTrip = {
         title: req.body.title,
-        startDate: req.body.startDate,
-        endDate: req.body.endDate,
-        details:req.body.details,
+        startDate: moment(req.body.startDate),
+        endDate: moment(req.body.endDate),
+        details: req.body.details,
         locations: tripLocations,
         images: tripImages,
     }
