@@ -51,7 +51,8 @@ class Trip extends React.Component {
             cardTabList.push({ key: 'images', tab: 'Photos' })
         }
         
-        cardTabList.push({ key: 'videos', tab: 'Videos', })
+        //TODO
+        //cardTabList.push({ key: 'videos', tab: 'Videos', })
         return cardTabList
     }
 
@@ -138,9 +139,11 @@ const TripTabContent = (props) => {
             contentComponent = <PictureCarousel images={props.curTrip.images}/>
             break
 
+        /* TODO
         case 'videos':
             contentComponent = <span>THIS IS FOR VIDEOS</span>
             break
+        */
 
         default:
             contentComponent = <TripDetails details={props.curTrip.details} locAddr={props.locAddr} />
