@@ -17,22 +17,31 @@ class App extends React.Component {
         editTripId: null,
         modalVisible: false,
         tripLocationsForMap: null,
+        savingInProgress: false,
+        loadingInProgress: true,
     }
     
     async componentDidMount() {
         const res = await tripService.getTrips()
         this.setState({
-            trips: res
+            trips: res,
+            loadingInProgress: false,
         })
     }
 
     handleSubmit = async trip => {
+        this.setState({
+            savingInProgress: true,
+        })
+
         const res = await tripService.submitNewTrip(trip)
         console.log(res)
         trip._id = res.data.insertedId
         this.setState({
-            trips: [...this.state.trips, trip]
+            trips: [...this.state.trips, trip],
+            savingInProgress: false,
         })
+
         history.push('/')
     }
     handleDeleteTrip = async tripId => {
@@ -51,6 +60,10 @@ class App extends React.Component {
         history.push('/addTrip')
     }
     handleUpdate = async (updatedTrip, tripId) => {
+        this.setState({
+            savingInProgress: true,
+        })
+
         const res = await tripService.updateTrip(updatedTrip, tripId)
         console.log(res)
         this.setState({
@@ -58,7 +71,9 @@ class App extends React.Component {
                 return (trip._id === tripId) ? {...trip, ...updatedTrip} : trip
             }),
             editTripId: null,
+            savingInProgress: false,
         })
+
         history.push('/')
     }
     handleCancel = () => {
@@ -82,6 +97,8 @@ class App extends React.Component {
         const tripEditId = this.state.editTripId
         const modalVisible = this.state.modalVisible
         const tripLocations = this.state.tripLocationsForMap
+        const showSpin = this.state.savingInProgress
+        const loadingData = this.state.loadingInProgress
         const mapCenterLat = (tripLocations && tripLocations.length>0) ? tripLocations[0].latLng[0] : null
         const mapCenterLng = (tripLocations && tripLocations.length>0) ? tripLocations[0].latLng[1] : null
 
@@ -108,6 +125,7 @@ class App extends React.Component {
                                         <Route path="/" exact>
                                             <Home
                                                 tripData={trips}
+                                                loadingData={loadingData}
                                                 deleteTrip={this.handleDeleteTrip}
                                                 editTrip={this.handleEditTrip}
                                                 launchMapModal={this.launchMapModal} />
@@ -116,6 +134,7 @@ class App extends React.Component {
                                             <EditTrip
                                                 editTrip={tripToEdit}
                                                 editTripId={tripEditId}
+                                                showSpin={showSpin}
                                                 handleUpdate={this.handleUpdate}
                                                 handleSubmit={this.handleSubmit}
                                                 handleCancel={this.handleCancel}

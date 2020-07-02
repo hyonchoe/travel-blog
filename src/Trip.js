@@ -31,10 +31,10 @@ class Trip extends React.Component {
           okText: 'Yes',
           okType: 'danger',
           cancelText: 'No',
-          onOk() {
-            tripInstance.props.deleteTrip(tripId)
+          async onOk() {
+            await tripInstance.props.deleteTrip(tripId)
           },
-          onCancel() {}
+          onCancel() {},
         });
     }
     popoverConfirm = (tripId) => {

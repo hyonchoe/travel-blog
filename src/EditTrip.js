@@ -1,5 +1,5 @@
-import React from 'react'
-import { Button, Input, DatePicker, Form, Space  } from 'antd'
+import React, { useState } from 'react'
+import { Button, Input, DatePicker, Form, Space, Spin  } from 'antd'
 
 import LocationSelect from './LocationSelect.js'
 import S3Upload from './S3Upload.js'
@@ -14,7 +14,7 @@ const EditTrip = props => {
     }
     const tailLayout = {
         wrapperCol: { offset: 8, span: 12 }
-    }    
+    }
 
     const getInitialFormValues = (existingTrip) => {
         // Initial values for upload images are handled inside own component
@@ -42,7 +42,7 @@ const EditTrip = props => {
     const onFinish = values => {
         // Get location data
         const locationData = []
-        const locationList = values[listName]
+        const locationList = (values[listName]) ? values[listName] : []
         locationList.forEach((loc) => {
             if(loc.latLng){
                 locationData.push({
@@ -59,7 +59,7 @@ const EditTrip = props => {
 
         // Get image upload data
         const imageInfoData = []
-        const uploadFiles = values[uploadFldName]
+        const uploadFiles = (values[uploadFldName]) ? values[uploadFldName] : []
         if (uploadFiles){
             if(uploadFiles.fileList){
                 uploadFiles.fileList.forEach((file) => {
@@ -98,9 +98,17 @@ const EditTrip = props => {
     const [form] = Form.useForm()
     const existingTrip = props.editTrip
     const existingImages = (existingTrip && existingTrip.images) ? existingTrip.images : []
-    let btnName = (existingTrip) ? 'Update' : 'Submit'
+    let btnName = 'Submit'
+    let spinTip = 'Submitting the trip'
+    if (existingTrip) {
+        btnName = 'Update'
+        spinTip = 'Updating the trip'
+    }
 
     return (
+        <Spin
+            tip={spinTip}
+            spinning={props.showSpin} >
         <Form
             form={form}
             {...layout}
@@ -166,6 +174,7 @@ const EditTrip = props => {
                         </Space>
                 </Form.Item>
         </Form>
+        </Spin>
     )
 }
 
