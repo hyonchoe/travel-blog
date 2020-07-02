@@ -98,42 +98,6 @@ const LocationSelect = (props) => {
         setLocFieldNameIndex(locFieldIndex)
     }
 
-    const getInitialValueFmtAddr = (locFldIndex) => {
-        const locations = props.existingTripLocations
-        if (locations.length > locFldIndex){
-            return locations[locFldIndex].fmtAddr
-        }
-        return ''
-    }
-    const getInitialValueLatLng = (locFldIndex) => {
-        const locations = props.existingTripLocations
-        if (locations.length > locFldIndex){
-            return locations[locFldIndex].latLng[0] + props.latLngDelim + locations[locFldIndex].latLng[1]
-        }
-        return ''
-    }
-    const getInitialValueCity = (locFldIndex) => {
-        const locations = props.existingTripLocations
-        if (locations.length > locFldIndex){
-            return locations[locFldIndex].city
-        }
-        return ''
-    }
-    const getInitialValueState = (locFldIndex) => {
-        const locations = props.existingTripLocations
-        if (locations.length > locFldIndex){
-            return locations[locFldIndex].state
-        }
-        return ''
-    }
-    const getInitialValueCountry = (locFldIndex) => {
-        const locations = props.existingTripLocations
-        if (locations.length > locFldIndex){
-            return locations[locFldIndex].country
-        }
-        return ''
-    }
-
     return (
         <div>
             <Form.List name={listName}>

@@ -17,13 +17,20 @@ const EditTrip = props => {
     }    
 
     const getInitialFormValues = (existingTrip) => {
-        // Initial values for location and upload images are handled
-        // inside own component        
+        // Initial values for upload images are handled inside own component
         if (existingTrip){
-            let initialValues = {
+            const initialLocations = (existingTrip.locations) ?
+                                        existingTrip.locations.slice()
+                                        : []
+            initialLocations.forEach((loc) => {
+                loc.latLng = loc.latLng[0] + latLngDelim + loc.latLng[1]
+            })
+
+            const initialValues = {
                 title: existingTrip.title,
                 dates: [existingTrip.startDate, existingTrip.endDate],
-                details: existingTrip.details,            
+                details: existingTrip.details,
+                [listName]: initialLocations,
             }
             
             return initialValues
@@ -90,7 +97,6 @@ const EditTrip = props => {
 
     const [form] = Form.useForm()
     const existingTrip = props.editTrip
-    const existingTripLocations = (existingTrip && existingTrip.locations) ? existingTrip.locations : []
     const existingImages = (existingTrip && existingTrip.images) ? existingTrip.images : []
     let btnName = (existingTrip) ? 'Update' : 'Submit'
 
@@ -143,7 +149,6 @@ const EditTrip = props => {
                 <LocationSelect
                     form={form}
                     listName={listName}
-                    existingTripLocations={existingTripLocations}
                     latLngDelim={latLngDelim} />
 
                 <S3Upload
