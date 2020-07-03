@@ -1,6 +1,6 @@
 import React from 'react'
-import { Switch, Route, Router, Link, useLocation } from 'react-router-dom'
-import { Layout, Menu, Modal, Button, message } from 'antd'
+import { Switch, Route, Router } from 'react-router-dom'
+import { Layout,Modal, Button, message } from 'antd'
 import history from './history'
 
 import Home from './Home.js'
@@ -8,6 +8,11 @@ import EditTrip from './EditTrip.js'
 import MyMapContainer from './MyMapContainer.js'
 import tripService from './services/tripService.js'
 import './App.css'
+
+import Splash from './Splash.js'
+import PrivateRoute from './PrivateRoute.js'
+import LoginPage from './LoginPage.js'
+import NavBar from './NavBar.js'
 
 const { Header, Content, Footer } = Layout
 
@@ -130,28 +135,32 @@ class App extends React.Component {
                         <Header className="appHeader">
                             {/* TODO: add logo */}
                             <div className="logo" />
-                            <TopMenus />
+                            <NavBar />
                         </Header>
 
                         <Content className="appContent" >
                             <Switch>
                                 <Route path="/" exact>
-                                    <Home
-                                        tripData={trips}
-                                        loadingData={loadingData}
-                                        deleteTrip={this.handleDeleteTrip}
-                                        editTrip={this.handleEditTrip}
-                                        launchMapModal={this.launchMapModal} />
+                                    <Splash />
                                 </Route>
-                                <Route path="/addTrip">
-                                    <EditTrip
-                                        editTrip={tripToEdit}
-                                        editTripId={tripEditId}
-                                        showSpin={showSpin}
-                                        handleUpdate={this.handleUpdate}
-                                        handleSubmit={this.handleSubmit}
-                                        handleCancel={this.handleCancel}
-                                        />
+                                <PrivateRoute
+                                    path="/myTrips"
+                                    component={Home}
+                                    tripData={trips}
+                                    loadingData={loadingData}
+                                    deleteTrip={this.handleDeleteTrip}
+                                    editTrip={this.handleEditTrip}
+                                    launchMapModal={this.launchMapModal} />
+                                <PrivateRoute 
+                                    path="/addTrip"
+                                    component={EditTrip}
+                                    editTrip={tripToEdit}
+                                    editTripId={tripEditId}
+                                    showSpin={showSpin}
+                                    handleUpdate={this.handleUpdate}
+                                    handleSubmit={this.handleSubmit}
+                                    handleCancel={this.handleCancel} />
+                                <Route path='/login' component={LoginPage}>
                                 </Route>
                             </Switch>
                         </Content>
@@ -161,6 +170,7 @@ class App extends React.Component {
                         </Footer>
                     </Layout>
                 </Router>
+
                 <Modal
                     title='Trip locations'
                     visible={modalVisible}
@@ -186,21 +196,5 @@ class App extends React.Component {
         )
     }
   }
-
-const TopMenus = () =>{
-    let location = useLocation()
-    return (
-        <Menu theme="dark" mode="horizontal" selectedKeys={[location.pathname]}>
-            <Menu.Item key="/">
-                <Link to="/">My Trips</Link>
-            </Menu.Item>
-            <Menu.Item key="/addTrip">
-                <Link to="/addTrip">
-                    Add/Edit Trip
-                </Link>
-            </Menu.Item>
-        </Menu> 
-    )   
-}
 
 export default App
