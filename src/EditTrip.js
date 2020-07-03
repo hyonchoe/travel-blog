@@ -1,10 +1,28 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button, Input, DatePicker, Form, Space, Spin  } from 'antd'
+import { Prompt } from 'react-router-dom'
 
 import LocationSelect from './LocationSelect.js'
 import S3Upload from './S3Upload.js'
 
 const EditTrip = props => {
+    const [showNavPrompt, setShowNavPrompt] = useState(true)
+    useEffect(() => {
+        // For showing prompt on re-loading and closing window
+        const handleUnload = (e) => {
+            if (showNavPrompt) {
+                e.preventDefault();
+                e.returnValue = true;
+            }
+        }
+        window.addEventListener('beforeunload', handleUnload)
+
+        return () => {
+            window.removeEventListener('beforeunload', handleUnload)
+        }
+    }, [])
+
+
     const listName = 'locationList'
     const latLngDelim = ','
     const uploadFldName = 'files'
@@ -40,6 +58,7 @@ const EditTrip = props => {
     }
 
     const onFinish = values => {
+        setShowNavPrompt(false)
         // Get location data
         const locationData = []
         const locationList = (values[listName]) ? values[listName] : []
@@ -109,68 +128,71 @@ const EditTrip = props => {
         <Spin
             tip={spinTip}
             spinning={props.showSpin} >
-        <Form
-            form={form}
-            {...layout}
-            initialValues={getInitialFormValues(existingTrip)}
-            layout="horizontal"
-            onFinish={onFinish} >
-                <Form.Item
-                    label="Trip Title"
-                    name="title"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please input your trip title.',
-                        },
-                    ]} >
-                    <Input />
-                </Form.Item>
+            <Prompt
+                when={showNavPrompt}
+                message="You may have unsaved changes, are you sure you want to leave the page?" />
+            <Form
+                form={form}
+                {...layout}
+                initialValues={getInitialFormValues(existingTrip)}
+                layout="horizontal"
+                onFinish={onFinish} >
+                    <Form.Item
+                        label="Trip Title"
+                        name="title"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input your trip title.',
+                            },
+                        ]} >
+                        <Input />
+                    </Form.Item>
 
-                <Form.Item
-                    label="Date of Trip"
-                    name="dates"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please input your trip date.',
-                        },
-                    ]} >
-                    <DatePicker.RangePicker
-                        allowClear={true} />
-                </Form.Item>
+                    <Form.Item
+                        label="Date of Trip"
+                        name="dates"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input your trip date.',
+                            },
+                        ]} >
+                        <DatePicker.RangePicker
+                            allowClear={true} />
+                    </Form.Item>
 
-                <Form.Item
-                    label="Details"
-                    name="details"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Pleaes input your trip details.',
-                        },
-                    ]} >
-                    <Input.TextArea
-                        autoSize={ {minRows:4, maxRows:20} } />
-                </Form.Item>
+                    <Form.Item
+                        label="Details"
+                        name="details"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Pleaes input your trip details.',
+                            },
+                        ]} >
+                        <Input.TextArea
+                            autoSize={ {minRows:4, maxRows:20} } />
+                    </Form.Item>
 
-                <LocationSelect
-                    form={form}
-                    listName={listName}
-                    latLngDelim={latLngDelim} />
+                    <LocationSelect
+                        form={form}
+                        listName={listName}
+                        latLngDelim={latLngDelim} />
 
-                <S3Upload
-                    form={form}
-                    fieldName={uploadFldName}
-                    images={existingImages} />
+                    <S3Upload
+                        form={form}
+                        fieldName={uploadFldName}
+                        images={existingImages} />
 
-                <Form.Item
-                    {...tailLayout} >
-                        <Space>
-                            <Button type="primary" htmlType="submit">{btnName}</Button>
-                            <Button type="link" onClick={onCancel}>Cancel</Button>
-                        </Space>
-                </Form.Item>
-        </Form>
+                    <Form.Item
+                        {...tailLayout} >
+                            <Space>
+                                <Button type="primary" htmlType="submit">{btnName}</Button>
+                                <Button type="link" onClick={onCancel}>Cancel</Button>
+                            </Space>
+                    </Form.Item>
+            </Form>
         </Spin>
     )
 }
