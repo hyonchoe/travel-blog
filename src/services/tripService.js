@@ -8,9 +8,10 @@ export default {
         return res
     },
 
-    getTrips: async () => {
+    getTrips: async (getAccessTokenSilently) => {
         try{
-            let res = await axios.get('/trips')
+            const headers = await getAuthHeader(getAccessTokenSilently)
+            let res = await axios.get('/trips', headers)
             if (res.data){
                 const curTrips = res.data.map((trip) => {
                     trip.startDate = moment(trip.startDate)
@@ -42,12 +43,8 @@ export default {
     },
     testPrivateApi: async (getAccessTokenSilently) => {
         try {
-            const token = await getAccessTokenSilently()
-            const res = await axios.get('/private-api-test', {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
+            const headers = await getAuthHeader(getAccessTokenSilently)
+            const res = await axios.get('/private-api-test', headers)
             console.log(res)
             return []
         } catch (error) {
@@ -102,5 +99,14 @@ export default {
         } catch (error) {
             console.log(error)
         }
+    }
+}
+
+const getAuthHeader = async (getAccessTokenSilently) => {
+    const token = await getAccessTokenSilently()
+    return {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }        
     }
 }

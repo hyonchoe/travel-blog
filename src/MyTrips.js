@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import TripList from './TripList.js'
 import { Empty, Skeleton, Row, Col, BackTop, message, Modal, Button } from 'antd'
+import { useAuth0 } from '@auth0/auth0-react'
 
 import tripService from './services/tripService.js'
 import MyMapContainer from './MyMapContainer.js'
@@ -10,10 +11,12 @@ const MyTrips = (props) => {
     const [loadingData, setLoadingData] = useState(true)
     const [modalVisible, setModalVisible] = useState(false)
     const [tripLocations, setTripLocations] = useState(null)
+
+    const { getAccessTokenSilently } = useAuth0()
     
     useEffect(() => {
       const fetchData = async () => {
-        const res = await tripService.getTrips()
+        const res = await tripService.getTrips(getAccessTokenSilently)
         setTrips(res)
         setLoadingData(false)
       }

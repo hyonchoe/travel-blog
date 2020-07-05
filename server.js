@@ -85,7 +85,7 @@ app.delete('/trips/:tripId', async (req, res) => {
 })
 
 // Get existing trips (GET)
-app.get('/trips', async (req, res) => {
+app.get('/trips', checkJwt, async (req, res) => {
     const mgClient = new MongoClient(uri, { useUnifiedTopology: true })
 
     try {

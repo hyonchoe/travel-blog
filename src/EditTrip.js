@@ -63,7 +63,6 @@ const EditTrip = props => {
     }
 
     const onFinish = values => {
-        setShowNavPrompt(false)
         // Get location data
         const locationData = []
         const locationList = (values[listName]) ? values[listName] : []
@@ -114,6 +113,7 @@ const EditTrip = props => {
         else{
             handleSubmit(tripData)
         }
+        setShowNavPrompt(false)
     }
 
     const onCancel = () => {
