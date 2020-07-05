@@ -7,7 +7,6 @@ import MyTrips from './MyTrips.js'
 import EditTrip from './EditTrip.js'
 import './App.css'
 
-import Splash from './Splash.js'
 import PrivateRoute from './PrivateRoute.js'
 import LoginPage from './LoginPage.js'
 import NavBar from './NavBar.js'
@@ -48,11 +47,14 @@ class App extends React.Component {
                         <Content className="appContent" >
                             <Switch>
                                 <Route path="/" exact>
-                                    <Splash />
+                                    <MyTrips
+                                        showMyTrips={false}
+                                        editTrip={this.handleEditTrip} />
                                 </Route>
                                 <PrivateRoute
                                     path="/myTrips"
                                     component={MyTrips}
+                                    showMyTrips={true}
                                     editTrip={this.handleEditTrip} />
                                 <PrivateRoute 
                                     path="/addTrip"

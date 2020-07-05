@@ -22,7 +22,7 @@ const NavBar = () =>{
             onClick={handleClick}
             >
             <Menu.Item key="/">
-                <Link to="/">Splash</Link>
+                <Link to="/">Travelers' Feed</Link>
             </Menu.Item>
             {isAuthenticated && (
             <Menu.Item key="/myTrips">

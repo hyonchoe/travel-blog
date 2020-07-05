@@ -16,7 +16,12 @@ const MyTrips = (props) => {
     
     useEffect(() => {
       const fetchData = async () => {
-        const res = await tripService.getTrips(getAccessTokenSilently)
+        let res
+        if (props.showMyTrips){
+          res = await tripService.getTrips(getAccessTokenSilently)
+        } else {
+          res = await tripService.getPublicTrips()
+        }
         setTrips(res)
         setLoadingData(false)
       }

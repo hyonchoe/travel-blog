@@ -1,7 +1,6 @@
 import axios from 'axios'
 import moment from 'moment'
 
-
 export default {
     submitNewTrip: async (trip, getAccessTokenSilently) => {
         const headers = await getAuthHeader(getAccessTokenSilently)
@@ -10,22 +9,29 @@ export default {
     },
 
     getTrips: async (getAccessTokenSilently) => {
-        try{
+        try {
             const headers = await getAuthHeader(getAccessTokenSilently)
             let res = await axios.get('/trips', headers)
             if (res.data){
-                const curTrips = res.data.map((trip) => {
-                    trip.startDate = moment(trip.startDate)
-                    trip.endDate = moment(trip.endDate)
-                    return trip
-                })
-
-                return curTrips
+                return processDates(res.data)
             }
         } catch (error){
             console.log(error)
         }
     
+        return []
+    },
+
+    getPublicTrips: async () => {
+        try {
+            let res = await axios.get('/publicTrips')
+            if (res.data){
+                return processDates(res.data)
+            }
+        } catch (error){
+            console.log(error)
+        }
+
         return []
     },
 
@@ -88,4 +94,14 @@ const getAuthHeader = async (getAccessTokenSilently) => {
             'Authorization': `Bearer ${token}`
         }        
     }
+}
+
+const processDates = (trips) => {
+    const curTrips = trips.map((trip) => {
+        trip.startDate = moment(trip.startDate)
+        trip.endDate = moment(trip.endDate)
+        return trip
+    })
+
+    return curTrips    
 }

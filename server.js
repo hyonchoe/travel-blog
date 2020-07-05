@@ -95,17 +95,23 @@ app.get('/trips', checkJwt, async (req, res) => {
         const client = await mgClient.connect()
         // Find all existing trips
         const result = await client.db("trips").collection("tripInfo").find({"userId": userId}).toArray()
-        // Populate S3Url for trips' images 
-        result.forEach((trip) => {
-            trip.startDate = moment(trip.startDate)
-            trip.endDate = moment(trip.endDate)            
-            const tripImages = trip.images
-            if (tripImages && tripImages.length > 0) {
-                tripImages.forEach((imgInfo) => {
-                    imgInfo.S3Url = getImageS3URL(imgInfo.fileUrlName)
-                })
-            }
-        })
+        processDatesImages(result)
+
+        res.send(result)
+    } catch (error) {
+        console.log(error)
+
+        res.send(error)
+    }
+})
+
+app.get('/publicTrips', async (req, res) => {
+    const mgClient = new MongoClient(uri, { useUnifiedTopology: true })
+    try {
+        const client = await mgClient.connect()
+        // Find all existing trips
+        const result = await client.db("trips").collection("tripInfo").find({"public": true}).toArray()
+        processDatesImages(result)
 
         res.send(result)
     } catch (error) {
@@ -220,5 +226,18 @@ const processTripLocData = (tripLocations) => {
     tripLocations.forEach((loc) => {
         loc.latLng[0] = parseFloat(loc.latLng[0])
         loc.latLng[1] = parseFloat(loc.latLng[1])
+    })
+}
+
+const processDatesImages = (data) => {
+    data.forEach((trip) => {
+        trip.startDate = moment(trip.startDate)
+        trip.endDate = moment(trip.endDate)            
+        const tripImages = trip.images
+        if (tripImages && tripImages.length > 0) {
+            tripImages.forEach((imgInfo) => {
+                imgInfo.S3Url = getImageS3URL(imgInfo.fileUrlName)
+            })
+        }
     })
 }
