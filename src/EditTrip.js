@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Input, DatePicker, Form, Space, Spin, message  } from 'antd'
+import { Button, Input, DatePicker, Checkbox, Form, Space, Spin, message  } from 'antd'
 import { Prompt } from 'react-router-dom'
 import history from './history'
 import { useAuth0 } from '@auth0/auth0-react'
@@ -55,6 +55,7 @@ const EditTrip = props => {
                 title: existingTrip.title,
                 dates: [existingTrip.startDate, existingTrip.endDate],
                 details: existingTrip.details,
+                public: existingTrip.public,
                 [listName]: initialLocations,
             }
             
@@ -105,6 +106,7 @@ const EditTrip = props => {
             title: values.title,
             startDate: values.dates[0],
             endDate: values.dates[1],
+            public: (values.public) ? true : false,
             details: values.details,
             locations: locationData,
             images: imageInfoData,
@@ -189,6 +191,13 @@ const EditTrip = props => {
                         ]} >
                         <DatePicker.RangePicker
                             allowClear={true} />
+                    </Form.Item>
+
+                    <Form.Item
+                        {...tailLayout}
+                        name="public"
+                        valuePropName="checked" >
+                            <Checkbox>Allow public access</Checkbox>
                     </Form.Item>
 
                     <Form.Item
