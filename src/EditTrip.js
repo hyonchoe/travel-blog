@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Input, DatePicker, Form, Space, Spin  } from 'antd'
+import { Button, Input, DatePicker, Form, Space, Spin, message  } from 'antd'
 import { Prompt } from 'react-router-dom'
+import history from './history'
 
 import LocationSelect from './LocationSelect.js'
 import S3Upload from './S3Upload.js'
+import tripService from './services/tripService.js'
 
 const EditTrip = props => {
     const [showNavPrompt, setShowNavPrompt] = useState(true)
+    const [savingInProgress, setSavingInProgress] = useState(false)
     useEffect(() => {
         // For showing prompt on re-loading and closing window
         const handleUnload = (e) => {
@@ -15,10 +18,12 @@ const EditTrip = props => {
                 e.returnValue = true;
             }
         }
+
         window.addEventListener('beforeunload', handleUnload)
 
         return () => {
             window.removeEventListener('beforeunload', handleUnload)
+            props.clearEditTrip()
         }
     }, [])
 
@@ -104,16 +109,38 @@ const EditTrip = props => {
             images: imageInfoData,
         }
         if (props.editTrip){
-            props.handleUpdate(tripData, props.editTripId)
+            handleUpdate(tripData, props.editTrip._id)
         }
         else{
-            props.handleSubmit(tripData)
+            handleSubmit(tripData)
         }
     }
-    const onCancel = () => {
-        props.handleCancel()
-    }
 
+    const onCancel = () => {
+        props.clearEditTrip()
+        history.push('/myTrips')
+    }
+    const handleSubmit = async (trip) => {
+        setSavingInProgress(true)
+        const res = await tripService.submitNewTrip(trip)
+        console.log(res)
+        setSavingInProgress(false)
+
+        history.push('/myTrips')
+        message.success(`Trip "${trip.title}" added successfully`)
+    }
+    const handleUpdate = async (updatedTrip, tripId) => {
+        setSavingInProgress(true)
+
+        const res = await tripService.updateTrip(updatedTrip, tripId)
+        console.log(res)
+        props.clearEditTrip()
+        setSavingInProgress(false)
+
+        history.push('/myTrips')
+        message.success(`Trip "${updatedTrip.title}" updated successfully`)
+    }
+    
     const [form] = Form.useForm()
     const existingTrip = props.editTrip
     const existingImages = (existingTrip && existingTrip.images) ? existingTrip.images : []
@@ -127,7 +154,7 @@ const EditTrip = props => {
     return (
         <Spin
             tip={spinTip}
-            spinning={props.showSpin} >
+            spinning={savingInProgress} >
             <Prompt
                 when={showNavPrompt}
                 message="You may have unsaved changes, are you sure you want to leave the page?" />

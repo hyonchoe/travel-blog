@@ -1,6 +1,8 @@
 import React from 'react'
 import { Typography, Card, Modal, Popconfirm, Tooltip } from 'antd'
 import { GlobalOutlined, EditOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import history from './history'
+
 import PictureCarousel from './PictureCarousel.js'
 import './Trip.css'
 
@@ -37,8 +39,9 @@ class Trip extends React.Component {
           onCancel() {},
         });
     }
-    popoverConfirm = (tripId) => {
-        this.props.editTrip(tripId)
+    popoverConfirm = (selectedTrip) => {
+        this.props.editTrip(selectedTrip)
+        history.push('/addTrip')
     }
     popoverCancel = () => {
     }
@@ -80,7 +83,7 @@ class Trip extends React.Component {
                         <Tooltip title="Edit this trip information">
                             <Popconfirm
                                 title="Are you sure about editing this trip?"
-                                onConfirm={() => this.popoverConfirm(curTrip._id)}
+                                onConfirm={() => this.popoverConfirm(curTrip)}
                                 onCancel={() => this.popoverCancel()}
                                 okText="Yes"
                                 cancelText="No" >
