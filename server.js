@@ -3,6 +3,7 @@ const cors = require('cors')
 const moment = require('moment')
 const { MongoClient } = require('mongodb')
 const { response } = require('express')
+const { checkJwt } = require('./security.js')
 const ObjectId = require("mongodb").ObjectID
 const { genSignedUrlPut, getImageS3URL, deleteS3Images, copyToPermanentBucket } = require('./S3Service')
 require('dotenv').config()
@@ -181,6 +182,16 @@ app.get('/get-signed-url', async (req, res) => {
 
         res.send(err)        
     }
+})
+
+//TODO: testing
+app.get('/public-api-test', (req, res) => {
+    const testValue = { tes: 'PUBLIC TEST VALUEEE' }
+    res.send(testValue)
+})
+app.get('/private-api-test', checkJwt, (req, res) => {
+    const testValue = { tes: 'PRIVATE TEST VALUEEE' }
+    res.send(testValue)
 })
 
 const getImagesToRemove = (existingImages, updatedImages) => {

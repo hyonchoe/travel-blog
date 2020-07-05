@@ -1,6 +1,7 @@
 import axios from 'axios'
 import moment from 'moment'
 
+
 export default {
     submitNewTrip: async (trip) => {
         let res = await axios.post('/trips', trip)
@@ -26,6 +27,36 @@ export default {
         return []
     },
 
+    //TODO: testing
+    testPublicApi: async () => {
+        try {
+            const res = await axios.get('/public-api-test')
+            console.log("result:")
+            console.log(res)
+            return []
+        } catch (error) {
+            console.log("error:")
+            console.log(error)
+        }
+        return []
+    },
+    testPrivateApi: async (getAccessTokenSilently) => {
+        try {
+            const token = await getAccessTokenSilently()
+            const res = await axios.get('/private-api-test', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            console.log(res)
+            return []
+        } catch (error) {
+            console.log("error:")
+            console.log(error)
+        }
+        return []
+    },
+
     updateTrip: async (updatedTrip, tripId) => {
         try {
             let res = await axios.put(`/trips/${tripId}`, updatedTrip)
@@ -48,7 +79,6 @@ export default {
         }
     },
 
-    //TODO
     getS3SignedUrl: async (fileType) => {
         try {
             let res = await axios.get(`/get-signed-url`, {

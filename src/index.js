@@ -4,13 +4,13 @@ import App from './App'
 import './index.css'
 
 import { Auth0Provider } from '@auth0/auth0-react'
-import AUTH_CONFIG from './auth0-variables.js'
 
 ReactDom.render(
     <Auth0Provider
-        domain={AUTH_CONFIG.domain}
-        clientId={AUTH_CONFIG.clientId}
-        redirectUri={AUTH_CONFIG.callbackUrl} >
+        domain={process.env.REACT_APP_AUTH0_DOMAIN}
+        clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
+        audience={process.env.REACT_APP_AUTH0_AUDIENCE}
+        redirectUri={process.env.REACT_APP_AUTH0_CB_URL} >
         <App />
     </Auth0Provider>,
     document.getElementById('root')
