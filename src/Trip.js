@@ -1,6 +1,6 @@
 import React from 'react'
 import { Typography, Card, Modal, Popconfirm, Tooltip } from 'antd'
-import { GlobalOutlined, EditOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { GlobalOutlined, EditOutlined, DeleteOutlined, ExclamationCircleOutlined, LockOutlined } from '@ant-design/icons';
 import history from './history'
 
 import PictureCarousel from './PictureCarousel.js'
@@ -72,7 +72,7 @@ class Trip extends React.Component {
         return (
             <div className="tripContainer">
                 <Card
-                    title={curTrip.title}
+                    title={getCardTitle(curTrip.title, curTrip.public)}
                     hoverable={true}
                     bordered={true}
                     extra={dateStr}
@@ -154,6 +154,18 @@ const TripTabContent = (props) => {
     }
     
     return contentComponent
+}
+
+const getCardTitle = (title, isPublic) => {
+    if (isPublic){
+        return <span>{title}</span>
+    }
+
+    return (
+        <span>
+            {title}<LockOutlined className="privateIcon" />
+        </span>
+    )
 }
 
 export default Trip
