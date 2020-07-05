@@ -34,6 +34,7 @@ app.post('/trips', checkJwt, async (req, res) => {
     processTripLocData(tripLocations)
 
     const newTrip = {
+        userId: req.user.sub,
         title: req.body.title,
         startDate: moment(req.body.startDate),
         endDate: moment(req.body.endDate),
@@ -63,11 +64,12 @@ app.post('/trips', checkJwt, async (req, res) => {
 app.delete('/trips/:tripId', checkJwt, async (req, res) => {
     const mgClient = new MongoClient(uri, { useUnifiedTopology: true })
     const tripId = req.params.tripId
+    const userId = req.user.sub
 
     try {
         const client = await mgClient.connect()
         // Delete trip from DB
-        let result = await client.db("trips").collection("tripInfo").findOneAndDelete({"_id": ObjectId(tripId)})
+        let result = await client.db("trips").collection("tripInfo").findOneAndDelete({"_id": ObjectId(tripId), "userId": userId})
         // If there are images to remove from S3, remove them
         if (result.value && result.value.images && result.value.images.length > 0){
             const imagesToRemove = result.value.images.map((img) => {
@@ -87,11 +89,11 @@ app.delete('/trips/:tripId', checkJwt, async (req, res) => {
 // Get existing trips (GET)
 app.get('/trips', checkJwt, async (req, res) => {
     const mgClient = new MongoClient(uri, { useUnifiedTopology: true })
-
+    const userId = req.user.sub
     try {
         const client = await mgClient.connect()
         // Find all existing trips
-        const result = await client.db("trips").collection("tripInfo").find({}).toArray()
+        const result = await client.db("trips").collection("tripInfo").find({"userId": userId}).toArray()
         // Populate S3Url for trips' images 
         result.forEach((trip) => {
             trip.startDate = moment(trip.startDate)
@@ -118,6 +120,7 @@ app.put('/trips/:tripId', checkJwt, async (req, res) => {
     const tripId = req.params.tripId
     const tripLocations = req.body.locations
     const tripImages = req.body.images
+    const userId = req.user.sub
     
     // No need to save S3Url to database
     tripImages.forEach((img) => {
@@ -139,7 +142,7 @@ app.put('/trips/:tripId', checkJwt, async (req, res) => {
 
         // Find existing image information for the trip first to calculate
         // what is new and what is removed
-        let result = await client.db("trips").collection("tripInfo").findOne({"_id": ObjectId(tripId)}, {projection: {_id:0 , images:1}})
+        let result = await client.db("trips").collection("tripInfo").findOne({"_id": ObjectId(tripId), "userId": userId}, {projection: {_id:0 , images:1}})
         let imagesToRemove = []
         let imagesToAdd = []
         if (result) {
@@ -157,7 +160,7 @@ app.put('/trips/:tripId', checkJwt, async (req, res) => {
             deleteS3Images(imagesToRemove)
         }
         // Update trip information in the DB
-        result = await client.db("trips").collection("tripInfo").updateOne({"_id": ObjectId(tripId)}, { $set: updatedTrip })
+        result = await client.db("trips").collection("tripInfo").updateOne({"_id": ObjectId(tripId), "userId": userId}, { $set: updatedTrip })
 
         res.send(result)
     } catch (error){
