@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react'
 import axios from 'axios'
 import { PlusOutlined } from '@ant-design/icons';
 import { Form, Modal, Upload, message  } from 'antd'
+import { useAuth0 } from '@auth0/auth0-react'
 
 import tripService from './services/tripService.js'
 
@@ -13,6 +14,8 @@ const S3Upload = (props) => {
         previewImage: '',
         privewTitle: '',
     })
+
+    const { getAccessTokenSilently } = useAuth0()
     
     /**
      * File is object:
@@ -142,7 +145,7 @@ const S3Upload = (props) => {
         let signedUrl = ''
 
         try{
-            const urlInfo = await tripService.getS3SignedUrl(fileType)
+            const urlInfo = await tripService.getS3SignedUrl(fileType, getAccessTokenSilently)
             signedUrl = urlInfo.signedUrl
             const fileUID = file.uid
             const fileNameInfo = {

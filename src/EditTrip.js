@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Button, Input, DatePicker, Form, Space, Spin, message  } from 'antd'
 import { Prompt } from 'react-router-dom'
 import history from './history'
+import { useAuth0 } from '@auth0/auth0-react'
 
 import LocationSelect from './LocationSelect.js'
 import S3Upload from './S3Upload.js'
@@ -27,6 +28,7 @@ const EditTrip = props => {
         }
     }, [])
 
+    const { getAccessTokenSilently } = useAuth0()
 
     const listName = 'locationList'
     const latLngDelim = ','
@@ -122,7 +124,7 @@ const EditTrip = props => {
     }
     const handleSubmit = async (trip) => {
         setSavingInProgress(true)
-        const res = await tripService.submitNewTrip(trip)
+        const res = await tripService.submitNewTrip(trip, getAccessTokenSilently)
         console.log(res)
         setSavingInProgress(false)
 
@@ -132,7 +134,7 @@ const EditTrip = props => {
     const handleUpdate = async (updatedTrip, tripId) => {
         setSavingInProgress(true)
 
-        const res = await tripService.updateTrip(updatedTrip, tripId)
+        const res = await tripService.updateTrip(updatedTrip, tripId, getAccessTokenSilently)
         console.log(res)
         props.clearEditTrip()
         setSavingInProgress(false)

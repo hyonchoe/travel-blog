@@ -22,7 +22,7 @@ const uri = `mongodb+srv://${dbusername}:${dbpassword}@travelblog-ugmhk.mongodb.
 app.listen(port, () => console.log(`Listening on port ${port}`))
 
 // Create a trip (POST)
-app.post('/trips', async (req, res) => {
+app.post('/trips', checkJwt, async (req, res) => {
     const mgClient = new MongoClient(uri, { useUnifiedTopology: true })
     const tripLocations = req.body.locations
     const tripImages = req.body.images
@@ -60,7 +60,7 @@ app.post('/trips', async (req, res) => {
 })
 
 // Delete existing trip (DEL)
-app.delete('/trips/:tripId', async (req, res) => {
+app.delete('/trips/:tripId', checkJwt, async (req, res) => {
     const mgClient = new MongoClient(uri, { useUnifiedTopology: true })
     const tripId = req.params.tripId
 
@@ -113,7 +113,7 @@ app.get('/trips', checkJwt, async (req, res) => {
 })
 
 // Update existing trip (PUT)
-app.put('/trips/:tripId', async (req, res) => {
+app.put('/trips/:tripId', checkJwt, async (req, res) => {
     const mgClient = new MongoClient(uri, { useUnifiedTopology: true })
     const tripId = req.params.tripId
     const tripLocations = req.body.locations
@@ -168,7 +168,7 @@ app.put('/trips/:tripId', async (req, res) => {
 })
 
 // Generate S3 signed URL for photo upload
-app.get('/get-signed-url', async (req, res) => {
+app.get('/get-signed-url', checkJwt, async (req, res) => {
     //TODO: Can add some validation for allowed file type check here
     const fileType = req.query.type
     const urlFileName = new ObjectId().toString()
@@ -182,16 +182,6 @@ app.get('/get-signed-url', async (req, res) => {
 
         res.send(err)        
     }
-})
-
-//TODO: testing
-app.get('/public-api-test', (req, res) => {
-    const testValue = { tes: 'PUBLIC TEST VALUEEE' }
-    res.send(testValue)
-})
-app.get('/private-api-test', checkJwt, (req, res) => {
-    const testValue = { tes: 'PRIVATE TEST VALUEEE' }
-    res.send(testValue)
 })
 
 const getImagesToRemove = (existingImages, updatedImages) => {

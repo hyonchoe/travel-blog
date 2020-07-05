@@ -25,7 +25,7 @@ const MyTrips = (props) => {
     }, [])
 
     const handleDeleteTrip = async (tripId) => {
-      const res = await tripService.deleteTrip(tripId)
+      const res = await tripService.deleteTrip(tripId, getAccessTokenSilently)
       console.log(res)
       
       let tripTitle = ''

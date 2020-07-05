@@ -3,8 +3,9 @@ import moment from 'moment'
 
 
 export default {
-    submitNewTrip: async (trip) => {
-        let res = await axios.post('/trips', trip)
+    submitNewTrip: async (trip, getAccessTokenSilently) => {
+        const headers = await getAuthHeader(getAccessTokenSilently)
+        let res = await axios.post('/trips', trip, headers)
         return res
     },
 
@@ -28,35 +29,10 @@ export default {
         return []
     },
 
-    //TODO: testing
-    testPublicApi: async () => {
-        try {
-            const res = await axios.get('/public-api-test')
-            console.log("result:")
-            console.log(res)
-            return []
-        } catch (error) {
-            console.log("error:")
-            console.log(error)
-        }
-        return []
-    },
-    testPrivateApi: async (getAccessTokenSilently) => {
+    updateTrip: async (updatedTrip, tripId, getAccessTokenSilently) => {
         try {
             const headers = await getAuthHeader(getAccessTokenSilently)
-            const res = await axios.get('/private-api-test', headers)
-            console.log(res)
-            return []
-        } catch (error) {
-            console.log("error:")
-            console.log(error)
-        }
-        return []
-    },
-
-    updateTrip: async (updatedTrip, tripId) => {
-        try {
-            let res = await axios.put(`/trips/${tripId}`, updatedTrip)
+            let res = await axios.put(`/trips/${tripId}`, updatedTrip, headers)
             console.log(res)
             return res
         } catch (error) {
@@ -65,9 +41,10 @@ export default {
         }
     },
 
-    deleteTrip: async (tripId) => {
+    deleteTrip: async (tripId, getAccessTokenSilently) => {
         try {
-            let res = await axios.delete(`/trips/${tripId}`)
+            const headers = await getAuthHeader(getAccessTokenSilently)
+            let res = await axios.delete(`/trips/${tripId}`, headers)
             console.log(res)
             return res
         } catch (error) {
@@ -76,9 +53,11 @@ export default {
         }
     },
 
-    getS3SignedUrl: async (fileType) => {
+    getS3SignedUrl: async (fileType, getAccessTokenSilently) => {
         try {
+            const headers = await getAuthHeader(getAccessTokenSilently)
             let res = await axios.get(`/get-signed-url`, {
+                ...headers,
                 params: {
                     type: fileType,
                 }
