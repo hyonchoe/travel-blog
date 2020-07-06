@@ -5,6 +5,8 @@ import Trip from './Trip'
 class TripList extends React.Component {
     render() {
         const tripCountsPerSize = 10
+        const isAuthenticated = this.props.isAuthenticated
+        const userId = this.props.userId
         const showMyTrips = this.props.showMyTrips
         const handleDeleteTrip = this.props.deleteTrip
         const handleEditTrip = this.props.editTrip
@@ -24,6 +26,8 @@ class TripList extends React.Component {
                 renderItem={(item) => (
                     <List.Item>
                         <Trip
+                            isAuthenticated={isAuthenticated}
+                            userId={userId}
                             showMyTrips={showMyTrips}
                             trip={item}
                             deleteTrip={handleDeleteTrip}

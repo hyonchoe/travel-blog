@@ -36,6 +36,7 @@ app.post('/trips', checkJwt, async (req, res) => {
     const newTrip = {
         userId: req.user.sub,
         userName: req.body.userName,
+        userEmail: req.body.userEmail,
         title: req.body.title,
         startDate: moment(req.body.startDate),
         endDate: moment(req.body.endDate),

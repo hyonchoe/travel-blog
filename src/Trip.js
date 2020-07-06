@@ -57,6 +57,40 @@ class Trip extends React.Component {
         //cardTabList.push({ key: 'videos', tab: 'Videos', })
         return cardTabList
     }
+    getCardActions = (curTrip) => {
+        const actions = []
+        actions.push(
+            <Tooltip title="View this trip locations on a map">
+                <GlobalOutlined key="map" onClick={() => this.onGlobeClicked(curTrip) } />
+            </Tooltip>
+        )
+
+        if (this.isCurUserTrip()){
+            actions.push(
+                <Tooltip title="Edit this trip information">
+                    <Popconfirm
+                        title="Are you sure about editing this trip?"
+                        onConfirm={() => this.popoverConfirm(curTrip)}
+                        onCancel={() => this.popoverCancel()}
+                        okText="Yes"
+                        cancelText="No" >
+                        <EditOutlined key="edit" />
+                    </Popconfirm>
+                </Tooltip>            
+            )
+            actions.push(
+                <Tooltip title="Delete this trip">
+                    <DeleteOutlined key="delete" onClick={() => this.showDeleteConfirm(curTrip._id, this)} />
+                </Tooltip>            
+            )
+        }
+
+        return actions
+    }
+
+    isCurUserTrip = () => {
+        return this.props.isAuthenticated && this.props.userId === this.props.trip.userId
+    }
 
      render() {
         const curTrip = this.props.trip
@@ -67,7 +101,9 @@ class Trip extends React.Component {
         }
 
         const locAddr = LocationSpans(curTrip.locations)
-        const travelerName = (this.props.showMyTrips) ? '' : TravelerName(curTrip.userName)
+        
+        const travelerName = (this.props.showMyTrips) ? '' 
+                                : TravelerName((this.isCurUserTrip()) ? 'me' : curTrip.userName, curTrip.userEmail)
         
         return (
             <div className="tripContainer">
@@ -76,24 +112,7 @@ class Trip extends React.Component {
                     hoverable={true}
                     bordered={true}
                     extra={dateStr}
-                    actions={[
-                        <Tooltip title="View this trip locations on a map">
-                            <GlobalOutlined key="map" onClick={() => this.onGlobeClicked(curTrip) } />,
-                        </Tooltip>,                        
-                        <Tooltip title="Edit this trip information">
-                            <Popconfirm
-                                title="Are you sure about editing this trip?"
-                                onConfirm={() => this.popoverConfirm(curTrip)}
-                                onCancel={() => this.popoverCancel()}
-                                okText="Yes"
-                                cancelText="No" >
-                                <EditOutlined key="edit" />
-                            </Popconfirm>
-                        </Tooltip>,
-                        <Tooltip title="Delete this trip">
-                            <DeleteOutlined key="delete" onClick={() => this.showDeleteConfirm(curTrip._id, this)} />
-                        </Tooltip>,
-                    ]}
+                    actions={this.getCardActions(curTrip)}
                     tabList={this.getTabList()}
                     activeTabKey={ this.state.key }
                     tabProps={ {size: 'small'} }
@@ -134,8 +153,13 @@ const LocationSpans = (locations) => {
         <span className="spanLocation">{loc.fmtAddr}</span>
     ))
 }
-const TravelerName = (travelerName) => {
-    return <span>{travelerName}'s travel</span>
+const TravelerName = (travelerName, travelerEmail) => {
+    let name = (travelerName) ? travelerName : travelerEmail
+    if (!name){
+        name = 'someone'
+    }
+
+    return <span>Travelled by {name}</span>
 }
 const TripTabContent = (props) => {
     let contentComponent = null
@@ -172,10 +196,6 @@ const getCardTitle = (title, isPublic) => {
             {title}<LockOutlined className="privateIcon" />
         </span>
     )
-}
-
-const getCardActions = () => {
-    //TODO
 }
 
 export default Trip

@@ -127,6 +127,7 @@ const EditTrip = props => {
     const handleSubmit = async (trip) => {
         setSavingInProgress(true)
         trip.userName = user.given_name
+        trip.userEmail = user.email
         const res = await tripService.submitNewTrip(trip, getAccessTokenSilently)
         console.log(res)
         setSavingInProgress(false)

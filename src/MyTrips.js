@@ -12,7 +12,7 @@ const MyTrips = (props) => {
     const [modalVisible, setModalVisible] = useState(false)
     const [tripLocations, setTripLocations] = useState(null)
 
-    const { getAccessTokenSilently } = useAuth0()
+    const { getAccessTokenSilently, isAuthenticated, user } = useAuth0()
     
     useEffect(() => {
       const fetchData = async () => {
@@ -59,6 +59,7 @@ const MyTrips = (props) => {
     const handleEditTrip = props.editTrip
     const mapCenterLat = (tripLocations && tripLocations.length>0) ? tripLocations[0].latLng[0] : null
     const mapCenterLng = (tripLocations && tripLocations.length>0) ? tripLocations[0].latLng[1] : null
+    const userId = (isAuthenticated) ? user.sub : ''
 
     return (
       <div className="myTripsContainer">
@@ -70,6 +71,8 @@ const MyTrips = (props) => {
         <Col span={16}>
           { trips.length > 0 && 
           <TripList
+            isAuthenticated={isAuthenticated}
+            userId={userId}
             showMyTrips={showMyTrips}
             tripData={trips}
             deleteTrip={handleDeleteTrip}
