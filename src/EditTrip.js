@@ -28,7 +28,7 @@ const EditTrip = props => {
         }
     }, [])
 
-    const { getAccessTokenSilently } = useAuth0()
+    const { getAccessTokenSilently, user } = useAuth0()
 
     const listName = 'locationList'
     const latLngDelim = ','
@@ -126,6 +126,7 @@ const EditTrip = props => {
     }
     const handleSubmit = async (trip) => {
         setSavingInProgress(true)
+        trip.userName = user.given_name
         const res = await tripService.submitNewTrip(trip, getAccessTokenSilently)
         console.log(res)
         setSavingInProgress(false)

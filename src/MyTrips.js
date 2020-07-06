@@ -55,6 +55,7 @@ const MyTrips = (props) => {
     }
 
     
+    const showMyTrips = props.showMyTrips
     const handleEditTrip = props.editTrip
     const mapCenterLat = (tripLocations && tripLocations.length>0) ? tripLocations[0].latLng[0] : null
     const mapCenterLng = (tripLocations && tripLocations.length>0) ? tripLocations[0].latLng[1] : null
@@ -69,6 +70,7 @@ const MyTrips = (props) => {
         <Col span={16}>
           { trips.length > 0 && 
           <TripList
+            showMyTrips={showMyTrips}
             tripData={trips}
             deleteTrip={handleDeleteTrip}
             editTrip={handleEditTrip}

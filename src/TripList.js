@@ -5,6 +5,7 @@ import Trip from './Trip'
 class TripList extends React.Component {
     render() {
         const tripCountsPerSize = 10
+        const showMyTrips = this.props.showMyTrips
         const handleDeleteTrip = this.props.deleteTrip
         const handleEditTrip = this.props.editTrip
         const handleLaunchMapModal = this.props.launchMapModal
@@ -23,6 +24,7 @@ class TripList extends React.Component {
                 renderItem={(item) => (
                     <List.Item>
                         <Trip
+                            showMyTrips={showMyTrips}
                             trip={item}
                             deleteTrip={handleDeleteTrip}
                             editTrip={handleEditTrip}

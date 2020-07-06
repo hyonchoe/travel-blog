@@ -43,8 +43,7 @@ class Trip extends React.Component {
         this.props.editTrip(selectedTrip)
         history.push('/addTrip')
     }
-    popoverCancel = () => {
-    }
+    popoverCancel = () => {}
 
     getTabList = () => {
         let cardTabList = [{ key: 'journal', tab: 'Journal', }]
@@ -68,6 +67,7 @@ class Trip extends React.Component {
         }
 
         const locAddr = LocationSpans(curTrip.locations)
+        const travelerName = (this.props.showMyTrips) ? '' : TravelerName(curTrip.userName)
         
         return (
             <div className="tripContainer">
@@ -99,7 +99,7 @@ class Trip extends React.Component {
                     tabProps={ {size: 'small'} }
                     onTabChange={(key) => this.onTabChange(key, 'key') }
                     >
-                    <TripTabContent tabKey={this.state.key} curTrip={curTrip} locAddr={locAddr} />
+                    <TripTabContent tabKey={this.state.key} curTrip={curTrip} locAddr={locAddr} travelerName={travelerName} />
                 </Card>                
             </div>
         )
@@ -110,6 +110,9 @@ const { confirm } = Modal
 const TripDetails = (props) => {
     return (
         <Typography>
+            {props.travelerName && 
+            <div className="divTravelerName">{props.travelerName}</div>
+            }
             {props.locAddr && 
             <div className="divLocation"> {props.locAddr} </div>
             }
@@ -131,11 +134,14 @@ const LocationSpans = (locations) => {
         <span className="spanLocation">{loc.fmtAddr}</span>
     ))
 }
+const TravelerName = (travelerName) => {
+    return <span>{travelerName}'s travel</span>
+}
 const TripTabContent = (props) => {
     let contentComponent = null
     switch (props.tabKey){
         case 'journal':
-            contentComponent = <TripDetails details={props.curTrip.details} locAddr={props.locAddr} />
+            contentComponent = <TripDetails details={props.curTrip.details} locAddr={props.locAddr} travelerName={props.travelerName} />
             break
 
         case 'images':
@@ -149,7 +155,7 @@ const TripTabContent = (props) => {
         */
 
         default:
-            contentComponent = <TripDetails details={props.curTrip.details} locAddr={props.locAddr} />
+            contentComponent = <TripDetails details={props.curTrip.details} locAddr={props.locAddr} travelerName={props.travelerName} />
             break
     }
     
@@ -166,6 +172,10 @@ const getCardTitle = (title, isPublic) => {
             {title}<LockOutlined className="privateIcon" />
         </span>
     )
+}
+
+const getCardActions = () => {
+    //TODO
 }
 
 export default Trip
