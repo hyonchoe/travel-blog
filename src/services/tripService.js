@@ -13,7 +13,7 @@ export default {
             const headers = await getAuthHeader(getAccessTokenSilently)
             let res = await axios.get('/trips', headers)
             if (res.data){
-                return processDates(res.data)
+                return processTripData(res.data)
             }
         } catch (error){
             console.log(error)
@@ -26,7 +26,7 @@ export default {
         try {
             let res = await axios.get('/publicTrips')
             if (res.data){
-                return processDates(res.data)
+                return processTripData(res.data)
             }
         } catch (error){
             console.log(error)
@@ -96,6 +96,13 @@ const getAuthHeader = async (getAccessTokenSilently) => {
     }
 }
 
+const processTripData = (trips) => {
+    trips = processDates(trips)
+    sortTrips(trips)
+
+    return trips
+}
+
 const processDates = (trips) => {
     const curTrips = trips.map((trip) => {
         trip.startDate = moment(trip.startDate)
@@ -104,4 +111,20 @@ const processDates = (trips) => {
     })
 
     return curTrips    
+}
+
+// Sort by end date first, then start date.
+// Most recent dates should appear first in the list
+const sortTrips = (trips) => {
+    trips.sort((a, b) => {
+        if (a.endDate.isSame(b.endDate, 'day')){
+            return (a.startDate.isAfter(b.startDate, 'day')) ? -1 : 1
+        }
+        else if(a.endDate.isAfter(b.endDate, 'day')) {
+            return -1
+        }
+        else {
+            return 1
+        }
+    })
 }
