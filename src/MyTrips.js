@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import TripList from './TripList.js'
-import { Empty, Skeleton, Row, Col, BackTop, message, Modal, Button } from 'antd'
+import { Empty, Skeleton, Row, Col, BackTop, message, Modal, Button, List } from 'antd'
 import { useAuth0 } from '@auth0/auth0-react'
 
 import tripService from './services/tripService.js'
 import MyMapContainer from './MyMapContainer.js'
+import Trip from './Trip'
 
 const MyTrips = (props) => {
     const [trips, setTrips] = useState([])
@@ -54,7 +54,7 @@ const MyTrips = (props) => {
       setTripLocations(null)
     }
 
-    
+    const tripCountsPerSize = 10
     const showMyTrips = props.showMyTrips
     const handleEditTrip = props.editTrip
     const mapCenterLat = (tripLocations && tripLocations.length>0) ? tripLocations[0].latLng[0] : null
@@ -70,19 +70,30 @@ const MyTrips = (props) => {
         <Col span={4} />
         <Col span={16}>
           { trips.length > 0 && 
-          <TripList
-            isAuthenticated={isAuthenticated}
-            userId={userId}
-            showMyTrips={showMyTrips}
-            tripData={trips}
-            deleteTrip={handleDeleteTrip}
-            editTrip={handleEditTrip}
-            launchMapModal={handleLaunchMapModal} />
+          <List
+            itemLayout="vertical"
+            pagination={{
+                onChange: page => {
+                    window.scrollTo({top: 0, behavior: 'smooth'});
+                },
+                pageSize: tripCountsPerSize,
+            }}
+            dataSource={trips}
+            renderItem={(item) => (
+              <List.Item>
+                  <Trip
+                      isAuthenticated={isAuthenticated}
+                      userId={userId}
+                      showMyTrips={showMyTrips}
+                      trip={item}
+                      deleteTrip={handleDeleteTrip}
+                      editTrip={handleEditTrip}
+                      launchMapModal={handleLaunchMapModal} />
+              </List.Item>
+            )} />
           }
           { trips.length === 0 && loadingData && 
-          
-              <Skeleton active loading={loadingData} />
-          
+          <Skeleton active loading={loadingData} />
           }
           { trips.length === 0 && !loadingData &&
           <Empty />
