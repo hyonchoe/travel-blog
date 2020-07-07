@@ -9,7 +9,6 @@ import Trip from './Trip'
 const MyTrips = (props) => {
     const [tripList, setTripList] = useState({
       trips: [],
-      listData: [],
       loadingData: true,
       loadingMore: false,
       noMoreRecords: false,
@@ -34,7 +33,6 @@ const MyTrips = (props) => {
         setTripList( {
           ...tripList,
           trips: res,
-          listData: res,
           loadingData: false,
         })
       }
@@ -46,7 +44,6 @@ const MyTrips = (props) => {
       setTripList({
         ...tripList,
         loadingMore: true,
-        listData: tripList.listData.concat([...new Array(1)].map(() => ({ loading: true, }))),
       })
       
       let res
@@ -61,7 +58,6 @@ const MyTrips = (props) => {
       setTripList({
         ...tripList,
         trips: updatedData,
-        listData: updatedData,
         loadingMore: false,
         noMoreRecords: noMoreRecords,
       })
@@ -139,23 +135,21 @@ const MyTrips = (props) => {
             itemLayout="vertical"
             loading={tripList.loadingData}
             loadMore={loadMoreButton}
-            dataSource={tripList.listData}
+            dataSource={tripList.trips}
             renderItem={(item) => (
               <List.Item>
-                  <Skeleton loading={item.loading} active>
-                    <Trip
-                        isAuthenticated={isAuthenticated}
-                        userId={userId}
-                        showMyTrips={showMyTrips}
-                        trip={item}
-                        deleteTrip={handleDeleteTrip}
-                        editTrip={handleEditTrip}
-                        launchMapModal={handleLaunchMapModal} />
-                  </Skeleton>                      
+                <Trip
+                    isAuthenticated={isAuthenticated}
+                    userId={userId}
+                    showMyTrips={showMyTrips}
+                    trip={item}
+                    deleteTrip={handleDeleteTrip}
+                    editTrip={handleEditTrip}
+                    launchMapModal={handleLaunchMapModal} />
               </List.Item>
             )} />
           }
-          { tripList.trips.length === 0 && tripList.loadingData &&
+          { (tripList.loadingData || tripList.loadingMore) &&
           <Skeleton loading={true} active />
           }
           { tripList.trips.length === 0 && !tripList.loadingData &&
