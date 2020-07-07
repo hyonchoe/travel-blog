@@ -104,8 +104,8 @@ const EditTrip = props => {
 
         const tripData = {
             title: values.title,
-            startDate: values.dates[0],
-            endDate: values.dates[1],
+            startDate: values.dates[0].startOf('day'),
+            endDate: values.dates[1].startOf('day'),
             public: (values.public) ? true : false,
             details: values.details,
             locations: locationData,

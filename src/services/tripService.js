@@ -22,9 +22,15 @@ export default {
         return []
     },
 
-    getPublicTrips: async () => {
+    getPublicTrips: async (lastTripLoaded) => {
         try {
-            let res = await axios.get('/publicTrips')
+            const params = (lastTripLoaded) ? { params: {
+                                    tripId: lastTripLoaded._id,
+                                    startDate: lastTripLoaded.startDate.toISOString(),
+                                    endDate: lastTripLoaded.endDate.toISOString(),
+                                } }
+                                : null
+            let res = await axios.get('/publicTrips', params)
             if (res.data){
                 return processTripData(res.data)
             }
@@ -98,7 +104,7 @@ const getAuthHeader = async (getAccessTokenSilently) => {
 
 const processTripData = (trips) => {
     trips = processDates(trips)
-    sortTrips(trips)
+    //sortTrips(trips)
 
     return trips
 }

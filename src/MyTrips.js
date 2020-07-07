@@ -8,26 +8,46 @@ import Trip from './Trip'
 
 const MyTrips = (props) => {
     const [trips, setTrips] = useState([])
+    const [listData, setListData] = useState([])
     const [loadingData, setLoadingData] = useState(true)
+    const [loadingMore, setLoadingMore] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
     const [tripLocations, setTripLocations] = useState(null)
 
     const { getAccessTokenSilently, isAuthenticated, user } = useAuth0()
-    
+
     useEffect(() => {
       const fetchData = async () => {
         let res
         if (props.showMyTrips){
           res = await tripService.getTrips(getAccessTokenSilently)
         } else {
-          res = await tripService.getPublicTrips()
+          res = await tripService.getPublicTrips(null)
         }
         setTrips(res)
+        setListData(res)
         setLoadingData(false)
       }
 
       fetchData()
     }, [])
+
+    const onLoadMore = async () => {
+      setLoadingMore(true)
+      setListData(listData.concat([...new Array(3)].map(() => ({ loading: true, }))))
+      
+      let res
+      if (props.showMyTrips){
+        res = await tripService.getTrips(getAccessTokenSilently)
+      } else {
+        res = await tripService.getPublicTrips(trips[trips.length-1])
+      }
+
+      const updatedData = trips.concat(res)
+      setTrips(updatedData)
+      setListData(updatedData)
+      setLoadingMore(false)
+    }
 
     const handleDeleteTrip = async (tripId) => {
       const res = await tripService.deleteTrip(tripId, getAccessTokenSilently)
@@ -61,6 +81,19 @@ const MyTrips = (props) => {
     const mapCenterLng = (tripLocations && tripLocations.length>0) ? tripLocations[0].latLng[1] : null
     const userId = (isAuthenticated) ? user.sub : ''
 
+    const loadMoreButton = !loadingData && !loadingMore ? (
+                              <div
+                                style={{
+                                  textAlign: 'center',
+                                  marginTop: 12,
+                                  height: 32,
+                                  lineHeight: '32px',
+                                }} >
+                                <Button onClick={onLoadMore}>Load more</Button>
+                              </div>
+                            )
+                            : null
+
     return (
       <div className="myTripsContainer">
       <BackTop />
@@ -72,28 +105,23 @@ const MyTrips = (props) => {
           { trips.length > 0 && 
           <List
             itemLayout="vertical"
-            pagination={{
-                onChange: page => {
-                    window.scrollTo({top: 0, behavior: 'smooth'});
-                },
-                pageSize: tripCountsPerSize,
-            }}
+            loading={loadingData}
+            loadMore={loadMoreButton}
             dataSource={trips}
             renderItem={(item) => (
               <List.Item>
-                  <Trip
-                      isAuthenticated={isAuthenticated}
-                      userId={userId}
-                      showMyTrips={showMyTrips}
-                      trip={item}
-                      deleteTrip={handleDeleteTrip}
-                      editTrip={handleEditTrip}
-                      launchMapModal={handleLaunchMapModal} />
+                  <Skeleton loading={item.loading} active>
+                    <Trip
+                        isAuthenticated={isAuthenticated}
+                        userId={userId}
+                        showMyTrips={showMyTrips}
+                        trip={item}
+                        deleteTrip={handleDeleteTrip}
+                        editTrip={handleEditTrip}
+                        launchMapModal={handleLaunchMapModal} />
+                  </Skeleton>                      
               </List.Item>
             )} />
-          }
-          { trips.length === 0 && loadingData && 
-          <Skeleton active loading={loadingData} />
           }
           { trips.length === 0 && !loadingData &&
           <Empty />

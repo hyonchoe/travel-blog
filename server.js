@@ -38,8 +38,8 @@ app.post('/trips', checkJwt, async (req, res) => {
         userName: req.body.userName,
         userEmail: req.body.userEmail,
         title: req.body.title,
-        startDate: moment(req.body.startDate),
-        endDate: moment(req.body.endDate),
+        startDate: new Date(req.body.startDate),
+        endDate: new Date(req.body.endDate),
         public: req.body.public,
         details: req.body.details,
         locations: tripLocations,
@@ -89,7 +89,7 @@ app.delete('/trips/:tripId', checkJwt, async (req, res) => {
     }
 })
 
-// Get existing trips (GET)
+// Get existing trips for logged in user (GET)
 app.get('/trips', checkJwt, async (req, res) => {
     const mgClient = new MongoClient(uri, { useUnifiedTopology: true })
     const userId = req.user.sub
@@ -107,12 +107,44 @@ app.get('/trips', checkJwt, async (req, res) => {
     }
 })
 
+// Get existing  public trips (GET)
 app.get('/publicTrips', async (req, res) => {
     const mgClient = new MongoClient(uri, { useUnifiedTopology: true })
+    let findConditions = { "public": true }
+    const sortConditions = { "endDate": -1, "startDate": -1, "_id": -1 }
+    const initialLoad = (req.query.tripId) ? false : true
+    const resultLimit = 2
+    if (!initialLoad){
+        const lastLoadedTripId = ObjectId(req.query.tripId)
+        const lastLoadedTripEndDate = new Date(req.query.endDate)
+        const lastLoadedTripStartDate = new Date(req.query.startDate)
+        const findMoreConditions = 
+            { 
+            "$or": [
+                { "endDate": { "$lt": lastLoadedTripEndDate } },
+                {
+                "$and": [
+                    { "endDate": { "$eq": lastLoadedTripEndDate } },
+                    { "startDate": { "$lt": lastLoadedTripStartDate } }
+                    ]
+                },
+                {
+                "$and": [
+                    { "endDate": { "$eq": lastLoadedTripEndDate } },
+                    { "startDate": { "$eq": lastLoadedTripStartDate } },
+                    {  "_id": { "$lt": lastLoadedTripId }}
+                    ]
+                },
+                ]
+            }
+        findConditions = {...findConditions, ...findMoreConditions}
+    }
+
     try {
         const client = await mgClient.connect()
         // Find all existing trips
-        const result = await client.db("trips").collection("tripInfo").find({"public": true}).toArray()
+        const result = await client.db("trips").collection("tripInfo").
+            find(findConditions).sort(sortConditions).limit(resultLimit).toArray()
         processDatesImages(result)
 
         res.send(result)
