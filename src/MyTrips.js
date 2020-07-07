@@ -11,6 +11,7 @@ const MyTrips = (props) => {
     const [listData, setListData] = useState([])
     const [loadingData, setLoadingData] = useState(true)
     const [loadingMore, setLoadingMore] = useState(false)
+    const [noMoreRecords, setNoMoreRecords] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
     const [tripLocations, setTripLocations] = useState(null)
 
@@ -34,7 +35,7 @@ const MyTrips = (props) => {
 
     const onLoadMore = async () => {
       setLoadingMore(true)
-      setListData(listData.concat([...new Array(3)].map(() => ({ loading: true, }))))
+      setListData(listData.concat([...new Array(1)].map(() => ({ loading: true, }))))
       
       let res
       if (props.showMyTrips){
@@ -47,6 +48,10 @@ const MyTrips = (props) => {
       setTrips(updatedData)
       setListData(updatedData)
       setLoadingMore(false)
+      if(res.length === 0 || res[res.length-1].noMoreRecords){
+        setNoMoreRecords(true)
+        message.info('No more older public trips to display')
+      }
     }
 
     const handleDeleteTrip = async (tripId) => {
@@ -81,7 +86,7 @@ const MyTrips = (props) => {
     const mapCenterLng = (tripLocations && tripLocations.length>0) ? tripLocations[0].latLng[1] : null
     const userId = (isAuthenticated) ? user.sub : ''
 
-    const loadMoreButton = !loadingData && !loadingMore ? (
+    const loadMoreButton = !loadingData && !loadingMore && !noMoreRecords ? (
                               <div
                                 style={{
                                   textAlign: 'center',
@@ -107,7 +112,7 @@ const MyTrips = (props) => {
             itemLayout="vertical"
             loading={loadingData}
             loadMore={loadMoreButton}
-            dataSource={trips}
+            dataSource={listData}
             renderItem={(item) => (
               <List.Item>
                   <Skeleton loading={item.loading} active>
@@ -122,6 +127,9 @@ const MyTrips = (props) => {
                   </Skeleton>                      
               </List.Item>
             )} />
+          }
+          { trips.length === 0 && loadingData &&
+          <Skeleton loading={true} active />
           }
           { trips.length === 0 && !loadingData &&
           <Empty />

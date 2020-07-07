@@ -144,7 +144,12 @@ app.get('/publicTrips', async (req, res) => {
         const client = await mgClient.connect()
         // Find all existing trips
         const result = await client.db("trips").collection("tripInfo").
-            find(findConditions).sort(sortConditions).limit(resultLimit).toArray()
+            find(findConditions).sort(sortConditions).limit(resultLimit+1).toArray()
+        if (result.length === resultLimit+1){
+            result.length = resultLimit
+        } else if (result.length > 0) {
+            result[result.length-1].noMoreRecords = true
+        }
         processDatesImages(result)
 
         res.send(result)
