@@ -7,13 +7,17 @@ import MyMapContainer from './MyMapContainer.js'
 import Trip from './Trip'
 
 const MyTrips = (props) => {
+    // TODO: One object  
     const [trips, setTrips] = useState([])
     const [listData, setListData] = useState([])
     const [loadingData, setLoadingData] = useState(true)
     const [loadingMore, setLoadingMore] = useState(false)
     const [noMoreRecords, setNoMoreRecords] = useState(false)
-    const [modalVisible, setModalVisible] = useState(false)
-    const [tripLocations, setTripLocations] = useState(null)
+    
+    const [modalMap, setModalMap] = useState({
+      modalVisible: false,
+      tripLocations: null
+    })
 
     const { getAccessTokenSilently, isAuthenticated, user } = useAuth0()
 
@@ -71,19 +75,23 @@ const MyTrips = (props) => {
       message.success(`Trip "${tripTitle}" removed successfully`)
     }
     const handleLaunchMapModal = (tripTitle, tripLocations) => {
-      setModalVisible(true)
-      setTripLocations(tripLocations)
+      setModalMap({
+        modalVisible: true,
+        tripLocations: tripLocations
+      })
     }
     const handleModalOk = () => {
-      setModalVisible(false)
-      setTripLocations(null)
+      setModalMap({
+        modalVisible: false,
+        tripLocations: null
+      })
     }
 
     const tripCountsPerSize = 10
     const showMyTrips = props.showMyTrips
     const handleEditTrip = props.editTrip
-    const mapCenterLat = (tripLocations && tripLocations.length>0) ? tripLocations[0].latLng[0] : null
-    const mapCenterLng = (tripLocations && tripLocations.length>0) ? tripLocations[0].latLng[1] : null
+    const mapCenterLat = (modalMap.tripLocations && modalMap.tripLocations.length>0) ? modalMap.tripLocations[0].latLng[0] : null
+    const mapCenterLng = (modalMap.tripLocations && modalMap.tripLocations.length>0) ? modalMap.tripLocations[0].latLng[1] : null
     const userId = (isAuthenticated) ? user.sub : ''
 
     const loadMoreButton = !loadingData && !loadingMore && !noMoreRecords ? (
@@ -139,7 +147,7 @@ const MyTrips = (props) => {
       </Row>
       <Modal
         title='Trip locations'
-        visible={modalVisible}
+        visible={modalMap.modalVisible}
         maskClosable={false}
         bodyStyle={{height: '500px'}}
         width='500px'
@@ -154,7 +162,7 @@ const MyTrips = (props) => {
         ]} >
         <MyMapContainer
             searchMode={false}
-            tripLocations={tripLocations}
+            tripLocations={modalMap.tripLocations}
             mapCenterLat={mapCenterLat}
             mapCenterLng={mapCenterLng} />
       </Modal>
