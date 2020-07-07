@@ -7,16 +7,17 @@ import MyMapContainer from './MyMapContainer.js'
 import Trip from './Trip'
 
 const MyTrips = (props) => {
-    // TODO: One object  
-    const [trips, setTrips] = useState([])
-    const [listData, setListData] = useState([])
-    const [loadingData, setLoadingData] = useState(true)
-    const [loadingMore, setLoadingMore] = useState(false)
-    const [noMoreRecords, setNoMoreRecords] = useState(false)
+    const [tripList, setTripList] = useState({
+      trips: [],
+      listData: [],
+      loadingData: true,
+      loadingMore: false,
+      noMoreRecords: false,
+    })
     
     const [modalMap, setModalMap] = useState({
       modalVisible: false,
-      tripLocations: null
+      tripLocations: null,
     })
 
     const { getAccessTokenSilently, isAuthenticated, user } = useAuth0()
@@ -29,31 +30,42 @@ const MyTrips = (props) => {
         } else {
           res = await tripService.getPublicTrips(null)
         }
-        setTrips(res)
-        setListData(res)
-        setLoadingData(false)
+
+        setTripList( {
+          ...tripList,
+          trips: res,
+          listData: res,
+          loadingData: false,
+        })
       }
 
       fetchData()
     }, [])
 
     const onLoadMore = async () => {
-      setLoadingMore(true)
-      setListData(listData.concat([...new Array(1)].map(() => ({ loading: true, }))))
+      setTripList({
+        ...tripList,
+        loadingMore: true,
+        listData: tripList.listData.concat([...new Array(1)].map(() => ({ loading: true, }))),
+      })
       
       let res
       if (props.showMyTrips){
         res = await tripService.getTrips(getAccessTokenSilently)
       } else {
-        res = await tripService.getPublicTrips(trips[trips.length-1])
+        res = await tripService.getPublicTrips(tripList.trips[tripList.trips.length-1])
       }
 
-      const updatedData = trips.concat(res)
-      setTrips(updatedData)
-      setListData(updatedData)
-      setLoadingMore(false)
-      if(res.length === 0 || res[res.length-1].noMoreRecords){
-        setNoMoreRecords(true)
+      const updatedData = tripList.trips.concat(res)
+      const noMoreRecords = res.length === 0 || res[res.length-1].noMoreRecords
+      setTripList({
+        ...tripList,
+        trips: updatedData,
+        listData: updatedData,
+        loadingMore: false,
+        noMoreRecords: noMoreRecords,
+      })
+      if (noMoreRecords){
         message.info('No more older public trips to display')
       }
     }
@@ -63,14 +75,17 @@ const MyTrips = (props) => {
       console.log(res)
       
       let tripTitle = ''
-      setTrips(trips.filter((trip) => {
-            if (trip._id === tripId){
-                tripTitle = trip.title
-            }
 
-            return trip._id !== tripId
-        })
-      )
+      setTripList({
+        ...tripList,
+        trips: tripList.trips.filter((trip) => {
+                  if (trip._id === tripId){
+                      tripTitle = trip.title
+                  }
+
+                  return trip._id !== tripId
+              })
+      })
 
       message.success(`Trip "${tripTitle}" removed successfully`)
     }
@@ -90,11 +105,15 @@ const MyTrips = (props) => {
     const tripCountsPerSize = 10
     const showMyTrips = props.showMyTrips
     const handleEditTrip = props.editTrip
-    const mapCenterLat = (modalMap.tripLocations && modalMap.tripLocations.length>0) ? modalMap.tripLocations[0].latLng[0] : null
-    const mapCenterLng = (modalMap.tripLocations && modalMap.tripLocations.length>0) ? modalMap.tripLocations[0].latLng[1] : null
+    let mapCenterLat = null
+    let mapCenterLng = null
+    if (modalMap.tripLocations && modalMap.tripLocations.length>0) {
+      mapCenterLat = modalMap.tripLocations[0].latLng[0]
+      mapCenterLng = modalMap.tripLocations[0].latLng[1]
+    }
     const userId = (isAuthenticated) ? user.sub : ''
 
-    const loadMoreButton = !loadingData && !loadingMore && !noMoreRecords ? (
+    const loadMoreButton = !tripList.loadingData && !tripList.loadingMore && !tripList.noMoreRecords ? (
                               <div
                                 style={{
                                   textAlign: 'center',
@@ -115,12 +134,12 @@ const MyTrips = (props) => {
         justify="center" >
         <Col span={4} />
         <Col span={16}>
-          { trips.length > 0 && 
+          { tripList.trips.length > 0 && 
           <List
             itemLayout="vertical"
-            loading={loadingData}
+            loading={tripList.loadingData}
             loadMore={loadMoreButton}
-            dataSource={listData}
+            dataSource={tripList.listData}
             renderItem={(item) => (
               <List.Item>
                   <Skeleton loading={item.loading} active>
@@ -136,10 +155,10 @@ const MyTrips = (props) => {
               </List.Item>
             )} />
           }
-          { trips.length === 0 && loadingData &&
+          { tripList.trips.length === 0 && tripList.loadingData &&
           <Skeleton loading={true} active />
           }
-          { trips.length === 0 && !loadingData &&
+          { tripList.trips.length === 0 && !tripList.loadingData &&
           <Empty />
           }
         </Col>
