@@ -10,7 +10,6 @@ const MyTrips = (props) => {
     const [tripList, setTripList] = useState({
       trips: [],
       loadingData: true,
-      loadingMore: false,
       noMoreRecords: false,
     })
     
@@ -43,7 +42,7 @@ const MyTrips = (props) => {
     const onLoadMore = async () => {
       setTripList({
         ...tripList,
-        loadingMore: true,
+        loadingData: true,
       })
       
       let res
@@ -58,7 +57,7 @@ const MyTrips = (props) => {
       setTripList({
         ...tripList,
         trips: updatedData,
-        loadingMore: false,
+        loadingData: false,
         noMoreRecords: noMoreRecords,
       })
       if (noMoreRecords){
@@ -109,7 +108,7 @@ const MyTrips = (props) => {
     }
     const userId = (isAuthenticated) ? user.sub : ''
 
-    const loadMoreButton = !tripList.loadingData && !tripList.loadingMore && !tripList.noMoreRecords ? (
+    const loadMoreButton = !tripList.loadingData && !tripList.noMoreRecords ? (
                               <div
                                 style={{
                                   textAlign: 'center',
@@ -149,7 +148,7 @@ const MyTrips = (props) => {
               </List.Item>
             )} />
           }
-          { (tripList.loadingData || tripList.loadingMore) &&
+          { tripList.loadingData &&
           <Skeleton loading={true} active />
           }
           { tripList.trips.length === 0 && !tripList.loadingData &&
