@@ -137,7 +137,7 @@ const DisplayTrips = (props) => {
                               </div>)
                               : null
     const tripCard = (item, itemRef) =>
-                              (<div ref={itemRef}>
+                              (<div ref={itemRef} className="tripContainer">
                                 { item.placeholder && 
                                 <div style={{ textAlign: 'center', }} >
                                   <Button onClick={reloadTripData}>Trips removed from display. Click to refresh the feed</Button>

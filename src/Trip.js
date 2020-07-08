@@ -105,21 +105,19 @@ class Trip extends React.Component {
                                 : TravelerName((this.isCurUserTrip()) ? 'me' : curTrip.userName, curTrip.userEmail)
         
         return (
-            <div className="tripContainer">
-                <Card
-                    title={getCardTitle(curTrip.title, curTrip.public)}
-                    hoverable={true}
-                    bordered={true}
-                    extra={dateStr}
-                    actions={this.getCardActions(curTrip)}
-                    tabList={this.getTabList()}
-                    activeTabKey={ this.state.key }
-                    tabProps={ {size: 'small'} }
-                    onTabChange={(key) => this.onTabChange(key, 'key') }
-                    >
-                    <TripTabContent tabKey={this.state.key} curTrip={curTrip} locAddr={locAddr} travelerName={travelerName} />
-                </Card>
-            </div>
+            <Card
+                title={getCardTitle(curTrip.title, curTrip.public)}
+                hoverable={true}
+                bordered={true}
+                extra={dateStr}
+                actions={this.getCardActions(curTrip)}
+                tabList={this.getTabList()}
+                activeTabKey={ this.state.key }
+                tabProps={ {size: 'small'} }
+                onTabChange={(key) => this.onTabChange(key, 'key') }
+                >
+                <TripTabContent tabKey={this.state.key} curTrip={curTrip} locAddr={locAddr} travelerName={travelerName} />
+            </Card>
         )
     }
 }
