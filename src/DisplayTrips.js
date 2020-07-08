@@ -22,7 +22,7 @@ const DisplayTrips = (props) => {
     const lastItemRef = useRef(null)
 
     const { getAccessTokenSilently, isAuthenticated, user } = useAuth0()
-    const displayLimit = 10
+    const displayLimit = 100
 
     useEffect(() => {
       const fetchData = async () => {

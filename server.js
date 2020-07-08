@@ -116,7 +116,7 @@ app.get('/publicTrips', async (req, res) => {
     let findConditions = { "public": true }
     
     const initialLoad = (req.query.tripId) ? false : true
-    const resultLimit = 5
+    const resultLimit = 25
     if (!initialLoad){
         const lastLoadedTripId = ObjectId(req.query.tripId)
         const lastLoadedTripEndDate = new Date(req.query.endDate)
