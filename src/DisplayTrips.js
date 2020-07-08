@@ -6,7 +6,7 @@ import tripService from './services/tripService.js'
 import MyMapContainer from './MyMapContainer.js'
 import Trip from './Trip'
 
-const MyTrips = (props) => {
+const DisplayTrips = (props) => {
     const [tripList, setTripList] = useState({
       trips: [],
       loadingData: true,
@@ -121,7 +121,7 @@ const MyTrips = (props) => {
                                 launchMapModal={handleLaunchMapModal} />)
 
     return (
-      <div className="myTripsContainer">
+      <div className="displayTripsContainer">
       <BackTop />
       <Row
         gutter={[8, 16]}
@@ -189,4 +189,4 @@ const MyTrips = (props) => {
       </div>
       )
 }
-export default MyTrips
+export default DisplayTrips

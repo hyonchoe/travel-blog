@@ -3,7 +3,7 @@ import { Switch, Route, Router } from 'react-router-dom'
 import { Layout  } from 'antd'
 import history from './history'
 
-import MyTrips from './MyTrips.js'
+import DisplayTrips from './DisplayTrips.js'
 import EditTrip from './EditTrip.js'
 import './App.css'
 
@@ -47,13 +47,13 @@ class App extends React.Component {
                         <Content className="appContent" >
                             <Switch>
                                 <Route path="/" exact>
-                                    <MyTrips
+                                    <DisplayTrips
                                         showMyTrips={false}
                                         editTrip={this.handleEditTrip} />
                                 </Route>
                                 <PrivateRoute
                                     path="/myTrips"
-                                    component={MyTrips}
+                                    component={DisplayTrips}
                                     showMyTrips={true}
                                     editTrip={this.handleEditTrip} />
                                 <PrivateRoute 
