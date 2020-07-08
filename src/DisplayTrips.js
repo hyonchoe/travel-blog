@@ -40,6 +40,21 @@ const DisplayTrips = (props) => {
       fetchData()
     }, [])
 
+    const reloadTripData = async () => {
+      setTripList( {
+        ...tripList,
+        loadingData: true,
+      })
+
+      const res = await tripService.getPublicTrips(null)
+
+      setTripList( {
+        trips: res,
+        loadingData: false,
+        noMoreRecords: false,
+      })
+    }
+
     const onLoadMore = async () => {
       setTripList({
         ...tripList,
@@ -60,7 +75,6 @@ const DisplayTrips = (props) => {
       const noMoreRecords = res.length === 0 || res[res.length-1].noMoreRecords
       
       setTripList({
-        ...tripList,
         trips: updatedData,
         loadingData: false,
         noMoreRecords: noMoreRecords,
@@ -118,20 +132,16 @@ const DisplayTrips = (props) => {
     const userId = (isAuthenticated) ? user.sub : ''
 
     const loadMoreButton = (!tripList.loadingData && !tripList.noMoreRecords) ? 
-                              (<div
-                                style={{
-                                  textAlign: 'center',
-                                  marginTop: 12,
-                                  height: 32,
-                                  lineHeight: '32px',
-                                }} >
+                              (<div style={{ textAlign: 'center', marginTop: 12, }} >
                                 <Button onClick={onLoadMore}>Load more</Button>
                               </div>)
                               : null
-    const tripCard = (item, itemRef) =>(
-                              <div ref={itemRef}>
+    const tripCard = (item, itemRef) =>
+                              (<div ref={itemRef}>
                                 { item.placeholder && 
-                                <div>REMOVED</div>
+                                <div style={{ textAlign: 'center', }} >
+                                  <Button onClick={reloadTripData}>Trips removed from display. Click to refresh the feed</Button>
+                                </div>
                                 }
                                 { !item.placeholder &&
                                 <Trip
@@ -143,8 +153,7 @@ const DisplayTrips = (props) => {
                                   editTrip={handleEditTrip}
                                   launchMapModal={handleLaunchMapModal} />
                                 }
-                              </div>
-                              )
+                              </div>)
 
     return (
       <div className="displayTripsContainer">
