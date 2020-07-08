@@ -19,6 +19,8 @@ const dbpassword = process.env.DB_ADMIN_PASSWORD
 const dbname = process.env.DB_NAME
 const uri = `mongodb+srv://${dbusername}:${dbpassword}@travelblog-ugmhk.mongodb.net/${dbname}?retryWrites=true&w=majority`
 
+const sortConditions = { "endDate": -1, "startDate": -1, "_id": -1 }
+
 app.listen(port, () => console.log(`Listening on port ${port}`))
 
 // Create a trip (POST)
@@ -96,7 +98,8 @@ app.get('/trips', checkJwt, async (req, res) => {
     try {
         const client = await mgClient.connect()
         // Find all existing trips
-        const result = await client.db("trips").collection("tripInfo").find({"userId": userId}).toArray()
+        const result = await client.db("trips").collection("tripInfo").
+            find({"userId": userId}).sort(sortConditions).toArray()
         processDatesImages(result)
 
         res.send(result)
@@ -111,7 +114,7 @@ app.get('/trips', checkJwt, async (req, res) => {
 app.get('/publicTrips', async (req, res) => {
     const mgClient = new MongoClient(uri, { useUnifiedTopology: true })
     let findConditions = { "public": true }
-    const sortConditions = { "endDate": -1, "startDate": -1, "_id": -1 }
+    
     const initialLoad = (req.query.tripId) ? false : true
     const resultLimit = 2
     if (!initialLoad){
