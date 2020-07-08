@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Empty, Skeleton, Row, Col, BackTop, message, Modal, Button, List } from 'antd'
 import { useAuth0 } from '@auth0/auth0-react'
 
@@ -18,7 +18,11 @@ const DisplayTrips = (props) => {
       tripLocations: null,
     })
 
+    const [scrollToTripId, setScrollToTripId] = useState('')
+    const lastItemRef = useRef(null)
+
     const { getAccessTokenSilently, isAuthenticated, user } = useAuth0()
+    const displayLimit = 10
 
     useEffect(() => {
       const fetchData = async () => {
@@ -44,8 +48,17 @@ const DisplayTrips = (props) => {
       
       const res = await tripService.getPublicTrips(tripList.trips[tripList.trips.length-1])
 
-      const updatedData = tripList.trips.concat(res)
+      let updatedData = tripList.trips.concat(res)
+      let updateScrollPos = false
+      if (updatedData.length > displayLimit){
+        setScrollToTripId(tripList.trips[tripList.trips.length-1]._id)
+        updateScrollPos = true
+        
+        updatedData = updatedData.slice(updatedData.length - displayLimit)
+        updatedData[0] = { placeholder: true }
+      }
       const noMoreRecords = res.length === 0 || res[res.length-1].noMoreRecords
+      
       setTripList({
         ...tripList,
         trips: updatedData,
@@ -54,6 +67,10 @@ const DisplayTrips = (props) => {
       })
       if (noMoreRecords){
         message.info('No more older public trips to display')
+      }
+
+      if (updateScrollPos && lastItemRef.current){
+        lastItemRef.current.scrollIntoView()
       }
     }
 
@@ -111,14 +128,23 @@ const DisplayTrips = (props) => {
                                 <Button onClick={onLoadMore}>Load more</Button>
                               </div>)
                               : null
-    const tripCard = (item) =>(<Trip
-                                isAuthenticated={isAuthenticated}
-                                userId={userId}
-                                showMyTrips={showMyTrips}
-                                trip={item}
-                                deleteTrip={handleDeleteTrip}
-                                editTrip={handleEditTrip}
-                                launchMapModal={handleLaunchMapModal} />)
+    const tripCard = (item, itemRef) =>(
+                              <div ref={itemRef}>
+                                { item.placeholder && 
+                                <div>REMOVED</div>
+                                }
+                                { !item.placeholder &&
+                                <Trip
+                                  isAuthenticated={isAuthenticated}
+                                  userId={userId}
+                                  showMyTrips={showMyTrips}
+                                  trip={item}
+                                  deleteTrip={handleDeleteTrip}
+                                  editTrip={handleEditTrip}
+                                  launchMapModal={handleLaunchMapModal} />
+                                }
+                              </div>
+                              )
 
     return (
       <div className="displayTripsContainer">
@@ -136,7 +162,12 @@ const DisplayTrips = (props) => {
             dataSource={tripList.trips}
             renderItem={(item) => (
               <List.Item>
-                {tripCard(item)}
+                {item._id === scrollToTripId && 
+                  tripCard(item, lastItemRef)
+                }
+                {item._id !== scrollToTripId && 
+                  tripCard(item, null)
+                }
               </List.Item>
             )} />
           }

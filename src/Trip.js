@@ -101,7 +101,6 @@ class Trip extends React.Component {
         }
 
         const locAddr = LocationSpans(curTrip.locations)
-        
         const travelerName = (this.props.showMyTrips) ? '' 
                                 : TravelerName((this.isCurUserTrip()) ? 'me' : curTrip.userName, curTrip.userEmail)
         
@@ -119,7 +118,7 @@ class Trip extends React.Component {
                     onTabChange={(key) => this.onTabChange(key, 'key') }
                     >
                     <TripTabContent tabKey={this.state.key} curTrip={curTrip} locAddr={locAddr} travelerName={travelerName} />
-                </Card>                
+                </Card>
             </div>
         )
     }
