@@ -22,12 +22,9 @@ const MyTrips = (props) => {
 
     useEffect(() => {
       const fetchData = async () => {
-        let res
-        if (props.showMyTrips){
-          res = await tripService.getTrips(getAccessTokenSilently)
-        } else {
-          res = await tripService.getPublicTrips(null)
-        }
+        const res = (props.showMyTrips) ?
+          await tripService.getTrips(getAccessTokenSilently)
+          : await tripService.getPublicTrips(null)
 
         setTripList( {
           ...tripList,
@@ -45,12 +42,7 @@ const MyTrips = (props) => {
         loadingData: true,
       })
       
-      let res
-      if (props.showMyTrips){
-        res = await tripService.getTrips(getAccessTokenSilently)
-      } else {
-        res = await tripService.getPublicTrips(tripList.trips[tripList.trips.length-1])
-      }
+      const res = await tripService.getPublicTrips(tripList.trips[tripList.trips.length-1])
 
       const updatedData = tripList.trips.concat(res)
       const noMoreRecords = res.length === 0 || res[res.length-1].noMoreRecords
@@ -108,8 +100,8 @@ const MyTrips = (props) => {
     }
     const userId = (isAuthenticated) ? user.sub : ''
 
-    const loadMoreButton = !tripList.loadingData && !tripList.noMoreRecords ? (
-                              <div
+    const loadMoreButton = (!tripList.loadingData && !tripList.noMoreRecords) ? 
+                              (<div
                                 style={{
                                   textAlign: 'center',
                                   marginTop: 12,
@@ -117,9 +109,16 @@ const MyTrips = (props) => {
                                   lineHeight: '32px',
                                 }} >
                                 <Button onClick={onLoadMore}>Load more</Button>
-                              </div>
-                            )
-                            : null
+                              </div>)
+                              : null
+    const tripCard = (item) =>(<Trip
+                                isAuthenticated={isAuthenticated}
+                                userId={userId}
+                                showMyTrips={showMyTrips}
+                                trip={item}
+                                deleteTrip={handleDeleteTrip}
+                                editTrip={handleEditTrip}
+                                launchMapModal={handleLaunchMapModal} />)
 
     return (
       <div className="myTripsContainer">
@@ -129,7 +128,7 @@ const MyTrips = (props) => {
         justify="center" >
         <Col span={4} />
         <Col span={16}>
-          { tripList.trips.length > 0 && 
+          { !showMyTrips && tripList.trips.length > 0 && 
           <List
             itemLayout="vertical"
             loading={tripList.loadingData}
@@ -137,14 +136,23 @@ const MyTrips = (props) => {
             dataSource={tripList.trips}
             renderItem={(item) => (
               <List.Item>
-                <Trip
-                    isAuthenticated={isAuthenticated}
-                    userId={userId}
-                    showMyTrips={showMyTrips}
-                    trip={item}
-                    deleteTrip={handleDeleteTrip}
-                    editTrip={handleEditTrip}
-                    launchMapModal={handleLaunchMapModal} />
+                {tripCard(item)}
+              </List.Item>
+            )} />
+          }
+          { showMyTrips && tripList.trips.length > 0 && 
+          <List
+            itemLayout="vertical"
+            pagination={{
+              onChange: page=> {
+                window.scrollTo({top:0, behavior: 'smooth'})
+              },
+              pageSize: tripCountsPerSize,
+            }}
+            dataSource={tripList.trips}
+            renderItem={(item) => (
+              <List.Item>
+                {tripCard(item)}
               </List.Item>
             )} />
           }

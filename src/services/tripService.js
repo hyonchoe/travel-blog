@@ -13,7 +13,7 @@ export default {
             const headers = await getAuthHeader(getAccessTokenSilently)
             let res = await axios.get('/trips', headers)
             if (res.data){
-                return processTripData(res.data)
+                return processTripData(res.data, true)
             }
         } catch (error){
             console.log(error)
@@ -32,7 +32,7 @@ export default {
                                 : null
             let res = await axios.get('/publicTrips', params)
             if (res.data){
-                return processTripData(res.data)
+                return processTripData(res.data, false)
             }
         } catch (error){
             console.log(error)
@@ -102,9 +102,11 @@ const getAuthHeader = async (getAccessTokenSilently) => {
     }
 }
 
-const processTripData = (trips) => {
+const processTripData = (trips, sort) => {
     trips = processDates(trips)
-    //sortTrips(trips)
+    if (sort){
+        sortTrips(trips)
+    }
 
     return trips
 }
