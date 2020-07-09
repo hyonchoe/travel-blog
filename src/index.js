@@ -10,7 +10,8 @@ ReactDom.render(
         domain={process.env.REACT_APP_AUTH0_DOMAIN}
         clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
         audience={process.env.REACT_APP_AUTH0_AUDIENCE}
-        redirectUri={process.env.REACT_APP_AUTH0_CB_URL} >
+        redirectUri={process.env.REACT_APP_AUTH0_CB_URL}
+        useRefreshTokens={true} >
         <App />
     </Auth0Provider>,
     document.getElementById('root')
