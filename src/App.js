@@ -10,6 +10,8 @@ import './App.css'
 import PrivateRoute from './PrivateRoute.js'
 import NavBar from './NavBar.js'
 
+import Page404 from './Page404.js'
+
 const { Header, Content, Footer } = Layout
 
 class App extends React.Component {
@@ -60,6 +62,7 @@ class App extends React.Component {
                                     component={EditTrip}
                                     editTrip={tripToEdit}
                                     clearEditTrip={this.clearEditTrip} />
+                                <Route component={Page404} />
                             </Switch>
                         </Content>
 

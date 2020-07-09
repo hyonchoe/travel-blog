@@ -60,7 +60,6 @@ app.post('/trips', checkJwt, async (req, res) => {
         res.send(result)
     } catch (error){
         console.log(error)
-
         res.send(error)
     }
 })
@@ -86,7 +85,6 @@ app.delete('/trips/:tripId', checkJwt, async (req, res) => {
         res.send(result)
     } catch (error){
         console.log(error)
-        
         res.send(error)
     }
 })
@@ -105,7 +103,6 @@ app.get('/trips', checkJwt, async (req, res) => {
         res.send(result)
     } catch (error) {
         console.log(error)
-
         res.send(error)
     }
 })
@@ -158,7 +155,6 @@ app.get('/publicTrips', async (req, res) => {
         res.send(result)
     } catch (error) {
         console.log(error)
-
         res.send(error)
     }
 })
@@ -179,8 +175,8 @@ app.put('/trips/:tripId', checkJwt, async (req, res) => {
     
     const updatedTrip = {
         title: req.body.title,
-        startDate: moment(req.body.startDate),
-        endDate: moment(req.body.endDate),
+        startDate: new Date(req.body.startDate),
+        endDate: new Date(req.body.endDate),
         public: req.body.public,
         details: req.body.details,
         locations: tripLocations,
@@ -215,7 +211,6 @@ app.put('/trips/:tripId', checkJwt, async (req, res) => {
         res.send(result)
     } catch (error){
         console.log(error)
-
         res.send(error)
     }
 })
@@ -232,7 +227,6 @@ app.get('/get-signed-url', checkJwt, async (req, res) => {
         res.send(urlInfo)
     } catch (error) {
         console.log(err)
-
         res.send(err)        
     }
 })

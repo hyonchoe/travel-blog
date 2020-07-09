@@ -117,7 +117,6 @@ const EditTrip = props => {
         else{
             handleSubmit(tripData)
         }
-        setShowNavPrompt(false)
     }
 
     const onCancel = () => {
@@ -129,22 +128,22 @@ const EditTrip = props => {
         trip.userName = user.given_name
         trip.userEmail = user.email
         const res = await tripService.submitNewTrip(trip, getAccessTokenSilently)
-        console.log(res)
-        setSavingInProgress(false)
 
-        history.push('/myTrips')
-        message.success(`Trip "${trip.title}" added successfully`)
+        setSavingInProgress(false)
+        if(res){
+            setShowNavPrompt(false)
+            history.push('/myTrips')
+        }
     }
     const handleUpdate = async (updatedTrip, tripId) => {
         setSavingInProgress(true)
 
-        const res = await tripService.updateTrip(updatedTrip, tripId, getAccessTokenSilently)
-        console.log(res)
+        await tripService.updateTrip(updatedTrip, tripId, getAccessTokenSilently)
         props.clearEditTrip()
         setSavingInProgress(false)
+        setShowNavPrompt(false)
 
         history.push('/myTrips')
-        message.success(`Trip "${updatedTrip.title}" updated successfully`)
     }
     
     const [form] = Form.useForm()

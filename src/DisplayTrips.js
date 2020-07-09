@@ -88,24 +88,15 @@ const DisplayTrips = (props) => {
       }
     }
 
-    const handleDeleteTrip = async (tripId) => {
-      const res = await tripService.deleteTrip(tripId, getAccessTokenSilently)
-      console.log(res)
+    const handleDeleteTrip = async (tripId, tripTitle) => {
+      const res = await tripService.deleteTrip(tripId, tripTitle, getAccessTokenSilently)
       
-      let tripTitle = ''
-
-      setTripList({
-        ...tripList,
-        trips: tripList.trips.filter((trip) => {
-                  if (trip._id === tripId){
-                      tripTitle = trip.title
-                  }
-
-                  return trip._id !== tripId
-              })
-      })
-
-      message.success(`Trip "${tripTitle}" removed successfully`)
+      if (res){
+        setTripList({
+          ...tripList,
+          trips: tripList.trips.filter((trip) => { return trip._id !== tripId })
+        })
+      }
     }
     const handleLaunchMapModal = (tripTitle, tripLocations) => {
       setModalMap({

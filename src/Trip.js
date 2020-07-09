@@ -25,7 +25,7 @@ class Trip extends React.Component {
             this.props.launchMapModal(curTrip.title, curTrip.locations)
         }
     }
-    showDeleteConfirm = (tripId, tripInstance) => {
+    showDeleteConfirm = (tripId, tripTitle, tripInstance) => {
         confirm({
           title: 'Are you sure you want to delete this trip?',
           icon: <ExclamationCircleOutlined />,
@@ -34,7 +34,7 @@ class Trip extends React.Component {
           okType: 'danger',
           cancelText: 'No',
           async onOk() {
-            await tripInstance.props.deleteTrip(tripId)
+            await tripInstance.props.deleteTrip(tripId, tripTitle)
           },
           onCancel() {},
         });
@@ -80,7 +80,7 @@ class Trip extends React.Component {
             )
             actions.push(
                 <Tooltip title="Delete this trip">
-                    <DeleteOutlined key="delete" onClick={() => this.showDeleteConfirm(curTrip._id, this)} />
+                    <DeleteOutlined key="delete" onClick={() => this.showDeleteConfirm(curTrip._id, curTrip.title, this)} />
                 </Tooltip>            
             )
         }

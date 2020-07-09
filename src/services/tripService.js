@@ -1,25 +1,31 @@
 import axios from 'axios'
 import moment from 'moment'
+import { message } from 'antd'
 
 export default {
     submitNewTrip: async (trip, getAccessTokenSilently) => {
-        const headers = await getAuthHeader(getAccessTokenSilently)
-        let res = await axios.post('/trips', trip, headers)
-        return res
+        try {
+            const headers = await getAuthHeader(getAccessTokenSilently)
+            await axios.post('/trips', trip, headers)
+            message.success(createTripMsg(trip.title))
+            return true
+        } catch (error){
+            console.log(error)
+            message.error(createTripErrMsg)
+            return false
+        }
     },
 
     getTrips: async (getAccessTokenSilently) => {
         try {
             const headers = await getAuthHeader(getAccessTokenSilently)
             let res = await axios.get('/trips', headers)
-            if (res.data){
-                return processTripData(res.data)
-            }
+            return processTripData(res.data)
         } catch (error){
             console.log(error)
+            message.error(loadTripErrMsg)
+            return []
         }
-    
-        return []
     },
 
     getPublicTrips: async (lastTripLoaded) => {
@@ -31,37 +37,35 @@ export default {
                                 } }
                                 : null
             let res = await axios.get('/publicTrips', params)
-            if (res.data){
-                return processTripData(res.data)
-            }
+            return processTripData(res.data)
         } catch (error){
             console.log(error)
+            message.error(loadTripErrMsg)
+            return []
         }
-
-        return []
     },
 
     updateTrip: async (updatedTrip, tripId, getAccessTokenSilently) => {
         try {
             const headers = await getAuthHeader(getAccessTokenSilently)
-            let res = await axios.put(`/trips/${tripId}`, updatedTrip, headers)
-            console.log(res)
-            return res
+            await axios.put(`/trips/${tripId}`, updatedTrip, headers)
+            message.success(updateTripMsg(updatedTrip.title))
         } catch (error) {
             console.log(error)
-            return null
+            message.error(updateTripErrMsg)
         }
     },
 
-    deleteTrip: async (tripId, getAccessTokenSilently) => {
+    deleteTrip: async (tripId, tripTitle, getAccessTokenSilently) => {
         try {
             const headers = await getAuthHeader(getAccessTokenSilently)
-            let res = await axios.delete(`/trips/${tripId}`, headers)
-            console.log(res)
-            return res
+            await axios.delete(`/trips/${tripId}`, headers)
+            message.success(deleteTripMsg(tripTitle))
+            return true
         } catch (error) {
             console.log(error)
-            return null
+            message.error(deleteTripErrMsg)
+            return false
         }
     },
 
@@ -93,6 +97,14 @@ export default {
     }
 }
 
+const createTripErrMsg = 'Unable to create trip due to error'
+const loadTripErrMsg = 'Unable to load trips due to error'
+const deleteTripErrMsg = 'Unable to delete trip due to error'
+const updateTripErrMsg = 'There was an issue with the trip update. Check the trip entry.'
+const createTripMsg = (tripTitle) => `Trip "${tripTitle}" added successfully`
+const updateTripMsg = (tripTitle) => `Trip "${tripTitle}" updated successfully`
+const deleteTripMsg = (tripTitle) => `Trip "${tripTitle}" removed successfully`
+
 const getAuthHeader = async (getAccessTokenSilently) => {
     const token = await getAccessTokenSilently()
     return {
@@ -103,9 +115,10 @@ const getAuthHeader = async (getAccessTokenSilently) => {
 }
 
 const processTripData = (trips) => {
-    trips = processDates(trips)
-
-    return trips
+    if (trips){
+        return processDates(trips)
+    }
+    return []
 }
 
 const processDates = (trips) => {
@@ -116,20 +129,4 @@ const processDates = (trips) => {
     })
 
     return curTrips    
-}
-
-// Sort by end date first, then start date.
-// Most recent dates should appear first in the list
-const sortTrips = (trips) => {
-    trips.sort((a, b) => {
-        if (a.endDate.isSame(b.endDate, 'day')){
-            return (a.startDate.isAfter(b.startDate, 'day')) ? -1 : 1
-        }
-        else if(a.endDate.isAfter(b.endDate, 'day')) {
-            return -1
-        }
-        else {
-            return 1
-        }
-    })
 }
