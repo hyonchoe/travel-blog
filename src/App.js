@@ -8,7 +8,6 @@ import EditTrip from './EditTrip.js'
 import './App.css'
 
 import PrivateRoute from './PrivateRoute.js'
-import LoginPage from './LoginPage.js'
 import NavBar from './NavBar.js'
 
 const { Header, Content, Footer } = Layout
@@ -61,8 +60,6 @@ class App extends React.Component {
                                     component={EditTrip}
                                     editTrip={tripToEdit}
                                     clearEditTrip={this.clearEditTrip} />
-                                <Route path='/login' component={LoginPage}>
-                                </Route>
                             </Switch>
                         </Content>
 
