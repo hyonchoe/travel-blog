@@ -2,7 +2,7 @@ import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Menu, Button } from 'antd'
 import { useAuth0 } from '@auth0/auth0-react'
-import './NavBar.css'
+import './style.css'
 
 const NavBar = () =>{
     const location = useLocation()

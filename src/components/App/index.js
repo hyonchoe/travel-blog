@@ -1,16 +1,13 @@
 import React from 'react'
 import { Switch, Route, Router } from 'react-router-dom'
 import { Layout } from 'antd'
-import history from './history'
-
-import DisplayTrips from './DisplayTrips.js'
-import EditTrip from './EditTrip.js'
-import './App.css'
-
-import PrivateRoute from './PrivateRoute.js'
-import NavBar from './NavBar.js'
-
-import Page404 from './Page404.js'
+import history from '../../services/history'
+import DisplayTrips from '../DisplayTrips'
+import EditTrip from '../EditTrip'
+import PrivateRoute from '../PrivateRoute'
+import NavBar from '../NavBar'
+import Error404 from '../Error404'
+import './style.css'
 
 const { Header, Content, Footer } = Layout
 
@@ -60,7 +57,7 @@ class App extends React.Component {
                                     component={EditTrip}
                                     editTrip={tripToEdit}
                                     clearEditTrip={this.clearEditTrip} />
-                                <Route component={Page404} />
+                                <Route component={Error404} />
                             </Switch>
                         </Content>
 

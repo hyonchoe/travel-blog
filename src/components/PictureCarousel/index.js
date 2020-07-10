@@ -1,6 +1,6 @@
 import React from 'react'
 import { Carousel } from 'antd'
-import './PictureCarousel.css'
+import './style.css'
 
 const PictureCarousel = (props) => {
 

@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { Button, Input, DatePicker, Checkbox, Form, Space, Spin, Row, Col, Typography  } from 'antd'
 import { Prompt } from 'react-router-dom'
-import history from './history'
+import history from '../../services/history'
 import { useAuth0 } from '@auth0/auth0-react'
-
-import LocationSelect from './LocationSelect.js'
-import S3Upload from './S3Upload.js'
-import tripService from './services/tripService.js'
+import LocationSelect from '../LocationSelect'
+import S3Upload from '../S3Upload'
+import tripService from '../../services/api'
 
 const EditTrip = props => {
     const [showNavPrompt, setShowNavPrompt] = useState(true)

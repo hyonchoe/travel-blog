@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import { Form, Input, Button, Modal } from 'antd'
-import { CloseCircleOutlined, PlusOutlined } from '@ant-design/icons';
-
-import MyMapContainer from './MyMapContainer.js'
-import './LocationSelect.css'
+import { CloseCircleOutlined, PlusOutlined } from '@ant-design/icons'
+import MyMapContainer from '../MyMapContainer'
+import './style.css'
 
 const LocationSelect = (props) => {
     const [markerLatLng, setMarkerLatLng] = useState({

@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Empty, Skeleton, Row, Col, BackTop, message, Modal, Button, List, Typography } from 'antd'
 import { useAuth0 } from '@auth0/auth0-react'
-
-import tripService from './services/tripService.js'
-import MyMapContainer from './MyMapContainer.js'
-import Trip from './Trip'
+import tripService from '../../services/api'
+import MyMapContainer from '../MyMapContainer'
+import Trip from '../Trip'
 
 const DisplayTrips = (props) => {
     const [tripList, setTripList] = useState({

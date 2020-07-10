@@ -1,10 +1,9 @@
 import React from 'react'
 import { Typography, Card, Modal, Popconfirm, Tooltip } from 'antd'
-import { GlobalOutlined, EditOutlined, DeleteOutlined, ExclamationCircleOutlined, LockOutlined } from '@ant-design/icons';
-import history from './history'
-
-import PictureCarousel from './PictureCarousel.js'
-import './Trip.css'
+import { GlobalOutlined, EditOutlined, DeleteOutlined, ExclamationCircleOutlined, LockOutlined } from '@ant-design/icons'
+import history from '../../services/history'
+import PictureCarousel from '../PictureCarousel'
+import './style.css'
 
 class Trip extends React.Component {
      state = {

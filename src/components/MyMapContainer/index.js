@@ -1,5 +1,5 @@
-import React from "react";
-import MyMap from "./MyMap.js";
+import React from "react"
+import MyMap from "./MyMap.js"
 
 const MyMapContainer = props => {
 	const api_key = process.env.REACT_APP_GOOGLE_MAPS_API_KEY

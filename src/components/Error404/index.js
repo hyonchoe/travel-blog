@@ -1,10 +1,10 @@
 import React from 'react'
-import './errors.css'
+import './style.css'
 
-const Page404 = () => {
+const Error404 = () => {
     return (
         <p className='error'>Page not found</p>
     )
 }
 
-export default Page404
+export default Error404

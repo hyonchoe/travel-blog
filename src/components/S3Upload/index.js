@@ -1,10 +1,9 @@
 import React, { useState, useRef } from 'react'
 import axios from 'axios'
-import { PlusOutlined } from '@ant-design/icons';
-import { Form, Modal, Upload, message  } from 'antd'
 import { useAuth0 } from '@auth0/auth0-react'
-
-import tripService from './services/tripService.js'
+import { Form, Modal, Upload, message  } from 'antd'
+import { PlusOutlined } from '@ant-design/icons'
+import tripService from '../../services/api'
 
 const S3Upload = (props) => {
     const myImage = useRef('')
