@@ -167,7 +167,7 @@ const EditTrip = props => {
                 justify="start" >
                 <Col span={4}/>
                 <Col span={16}>
-                <Typography.Title>It's time to put one down in the books</Typography.Title>
+                <Typography.Title>{greetingMsg((existingTrip) ? true:  false)}</Typography.Title>
                 </Col>
                 <Col span={4}/>
             </Row>
@@ -242,6 +242,13 @@ const EditTrip = props => {
             </Form>
         </Spin>
     )
+}
+
+const greetingMsg = (editTrip) => {
+    if (editTrip){
+        return "What has changed?"
+    }
+    return "It's time to put one down in the books"
 }
 
 export default EditTrip
