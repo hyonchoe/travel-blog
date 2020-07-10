@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Input, DatePicker, Checkbox, Form, Space, Spin, message  } from 'antd'
+import { Button, Input, DatePicker, Checkbox, Form, Space, Spin, Row, Col, Typography  } from 'antd'
 import { Prompt } from 'react-router-dom'
 import history from './history'
 import { useAuth0 } from '@auth0/auth0-react'
@@ -163,6 +163,15 @@ const EditTrip = props => {
             <Prompt
                 when={showNavPrompt}
                 message="You may have unsaved changes, are you sure you want to leave the page?" />
+            <Row
+                gutter={[0, 8]}
+                justify="start" >
+                <Col span={4}/>
+                <Col span={16}>
+                <Typography.Title>It's time to put one down in the books</Typography.Title>
+                </Col>
+                <Col span={4}/>
+            </Row>
             <Form
                 form={form}
                 {...layout}

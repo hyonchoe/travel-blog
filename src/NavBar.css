@@ -3,6 +3,5 @@
 }
 
 .userInfo {
-    pointer-events: none;
-    font-style: italic;
+    margin-right: 10px;
 }

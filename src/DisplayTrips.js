@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Empty, Skeleton, Row, Col, BackTop, message, Modal, Button, List } from 'antd'
+import { Empty, Skeleton, Row, Col, BackTop, message, Modal, Button, List, Typography } from 'antd'
 import { useAuth0 } from '@auth0/auth0-react'
 
 import tripService from './services/tripService.js'
@@ -149,53 +149,63 @@ const DisplayTrips = (props) => {
     return (
       <div className="displayTripsContainer">
       <BackTop />
-      <Row
-        gutter={[8, 16]}
-        justify="center" >
-        <Col span={4} />
-        <Col span={16}>
-          { !showMyTrips && tripList.trips.length > 0 && 
-          <List
-            itemLayout="vertical"
-            loading={tripList.loadingData}
-            loadMore={loadMoreButton}
-            dataSource={tripList.trips}
-            renderItem={(item) => (
-              <List.Item>
-                {item._id === scrollToTripId && 
-                  tripCard(item, lastItemRef)
-                }
-                {item._id !== scrollToTripId && 
-                  tripCard(item, null)
-                }
-              </List.Item>
-            )} />
-          }
-          { showMyTrips && tripList.trips.length > 0 && 
-          <List
-            itemLayout="vertical"
-            pagination={{
-              onChange: page=> {
-                window.scrollTo({top:0, behavior: 'smooth'})
-              },
-              pageSize: tripCountsPerSize,
-            }}
-            dataSource={tripList.trips}
-            renderItem={(item) => (
-              <List.Item>
-                {tripCard(item)}
-              </List.Item>
-            )} />
-          }
-          { tripList.loadingData &&
-          <Skeleton loading={true} active />
-          }
-          { tripList.trips.length === 0 && !tripList.loadingData &&
-          <Empty />
-          }
-        </Col>
-        <Col span={4} />
-      </Row>
+        <Row
+          gutter={[0, 8]}
+          justify="start" >
+          <Col span={2}/>
+          <Col span={20}>
+          <Typography.Title>{greetingMsg(showMyTrips)}</Typography.Title>
+          </Col>
+          <Col span={2}/>
+        </Row>
+
+        <Row
+          gutter={[8, 16]}
+          justify="center" >
+          <Col span={4} />
+          <Col span={16}>
+            { !showMyTrips && tripList.trips.length > 0 && 
+            <List
+              itemLayout="vertical"
+              loading={tripList.loadingData}
+              loadMore={loadMoreButton}
+              dataSource={tripList.trips}
+              renderItem={(item) => (
+                <List.Item>
+                  {item._id === scrollToTripId && 
+                    tripCard(item, lastItemRef)
+                  }
+                  {item._id !== scrollToTripId && 
+                    tripCard(item, null)
+                  }
+                </List.Item>
+              )} />
+            }
+            { showMyTrips && tripList.trips.length > 0 && 
+            <List
+              itemLayout="vertical"
+              pagination={{
+                onChange: page=> {
+                  window.scrollTo({top:0, behavior: 'smooth'})
+                },
+                pageSize: tripCountsPerSize,
+              }}
+              dataSource={tripList.trips}
+              renderItem={(item) => (
+                <List.Item>
+                  {tripCard(item)}
+                </List.Item>
+              )} />
+            }
+            { tripList.loadingData &&
+            <Skeleton loading={true} active />
+            }
+            { tripList.trips.length === 0 && !tripList.loadingData &&
+            <Empty />
+            }
+          </Col>
+          <Col span={4} />
+        </Row>
       <Modal
         title='Trip locations'
         visible={modalMap.modalVisible}
@@ -220,4 +230,12 @@ const DisplayTrips = (props) => {
       </div>
       )
 }
+
+const greetingMsg = (isMyTrips) => {
+  if (isMyTrips){
+    return 'Your memorable travels and memories'
+  }
+  return "Stories and footmarks from travelers in the world"
+}
+
 export default DisplayTrips
