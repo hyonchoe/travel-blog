@@ -6,7 +6,7 @@ import './NavBar.css'
 
 const NavBar = () =>{
     const location = useLocation()
-    const { isAuthenticated, loginWithRedirect, logout } = useAuth0()
+    const { isAuthenticated, user, loginWithRedirect, logout } = useAuth0()
 
     const handleClick = (e) => {
         if (e.key === 'login' || e.key === 'logout'){
@@ -19,8 +19,7 @@ const NavBar = () =>{
             theme="dark"
             mode="horizontal"
             selectedKeys={[location.pathname]}
-            onClick={handleClick}
-            >
+            onClick={handleClick} >
             <Menu.Item key="/">
                 <Link to="/">Travelers' Feed</Link>
             </Menu.Item>
@@ -40,6 +39,9 @@ const NavBar = () =>{
             )}
             {isAuthenticated && (
             <Menu.Item key='logout' className="userMenus"> Log out </Menu.Item>
+            )}
+            {isAuthenticated && (
+            <Menu.Item key='userName' className="userMenus userInfo" >Hello, {(user.name) ? user.name : user.email}</Menu.Item>
             )}
         </Menu> 
     )   

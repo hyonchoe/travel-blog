@@ -1,6 +1,6 @@
 import React from 'react'
 import { Switch, Route, Router } from 'react-router-dom'
-import { Layout  } from 'antd'
+import { Layout } from 'antd'
 import history from './history'
 
 import DisplayTrips from './DisplayTrips.js'
@@ -40,8 +40,6 @@ class App extends React.Component {
                 <Router history={history}>
                     <Layout className="appLayout">
                         <Header className="appHeader">
-                            {/* TODO: add logo */}
-                            <div className="logo" />
                             <NavBar />
                         </Header>
 
@@ -67,7 +65,10 @@ class App extends React.Component {
                         </Content>
 
                         <Footer className="appFooter">
-                            Work in progress
+                            <span className="footerWord">Travel</span>
+                            <span className="footerWord">Explore</span>
+                            <span className="footerWord">Learn</span>
+                            <span className="footerWord">Remember</span>
                         </Footer>
                     </Layout>
                 </Router>

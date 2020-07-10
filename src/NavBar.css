@@ -1,3 +1,8 @@
 .userMenus {
     float: right;
 }
+
+.userInfo {
+    pointer-events: none;
+    font-style: italic;
+}
