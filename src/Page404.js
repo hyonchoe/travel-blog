@@ -3,7 +3,7 @@ import './errors.css'
 
 const Page404 = () => {
     return (
-        <p className='error'>Custom error page: Page 404 error</p>
+        <p className='error'>Page not found</p>
     )
 }
 
