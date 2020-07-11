@@ -13,7 +13,7 @@ const S3Upload = (props) => {
         previewImage: '',
         privewTitle: '',
     })
-
+    
     const { getAccessTokenSilently } = useAuth0()
     
     /**
@@ -170,6 +170,8 @@ const S3Upload = (props) => {
         message.error('File upload is not completed yet.')
     }
 
+    const uploadLimit = 10
+
     return (
         <Form.Item
             label="Photos"
@@ -206,7 +208,7 @@ const S3Upload = (props) => {
                 listType="picture-card"
                 onPreview={handlePreview}
                 onChange={handleChange} >
-                { fileList.length >=2 ? null : <UploadButton /> }
+                { fileList.length >= uploadLimit ? null : <UploadButton /> }
             </Upload>
             <Modal
                 visible={previewInfo.previewVisible}
