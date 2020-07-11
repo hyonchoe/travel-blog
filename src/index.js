@@ -5,8 +5,7 @@ import './style.css'
 
 import { Auth0Provider } from '@auth0/auth0-react'
 
-const isDev = false
-
+const isDev = (process.env.REACT_APP_ENV !== 'production')
 const domain = (isDev) ? process.env.REACT_APP_AUTH0_DOMAIN : process.env.REACT_APP_AUTH0_DOMAIN_PRD
 const clientId = (isDev) ? process.env.REACT_APP_AUTH0_CLIENT_ID : process.env.REACT_APP_AUTH0_CLIENT_ID_PRD
 const audience = (isDev) ? process.env.REACT_APP_AUTH0_AUDIENCE : process.env.REACT_APP_AUTH0_AUDIENCE_PRD
