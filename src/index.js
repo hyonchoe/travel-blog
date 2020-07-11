@@ -5,12 +5,19 @@ import './style.css'
 
 import { Auth0Provider } from '@auth0/auth0-react'
 
+const isDev = false
+
+const domain = (isDev) ? process.env.REACT_APP_AUTH0_DOMAIN : process.env.REACT_APP_AUTH0_DOMAIN_PRD
+const clientId = (isDev) ? process.env.REACT_APP_AUTH0_CLIENT_ID : process.env.REACT_APP_AUTH0_CLIENT_ID_PRD
+const audience = (isDev) ? process.env.REACT_APP_AUTH0_AUDIENCE : process.env.REACT_APP_AUTH0_AUDIENCE_PRD
+const redirectUri = (isDev) ? process.env.REACT_APP_AUTH0_CB_URL : process.env.REACT_APP_AUTH0_CB_URL_PRD
+
 ReactDom.render(
     <Auth0Provider
-        domain={process.env.REACT_APP_AUTH0_DOMAIN}
-        clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
-        audience={process.env.REACT_APP_AUTH0_AUDIENCE}
-        redirectUri={process.env.REACT_APP_AUTH0_CB_URL}
+        domain={domain}
+        clientId={clientId}
+        audience={audience}
+        redirectUri={redirectUri}
         useRefreshTokens={true} >
         <App />
     </Auth0Provider>,
