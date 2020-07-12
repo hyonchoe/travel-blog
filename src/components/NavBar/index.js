@@ -6,7 +6,7 @@ import './style.css'
 
 const NavBar = () =>{
     const location = useLocation()
-    const { isAuthenticated, user, loginWithRedirect, logout } = useAuth0()
+    const { isAuthenticated, user, logout, loginWithPopup } = useAuth0()
     
     return (
         <Menu 
@@ -30,7 +30,7 @@ const NavBar = () =>{
             <Menu.Item
                 className="userMenus" >
                 {!isAuthenticated && (
-                    <Button onClick={()=>loginWithRedirect()}>Log in</Button>
+                    <Button onClick={()=>loginWithPopup()}>Log in</Button>
                 )}
                 {isAuthenticated && (
                 <span className="userInfo">Hello, {(user.name) ? user.name : user.email}</span>
