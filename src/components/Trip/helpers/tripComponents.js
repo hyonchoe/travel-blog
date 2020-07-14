@@ -1,7 +1,7 @@
 import React from 'react'
 import { Typography } from 'antd'
 import { LockOutlined } from '@ant-design/icons'
-import PictureCarousel from '../PictureCarousel'
+import PictureCarousel from '../../PictureCarousel'
     
 export const LocationSpans = (locations, cssStyle) => {
     if (!locations) return null

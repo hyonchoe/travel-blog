@@ -2,7 +2,7 @@ import React from 'react'
 import { Modal, Tooltip, Popconfirm } from 'antd'
 import { ExclamationCircleOutlined, GlobalOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons'
 
-import history from '../../services/history'
+import history from '../../../services/history'
 
 export const getCardActions = (curTrip, isCurUserTrip, launchMapCallback, editTripCallback, deleteCallback) => {
     const actions = []

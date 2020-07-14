@@ -2,9 +2,9 @@ import React from 'react'
 import { Card } from 'antd'
 import './style.css'
 
-import { LocationSpans, TravelerName, getCardTitle, TripTabContent, TripDates } from './tripComponents'
-import { getCardActions } from './cardActions'
-import useTripTabs from './useTripTabs'
+import { LocationSpans, TravelerName, getCardTitle, TripTabContent, TripDates } from './helpers/tripComponents'
+import { getCardActions } from './helpers/cardActions'
+import useTripTabs from './helpers/useTripTabs'
 
 const Trip = (props) => {
     const { tabState, onTabChange, getTabList } = useTripTabs()
