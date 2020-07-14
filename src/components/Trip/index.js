@@ -18,7 +18,7 @@ const Trip = (props) => {
         deleteTrip,
     } = props
 
-    const locAddr = LocationSpans(trip.locations)
+    const locAddr = LocationSpans(trip.locations, 'spanLocation')
     const isMyTrip = isAuthenticated && (userId === trip.userId)
     const travelerName = TravelerName(showMyTrips, isMyTrip, { 
                                 userName: trip.userName,
@@ -26,7 +26,7 @@ const Trip = (props) => {
                         })
     return (
         <Card
-            title={getCardTitle(trip.title, trip.public)}
+            title={getCardTitle(trip.title, trip.public, 'privateIcon')}
             hoverable={true}
             bordered={true}
             extra={TripDates(trip)}
@@ -40,7 +40,9 @@ const Trip = (props) => {
                 tabKey={tabState.key}
                 curTrip={trip}
                 locAddr={locAddr}
-                travelerName={travelerName} />
+                travelerName={travelerName}
+                cssStyle={{name: 'divTravelerName', loc: 'divLocation' }}
+                 />
         </Card>
     )
 }

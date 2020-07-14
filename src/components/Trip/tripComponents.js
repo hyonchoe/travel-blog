@@ -3,11 +3,11 @@ import { Typography } from 'antd'
 import { LockOutlined } from '@ant-design/icons'
 import PictureCarousel from '../PictureCarousel'
     
-export const LocationSpans = (locations) => {
+export const LocationSpans = (locations, cssStyle) => {
     if (!locations) return null
 
     return locations.map((loc) => (
-        <span className="spanLocation">{loc.fmtAddr}</span>
+        <span className={cssStyle}>{loc.fmtAddr}</span>
     ))
 }
 
@@ -22,14 +22,14 @@ export const TravelerName = (showMyTrips, isMyTrip, userInfo) => {
     return <span>Travelled by {name}</span>
 }
 
-export const getCardTitle = (title, isPublic) => {
+export const getCardTitle = (title, isPublic, cssStyle) => {
     if (isPublic){
         return <span>{title}</span>
     }
 
     return (
         <span>
-            {title}<LockOutlined className="privateIcon" />
+            {title}<LockOutlined className={cssStyle} />
         </span>
     )
 }
@@ -38,7 +38,11 @@ export const TripTabContent = (props) => {
     let contentComponent = null
     switch (props.tabKey){
         case 'journal':
-            contentComponent = <TripDetails details={props.curTrip.details} locAddr={props.locAddr} travelerName={props.travelerName} />
+            contentComponent = <TripDetails 
+                                details={props.curTrip.details}
+                                locAddr={props.locAddr}
+                                travelerName={props.travelerName}
+                                cssStyle={props.cssStyle} />
             break
 
         case 'images':
@@ -46,7 +50,11 @@ export const TripTabContent = (props) => {
             break
 
         default:
-            contentComponent = <TripDetails details={props.curTrip.details} locAddr={props.locAddr} travelerName={props.travelerName} />
+            contentComponent = <TripDetails 
+                                details={props.curTrip.details}
+                                locAddr={props.locAddr}
+                                travelerName={props.travelerName}
+                                cssStyle={props.cssStyle} />
             break
     }
     
@@ -67,10 +75,10 @@ const TripDetails = (props) => {
     return (
         <Typography>
             {props.travelerName && 
-            <div className="divTravelerName">{props.travelerName}</div>
+            <div className={props.cssStyle.name}>{props.travelerName}</div>
             }
             {props.locAddr && 
-            <div className="divLocation"> {props.locAddr} </div>
+            <div className={props.cssStyle.loc}> {props.locAddr} </div>
             }
             { 
             props.details.split('\n').map( (line) => { 
