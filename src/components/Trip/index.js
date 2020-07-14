@@ -1,50 +1,48 @@
 import React from 'react'
-import { Card, } from 'antd'
+import { Card } from 'antd'
 import './style.css'
 
 import { LocationSpans, TravelerName, getCardTitle, TripTabContent, TripDates } from './tripComponents'
 import { getTabList, getCardActions } from './cardActions'
+import useTripTabs from './useTripTabs'
 
-class Trip extends React.Component {
-     state = {
-         key: 'journal',
-     }
+const Trip = (props) => {
+    const { tabState, onTabChange } = useTripTabs()
+    const { 
+        isAuthenticated,
+        userId,
+        showMyTrips,
+        trip,
+        launchMapModal,
+        editTrip,
+        deleteTrip,
+    } = props
 
-    // TODO: turn this into custom hook after changing Trip to functional?
-    onTabChange = (key, type) => {
-        let updatedTabKey = {}
-        updatedTabKey[type] = key
-        this.setState(updatedTabKey)
-        /*
-        TODO: Below does the same thing. Should update to use that pattern in this project
-        - this.setState({ [type]: key });
-        */
-    }
-
-     render() {
-        const curTrip = this.props.trip
-        const locAddr = LocationSpans(curTrip.locations)
-        const isMyTrip = this.props.isAuthenticated && (this.props.userId === this.props.trip.userId)
-        const travelerName = TravelerName(this.props.showMyTrips, isMyTrip, { 
-                                    userName: curTrip.userName,
-                                    userEmail: curTrip.userEmail
-                            })
-        return (
-            <Card
-                title={getCardTitle(curTrip.title, curTrip.public)}
-                hoverable={true}
-                bordered={true}
-                extra={TripDates(curTrip)}
-                actions={getCardActions(curTrip, isMyTrip, this.props.launchMapModal, this.props.editTrip, this)}
-                tabList={getTabList(this.props.trip.images)}
-                activeTabKey={ this.state.key }
-                tabProps={ {size: 'small'} }
-                onTabChange={(key) => this.onTabChange(key, 'key') }
-                >
-                <TripTabContent tabKey={this.state.key} curTrip={curTrip} locAddr={locAddr} travelerName={travelerName} />
-            </Card>
-        )
-    }
+    const locAddr = LocationSpans(trip.locations)
+    const isMyTrip = isAuthenticated && (userId === trip.userId)
+    const travelerName = TravelerName(showMyTrips, isMyTrip, { 
+                                userName: trip.userName,
+                                userEmail: trip.userEmail
+                        })
+    return (
+        <Card
+            title={getCardTitle(trip.title, trip.public)}
+            hoverable={true}
+            bordered={true}
+            extra={TripDates(trip)}
+            actions={getCardActions(trip, isMyTrip, launchMapModal, editTrip, deleteTrip)}
+            tabList={getTabList(trip.images)}
+            activeTabKey={ tabState.key }
+            tabProps={ {size: 'small'} }
+            onTabChange={(key) => onTabChange(key, 'key') }
+            >
+            <TripTabContent 
+                tabKey={tabState.key}
+                curTrip={trip}
+                locAddr={locAddr}
+                travelerName={travelerName} />
+        </Card>
+    )
 }
 
 export default Trip

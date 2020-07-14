@@ -14,7 +14,7 @@ export const getTabList = (tripImages) => {
     return cardTabList
 }
 
-export const getCardActions = (curTrip, isCurUserTrip, launchMapCallback, editTripCallback, tripInstance) => {
+export const getCardActions = (curTrip, isCurUserTrip, launchMapCallback, editTripCallback, deleteCallback) => {
     const actions = []
     actions.push(
         <Tooltip title="View this trip locations on a map">
@@ -37,7 +37,7 @@ export const getCardActions = (curTrip, isCurUserTrip, launchMapCallback, editTr
         )
         actions.push(
             <Tooltip title="Delete this trip">
-                <DeleteOutlined key="delete" onClick={() => showDeleteConfirm(curTrip._id, curTrip.title, tripInstance)} />
+                <DeleteOutlined key="delete" onClick={() => showDeleteConfirm(curTrip._id, curTrip.title, deleteCallback)} />
             </Tooltip>
         )
     }
@@ -58,7 +58,7 @@ const popoverConfirm = (selectedTrip, callback) => {
 
 const popoverCancel = () => {}
 
-const showDeleteConfirm = (tripId, tripTitle, tripInstance) => {
+const showDeleteConfirm = (tripId, tripTitle, deleteCallback) => {
     const { confirm } = Modal
 
     confirm({
@@ -69,7 +69,7 @@ const showDeleteConfirm = (tripId, tripTitle, tripInstance) => {
       okType: 'danger',
       cancelText: 'No',
       async onOk() {
-        await tripInstance.props.deleteTrip(tripId, tripTitle)
+        await deleteCallback(tripId, tripTitle)
       },
       onCancel() {},
     });
