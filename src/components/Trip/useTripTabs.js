@@ -7,7 +7,17 @@ const useTripTabs = () => {
         setTabState({ [type]: key })
     }
 
-    return { tabState, onTabChange }
+    const getTabList = (tripImages) => {
+        let cardTabList = [{ key: 'journal', tab: 'Journal', }]
+    
+        if (tripImages && tripImages.length > 0){
+            cardTabList.push({ key: 'images', tab: 'Photos' })
+        }
+        
+        return cardTabList
+    }
+
+    return { tabState, onTabChange, getTabList }
 }
 
 export default useTripTabs

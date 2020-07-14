@@ -4,16 +4,6 @@ import { ExclamationCircleOutlined, GlobalOutlined, EditOutlined, DeleteOutlined
 
 import history from '../../services/history'
 
-export const getTabList = (tripImages) => {
-    let cardTabList = [{ key: 'journal', tab: 'Journal', }]
-
-    if (tripImages && tripImages.length > 0){
-        cardTabList.push({ key: 'images', tab: 'Photos' })
-    }
-    
-    return cardTabList
-}
-
 export const getCardActions = (curTrip, isCurUserTrip, launchMapCallback, editTripCallback, deleteCallback) => {
     const actions = []
     actions.push(

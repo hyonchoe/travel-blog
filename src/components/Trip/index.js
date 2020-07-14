@@ -3,11 +3,11 @@ import { Card } from 'antd'
 import './style.css'
 
 import { LocationSpans, TravelerName, getCardTitle, TripTabContent, TripDates } from './tripComponents'
-import { getTabList, getCardActions } from './cardActions'
+import { getCardActions } from './cardActions'
 import useTripTabs from './useTripTabs'
 
 const Trip = (props) => {
-    const { tabState, onTabChange } = useTripTabs()
+    const { tabState, onTabChange, getTabList } = useTripTabs()
     const { 
         isAuthenticated,
         userId,
