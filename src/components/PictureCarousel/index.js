@@ -3,11 +3,6 @@ import { Carousel } from 'antd'
 import './style.css'
 
 const PictureCarousel = (props) => {
-
-    const onChange = (a, b, c) => {
-        console.log(a, b, c)
-    }
-
     const divCarouselImages = (props.images) ? 
         props.images.map((imgInfo) => {
             return ( 
@@ -22,7 +17,7 @@ const PictureCarousel = (props) => {
         : null
 
     return (
-        <Carousel draggable={true} afterChange={onChange}>
+        <Carousel draggable={true}>
             {divCarouselImages}
         </Carousel>
     )
