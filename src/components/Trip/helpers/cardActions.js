@@ -7,14 +7,14 @@ import history from '../../../services/history'
 export const getCardActions = (curTrip, isCurUserTrip, launchMapCallback, editTripCallback, deleteCallback) => {
     const actions = []
     actions.push(
-        <Tooltip title="View this trip locations on a map">
+        <Tooltip title="View this trip locations on a map" key ={0}>
             <GlobalOutlined key="map" onClick={() => onGlobeClicked(curTrip, launchMapCallback) } />
         </Tooltip>
     )
 
     if (isCurUserTrip){
         actions.push(
-            <Tooltip title="Edit this trip information">
+            <Tooltip title="Edit this trip information" key={1}>
                 <Popconfirm
                     title="Are you sure about editing this trip?"
                     onConfirm={() => popoverConfirm(curTrip, editTripCallback)}
@@ -26,7 +26,7 @@ export const getCardActions = (curTrip, isCurUserTrip, launchMapCallback, editTr
             </Tooltip>            
         )
         actions.push(
-            <Tooltip title="Delete this trip">
+            <Tooltip title="Delete this trip" key={2}>
                 <DeleteOutlined key="delete" onClick={() => showDeleteConfirm(curTrip._id, curTrip.title, deleteCallback)} />
             </Tooltip>
         )

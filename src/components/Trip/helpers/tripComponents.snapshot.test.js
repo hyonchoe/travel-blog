@@ -2,7 +2,12 @@ import React from 'react'
 import renderer from 'react-test-renderer'
 import moment from 'moment'
 import { LocationSpans, TravelerName, CardTitle, TripTabContent, TripDates } from './tripComponents'
-import { journalKey } from './useTripTabs'
+import { journalKey, imageKey } from './useTripTabs'
+
+jest.mock('../../PictureCarousel', () => {
+    const mockedComponent = () => <div className='mockedPictureCarousel' />
+    return mockedComponent
+})
 
 describe('LocationSpans', () => {
     it('matches snapshot for no location', () => {
@@ -103,11 +108,17 @@ describe('TripTabContent', () => {
         expect(tree).toMatchSnapshot()
     })
     
-   it('NOTE: cannot snapshot-test photo tab content due to incompatibility with AntD Carousel component', () => {
-        /*
-        Can't snapshot test photo tab content as AntD Carousel component does not seem
-        to work well with Jest snapshot testing.
-        */   
+   it('mathces snapshot for photo tab content (PictureCarousel component mocked)', () => {
+        const component = renderer.create(
+            <TripTabContent 
+                tabKey={imageKey}
+                curTrip= { {details: 'dummyDetails', images: [{name: 'dummyfilename', S3Url: 'dummyurl'}]} }
+                locAddr= 'dummyAddr'
+                travelerName= 'dummyName'
+                cssStyle= { {name: 'nameCssClass', loc: 'locCssClass'} } />
+        )
+        const tree = component.toJSON()
+        expect(tree).toMatchSnapshot()       
         expect(true).toBe(true)
    })
 })

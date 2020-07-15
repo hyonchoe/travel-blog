@@ -19,7 +19,7 @@ const Trip = (props) => {
     } = props
 
     const locAddr = LocationSpans(trip.locations, 'spanLocation')
-    const isMyTrip = isAuthenticated && (userId === trip.userId)
+    const isMyTrip = checkIsMyTrip(isAuthenticated, userId, trip.userId)
     const travelerName = TravelerName(showMyTrips, isMyTrip, { 
                                 userName: trip.userName,
                                 userEmail: trip.userEmail
@@ -34,17 +34,19 @@ const Trip = (props) => {
             tabList={getTabList(trip.images)}
             activeTabKey={ tabState.key }
             tabProps={ {size: 'small'} }
-            onTabChange={(key) => onTabChange(key, 'key') }
-            >
+            onTabChange={(key) => onTabChange(key, 'key') } >
             <TripTabContent 
                 tabKey={tabState.key}
                 curTrip={trip}
                 locAddr={locAddr}
                 travelerName={travelerName}
-                cssStyle={{name: 'divTravelerName', loc: 'divLocation' }}
-                 />
+                cssStyle={{name: 'divTravelerName', loc: 'divLocation' }} />
         </Card>
     )
+}
+
+export const checkIsMyTrip = (isAuthenticated, userId, tripUserId) => {
+    return isAuthenticated && (userId === tripUserId)
 }
 
 export default Trip
