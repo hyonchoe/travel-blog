@@ -1,4 +1,4 @@
-import { getCardActions } from './cardActions'
+import { getCardActions } from './tripComponents'
 
 describe('Trip card actions', () => {
     it('should only have 1 action (map)', () => {

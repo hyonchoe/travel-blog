@@ -1,7 +1,7 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
 import moment from 'moment'
-import { LocationSpans, TravelerName, CardTitle, TripTabContent, TripDates } from './tripComponents'
+import { LocationSpans, TravelerName, CardTitle, TripTabContent, TripDates, getCardActions } from './tripComponents'
 import { journalKey, imageKey } from './useTripTabs'
 
 jest.mock('../../PictureCarousel', () => {
@@ -129,6 +129,25 @@ describe('TripDates', () => {
         const dummyEndDate = moment('2020-07-04', 'YYYY-MM-DD')
         const component = renderer.create(
             TripDates({ startDate: dummyStartDate, endDate: dummyEndDate })
+        )
+        const tree = component.toJSON()
+        expect(tree).toMatchSnapshot()
+    })
+})
+
+describe('Card actions', () => {
+    const dummyParam = ''
+    it('matches snapshot for one action (map)', () => {
+        const component = renderer.create(
+            getCardActions(dummyParam, false, dummyParam, dummyParam, dummyParam)
+        )
+        const tree = component.toJSON()
+        expect(tree).toMatchSnapshot()
+    })
+
+    it('matches snapshot for three actions (map, edit, delete)', () => {
+        const component = renderer.create(
+            getCardActions(dummyParam, true, dummyParam, dummyParam, dummyParam)
         )
         const tree = component.toJSON()
         expect(tree).toMatchSnapshot()

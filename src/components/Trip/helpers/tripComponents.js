@@ -1,8 +1,9 @@
 import React from 'react'
-import { Typography } from 'antd'
-import { LockOutlined } from '@ant-design/icons'
+import { Typography, Tooltip, Popconfirm } from 'antd'
+import { LockOutlined, GlobalOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import PictureCarousel from '../../PictureCarousel'
 import { journalKey, imageKey } from './useTripTabs'
+import { onGlobeClicked, popoverConfirm, popoverCancel, showDeleteConfirm } from './cardActions'
     
 export const LocationSpans = (locations, cssStyle) => {
     if (!locations) return null
@@ -70,6 +71,37 @@ export const TripDates = (curTrip) => {
     }
     
     return dateStr
+}
+
+export const getCardActions = (curTrip, isCurUserTrip, launchMapCallback, editTripCallback, deleteCallback) => {
+    const actions = []
+    actions.push(
+        <Tooltip title="View this trip locations on a map" key ={0}>
+            <GlobalOutlined key="map" onClick={() => onGlobeClicked(curTrip, launchMapCallback) } />
+        </Tooltip>
+    )
+
+    if (isCurUserTrip){
+        actions.push(
+            <Tooltip title="Edit this trip information" key={1}>
+                <Popconfirm
+                    title="Are you sure about editing this trip?"
+                    onConfirm={() => popoverConfirm(curTrip, editTripCallback)}
+                    onCancel={() => popoverCancel()}
+                    okText="Yes"
+                    cancelText="No" >
+                    <EditOutlined key="edit" />
+                </Popconfirm>
+            </Tooltip>            
+        )
+        actions.push(
+            <Tooltip title="Delete this trip" key={2}>
+                <DeleteOutlined key="delete" onClick={() => showDeleteConfirm(curTrip._id, curTrip.title, deleteCallback)} />
+            </Tooltip>
+        )
+    }
+
+    return actions
 }
 
 const TripDetails = (props) => {

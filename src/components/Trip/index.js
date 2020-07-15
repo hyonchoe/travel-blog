@@ -2,8 +2,7 @@ import React from 'react'
 import { Card } from 'antd'
 import './style.css'
 
-import { LocationSpans, TravelerName, CardTitle, TripTabContent, TripDates } from './helpers/tripComponents'
-import { getCardActions } from './helpers/cardActions'
+import { LocationSpans, TravelerName, CardTitle, TripTabContent, TripDates, getCardActions } from './helpers/tripComponents'
 import useTripTabs from './helpers/useTripTabs'
 
 const Trip = (props) => {
