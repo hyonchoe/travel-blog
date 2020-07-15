@@ -2,7 +2,7 @@ import React from 'react'
 import { Card } from 'antd'
 import './style.css'
 
-import { LocationSpans, TravelerName, getCardTitle, TripTabContent, TripDates } from './helpers/tripComponents'
+import { LocationSpans, TravelerName, CardTitle, TripTabContent, TripDates } from './helpers/tripComponents'
 import { getCardActions } from './helpers/cardActions'
 import useTripTabs from './helpers/useTripTabs'
 
@@ -26,7 +26,7 @@ const Trip = (props) => {
                         })
     return (
         <Card
-            title={getCardTitle(trip.title, trip.public, 'privateIcon')}
+            title={CardTitle(trip.title, trip.public, 'privateIcon')}
             hoverable={true}
             bordered={true}
             extra={TripDates(trip)}

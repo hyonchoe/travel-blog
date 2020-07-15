@@ -4,9 +4,9 @@ import './style.css'
 
 const PictureCarousel = (props) => {
     const divCarouselImages = (props.images) ? 
-        props.images.map((imgInfo) => {
+        props.images.map((imgInfo, index) => {
             return ( 
-                <div>
+                <div key={index}>
                     <img 
                         src={imgInfo.S3Url}
                         alt={imgInfo.name}

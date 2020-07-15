@@ -1,0 +1,102 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CardTitle matches snapshot for private trip 1`] = `
+<span>
+  dummyTitle
+  <span
+    aria-label="lock"
+    className="anticon anticon-lock dummyCssClassName"
+    role="img"
+  >
+    <svg
+      aria-hidden="true"
+      className=""
+      data-icon="lock"
+      fill="currentColor"
+      focusable="false"
+      height="1em"
+      viewBox="64 64 896 896"
+      width="1em"
+    >
+      <path
+        d="M832 464h-68V240c0-70.7-57.3-128-128-128H388c-70.7 0-128 57.3-128 128v224h-68c-17.7 0-32 14.3-32 32v384c0 17.7 14.3 32 32 32h640c17.7 0 32-14.3 32-32V496c0-17.7-14.3-32-32-32zM332 240c0-30.9 25.1-56 56-56h248c30.9 0 56 25.1 56 56v224H332V240zm460 600H232V536h560v304zM484 701v53c0 4.4 3.6 8 8 8h40c4.4 0 8-3.6 8-8v-53a48.01 48.01 0 10-56 0z"
+      />
+    </svg>
+  </span>
+</span>
+`;
+
+exports[`CardTitle matches snapshot for public trip 1`] = `
+<span>
+  dummyTitle
+</span>
+`;
+
+exports[`LocationSpans matches snapshot for no location 1`] = `null`;
+
+exports[`LocationSpans matches snapshot for some locations 1`] = `
+Array [
+  <span
+    className="dummyCssClassName"
+  >
+    dummy addr
+  </span>,
+  <span
+    className="dummyCssClassName"
+  >
+    dummy addr
+  </span>,
+]
+`;
+
+exports[`TravelerName matches snapshot for my trip in public trips 1`] = `
+<span>
+  Travelled by 
+  me
+</span>
+`;
+
+exports[`TravelerName matches snapshot for no identifiable information 1`] = `
+<span>
+  Travelled by 
+  someone
+</span>
+`;
+
+exports[`TravelerName matches snapshot for not my trip in public trips - user email 1`] = `
+<span>
+  Travelled by 
+  dummyEmail
+</span>
+`;
+
+exports[`TravelerName matches snapshot for not my trip in public trips - user name 1`] = `
+<span>
+  Travelled by 
+  dummyName
+</span>
+`;
+
+exports[`TravelerName matches snapshot for showing My Trips 1`] = `""`;
+
+exports[`TripDates matches snapshot for trip dates string 1`] = `"Wednesday, July 1st 2020 - Saturday, July 4th 2020"`;
+
+exports[`TripTabContent matches snapshot for journey tab content 1`] = `
+<article
+  className="ant-typography"
+>
+  <div
+    className="nameCssClass"
+  >
+    dummyName
+  </div>
+  <div
+    className="locCssClass"
+  >
+    dummyAddr
+  </div>
+  <p>
+    dummyDetails
+  </p>
+</article>
+`;

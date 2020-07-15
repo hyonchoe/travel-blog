@@ -2,12 +2,13 @@ import React from 'react'
 import { Typography } from 'antd'
 import { LockOutlined } from '@ant-design/icons'
 import PictureCarousel from '../../PictureCarousel'
+import { journalKey, imageKey } from './useTripTabs'
     
 export const LocationSpans = (locations, cssStyle) => {
     if (!locations) return null
 
-    return locations.map((loc) => (
-        <span className={cssStyle}>{loc.fmtAddr}</span>
+    return locations.map((loc, index) => (
+        <span className={cssStyle} key={index}>{loc.fmtAddr}</span>
     ))
 }
 
@@ -22,7 +23,7 @@ export const TravelerName = (showMyTrips, isMyTrip, userInfo) => {
     return <span>Travelled by {name}</span>
 }
 
-export const getCardTitle = (title, isPublic, cssStyle) => {
+export const CardTitle = (title, isPublic, cssStyle) => {
     if (isPublic){
         return <span>{title}</span>
     }
@@ -37,7 +38,7 @@ export const getCardTitle = (title, isPublic, cssStyle) => {
 export const TripTabContent = (props) => {
     let contentComponent = null
     switch (props.tabKey){
-        case 'journal':
+        case journalKey:
             contentComponent = <TripDetails 
                                 details={props.curTrip.details}
                                 locAddr={props.locAddr}
@@ -45,7 +46,7 @@ export const TripTabContent = (props) => {
                                 cssStyle={props.cssStyle} />
             break
 
-        case 'images':
+        case imageKey:
             contentComponent = <PictureCarousel images={props.curTrip.images}/>
             break
 
@@ -66,7 +67,7 @@ export const TripDates = (curTrip) => {
     let dateStr = curTrip.startDate.format(dateFormat)
     if (curTrip.endDate){
         dateStr += " - " + curTrip.endDate.format(dateFormat)
-    }    
+    }
     
     return dateStr
 }
@@ -78,12 +79,12 @@ const TripDetails = (props) => {
             <div className={props.cssStyle.name}>{props.travelerName}</div>
             }
             {props.locAddr && 
-            <div className={props.cssStyle.loc}> {props.locAddr} </div>
+            <div className={props.cssStyle.loc}>{props.locAddr}</div>
             }
             { 
-            props.details.split('\n').map( (line) => { 
+            props.details.split('\n').map((line, index) => { 
                 if (line) {
-                    return <p>{line}</p>
+                    return <p key={index}>{line}</p>
                 }
                 return ""
             })
