@@ -1,0 +1,98 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`S3Upload matches snapshot 1`] = `
+<FormItem
+  initialValue={
+    Object {
+      "fileList": Array [
+        Object {
+          "name": "dummyname1",
+          "status": "done",
+          "uid": "dummyurlname1",
+          "url": "dummys3url1",
+        },
+        Object {
+          "name": "dummyname2",
+          "status": "done",
+          "uid": "dummyurlname2",
+          "url": "dummys3url2",
+        },
+      ],
+      "nameToUrlNameMap": Object {
+        "dummyurlname1": Object {
+          "fileUrlName": "dummyurlname1",
+          "name": "dummyname1",
+          "pendingFileUrl": "dummys3url1",
+        },
+        "dummyurlname2": Object {
+          "fileUrlName": "dummyurlname2",
+          "name": "dummyname2",
+          "pendingFileUrl": "dummys3url2",
+        },
+      },
+    }
+  }
+  label="Photos"
+  name="dummyfieldname"
+  rules={
+    Array [
+      Object {
+        "validator": [Function],
+      },
+    ]
+  }
+>
+  <Upload
+    accept=""
+    action={[Function]}
+    beforeUpload={[Function]}
+    className=""
+    customRequest={[Function]}
+    data={Object {}}
+    disabled={false}
+    fileList={
+      Array [
+        Object {
+          "name": "dummyname1",
+          "status": "done",
+          "uid": "dummyurlname1",
+          "url": "dummys3url1",
+        },
+        Object {
+          "name": "dummyname2",
+          "status": "done",
+          "uid": "dummyurlname2",
+          "url": "dummys3url2",
+        },
+      ]
+    }
+    listType="picture-card"
+    multiple={false}
+    onChange={[Function]}
+    onPreview={[Function]}
+    showUploadList={true}
+    supportServerRender={true}
+    type="select"
+  />
+  <Modal
+    confirmLoading={false}
+    footer={null}
+    maskTransitionName="fade"
+    okType="primary"
+    onCancel={[Function]}
+    transitionName="zoom"
+    visible={false}
+    width={520}
+  >
+    <img
+      alt="preview"
+      src=""
+      style={
+        Object {
+          "width": "100%",
+        }
+      }
+    />
+  </Modal>
+</FormItem>
+`;
