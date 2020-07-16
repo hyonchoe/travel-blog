@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PictureCarousel matches snapshot for image divs it hosts 1`] = `
+<Carousel
+  arrows={false}
+  dots={true}
+  draggable={true}
+>
+  <div
+    key="0"
+  >
+    <img
+      alt="dummyname"
+      className="carouselPicture"
+      src="dummyurl"
+    />
+  </div>
+  <div
+    key="1"
+  >
+    <img
+      alt="dummyname2"
+      className="carouselPicture"
+      src="dummyurl2"
+    />
+  </div>
+</Carousel>
+`;
