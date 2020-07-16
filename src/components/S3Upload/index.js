@@ -1,176 +1,55 @@
-import React, { useState, useRef } from 'react'
-import axios from 'axios'
-import { useAuth0 } from '@auth0/auth0-react'
+import React from 'react'
 import { Form, Modal, Upload, message  } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
-import tripService from '../../services/api'
+import useS3Upload from './helpers/useS3Upload'
 
 const S3Upload = (props) => {
-    const myImage = useRef('')
-    const [fileReader, setFileReader] = useState(new FileReader())
-    const [previewInfo, setPreviewInfo] = useState({
-        previewVisible: false,
-        previewImage: '',
-        privewTitle: '',
-    })
+    const { previewInfo, fileList, previewCancel, showPreview,
+            getS3SignedUrl, upload, chkUploadUpdates,
+            initialFileList, initialNameToUrlNameMap } = useS3Upload(props.images)
     
-    const { getAccessTokenSilently } = useAuth0()
-    
-    /**
-     * File is object:
-     *  {
-            uid: '',
-            name: '',
-            status: '',
-            url: '',
-        }
-    */
-   const getInitialImgValues = (images) => {
-        let initialValues = []
-        images.forEach((img) => {
-            initialValues.push({
-                uid: img.fileUrlName,
-                name: img.name,
-                status: 'done',
-                url: img.S3Url
-            })
-        })
-
-        return initialValues
-    }   
-    const [fileList, setFileList] = useState(getInitialImgValues(props.images))
-    /**
-     * Object of images with rc_uid key
-     * { 
-     *      rc_uid: {name: '', fileUrlName: ''},
-     *      ...
-     * }
-     */
-    const getInitialNameToUrlMapping = (images) => {
-        let mapping = {}
-        images.forEach((img) => {
-            mapping[img.fileUrlName] = { 
-                name: img.name,
-                fileUrlName: img.fileUrlName,
-                pendingFileUrl: img.S3Url,
-            }
-        })
-
-        return mapping
-    }
     const getInitialValues = () => {
         return {
-            fileList: getInitialImgValues(props.images),
-            nameToUrlNameMap: getInitialNameToUrlMapping(props.images),
+            fileList: initialFileList(),
+            nameToUrlNameMap: initialNameToUrlNameMap(),
         }
-    }
-
-    const handleCancel = () => {
-        setPreviewInfo({ previewVisible: false })
-    }
-
-    const handlePreview = async (file) => {
-        if (!file.url && !file.preview) {
-            file.preview = await getBase64(file.originFileObj)
-        }
-
-        setPreviewInfo({
-            previewImage: file.url || file.preview,
-            previewVisible: true,
-            previewTitle: file.name || file.url.substring(file.url.lastIndexOf('/')+1),
-        })
     }
 
     const handleChange = (info) => {
         const file = info.file
         const curFileList = info.fileList
-        setFileList(curFileList)
         props.form.setFieldsValue({
             [props.fieldName]: {
                 fileList: curFileList,
             }})
-        
-        if (file.status === 'done' || file.status === 'removed'){
-            if(file.status === 'done'){
-                fileReader.onloadend = null
-            }
-            return
-        }
-
-        if (!fileReader.onloadend){
-            fileReader.onloadend = (obj) => {
-                myImage.current = obj.srcElement.result
-            }
-            fileReader.readAsArrayBuffer(file.originFileObj);
-        }
-    }
-    const customRequest = async (option) => {
-        const { onSuccess, onError, file, action, onProgress } = option
-        const url = action
-
-        await new Promise(resolve => waitUntilImageLoaded(resolve))
-        const type = file.type
-        axios.put(url, myImage.current, {
-            onUploadProgress: e => {
-                onProgress({ percent: (e.loaded / e.total) * 100 })
-            },
-            headers: {
-                'Content-Type': type,
-            },
-        })
-            .then(response => {
-                onSuccess(response.body)
-            })
-            .catch(error => {
-                onError(error)
-            })
-            .finally(() => {
-                myImage.current = ''
-            })
-    }
-    const waitUntilImageLoaded = (resolve) => {
-        setTimeout( () => {
-            if (myImage.current){
-                resolve()
-            } else {
-                waitUntilImageLoaded(resolve)
-            }
-        }, 100)
+        chkUploadUpdates(file, curFileList)
     }
 
-    const handleUpload = async (file) => {
-        const fileName = file.name
-        const fileType = file.type
+    const getSignedUrl = async (file) => {
         let signedUrl = ''
-
-        try{
-            const urlInfo = await tripService.getS3SignedUrl(fileType, getAccessTokenSilently)
-            signedUrl = urlInfo.signedUrl
-            const fileUID = file.uid
-            const fileNameInfo = {
-                name: fileName,
-                fileUrlName: urlInfo.fileUrlName,
-                pendingFileUrl: urlInfo.pendingFileUrl,
-            }
-            const curNameToUrlName = props.form.getFieldValue(props.fieldName).nameToUrlNameMap
-            const updatedNameToUrlName = {...curNameToUrlName,  [fileUID]: fileNameInfo }
+        try {
+            const fileUrlInfo = await getS3SignedUrl(file.name, file.type, file.uid)
+            signedUrl = fileUrlInfo.signedUrl
             
+            const fileNameInfo = fileUrlInfo.fileNameInfo
+            const curNameToUrlName = props.form.getFieldValue(props.fieldName).nameToUrlNameMap
+            const updatedNameToUrlName = {...curNameToUrlName,  ...fileNameInfo }
             props.form.setFieldsValue({
                 [props.fieldName]: {
                     nameToUrlNameMap: updatedNameToUrlName,
                 }})
         } catch (err) {
-            console.log(err)
+            //TODO: show message?
         }
         
-        // TODO: error handling
         return signedUrl
     }
+
     const uploadInProgressMsg = () => {
         message.error('File upload is not completed yet.')
     }
 
-    const uploadLimit = 10
+    const uploadLimit = 2
 
     return (
         <Form.Item
@@ -203,10 +82,10 @@ const S3Upload = (props) => {
              >
             <Upload
                 fileList={fileList}
-                action={handleUpload}
-                customRequest={customRequest}
+                action={getSignedUrl}
+                customRequest={upload}
                 listType="picture-card"
-                onPreview={handlePreview}
+                onPreview={showPreview}
                 onChange={handleChange} >
                 { fileList.length >= uploadLimit ? null : <UploadButton /> }
             </Upload>
@@ -214,7 +93,7 @@ const S3Upload = (props) => {
                 visible={previewInfo.previewVisible}
                 title={previewInfo.previewTitle}
                 footer={null}
-                onCancel={handleCancel}
+                onCancel={previewCancel}
                 >
                 <img alt="preview" style={{ width: '100%' }} src={previewInfo.previewImage} />
             </Modal>
@@ -229,14 +108,6 @@ const UploadButton = () => {
             <div className="ant-upload-text">Upload</div>
         </div>
     )
-}
-const getBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = error => reject(error);
-    });
 }
 
 export default S3Upload
