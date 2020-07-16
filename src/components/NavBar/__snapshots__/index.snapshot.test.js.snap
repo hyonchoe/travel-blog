@@ -1,0 +1,95 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NavBar matches snapshot authenticated 1`] = `
+<Menu
+  mode="horizontal"
+  selectedKeys={
+    Array [
+      "dummypathname",
+    ]
+  }
+  theme="dark"
+>
+  <MenuItem
+    key="/"
+  >
+    <Link
+      to="/"
+    >
+      Travelers' Feed
+    </Link>
+  </MenuItem>
+  <MenuItem
+    key="/myTrips"
+  >
+    <Link
+      to="/myTrips"
+    >
+      My Trips
+    </Link>
+  </MenuItem>
+  <MenuItem
+    key="/addTrip"
+  >
+    <Link
+      to="/addTrip"
+    >
+       Add/Edit Trip 
+    </Link>
+  </MenuItem>
+  <MenuItem
+    className="userMenus"
+  >
+    <span
+      className="userInfo"
+    >
+      Hello, 
+      dummyname
+    </span>
+    <Button
+      block={false}
+      ghost={false}
+      htmlType="button"
+      loading={false}
+      onClick={[Function]}
+    >
+      Log out
+    </Button>
+  </MenuItem>
+</Menu>
+`;
+
+exports[`NavBar matches snapshot not authenticated 1`] = `
+<Menu
+  mode="horizontal"
+  selectedKeys={
+    Array [
+      "dummypathname",
+    ]
+  }
+  theme="dark"
+>
+  <MenuItem
+    key="/"
+  >
+    <Link
+      to="/"
+    >
+      Travelers' Feed
+    </Link>
+  </MenuItem>
+  <MenuItem
+    className="userMenus"
+  >
+    <Button
+      block={false}
+      ghost={false}
+      htmlType="button"
+      loading={false}
+      onClick={[Function]}
+    >
+      Log in
+    </Button>
+  </MenuItem>
+</Menu>
+`;
