@@ -6,7 +6,7 @@ import useS3Upload from './helpers/useS3Upload'
 const S3Upload = (props) => {
     const { previewInfo, fileList, previewCancel, showPreview,
             getS3SignedUrl, upload, chkUploadUpdates,
-            initialFileList, initialNameToUrlNameMap } = useS3Upload(props.images)
+            initialFileList, initialNameToUrlNameMap, uploadInProgress } = useS3Upload(props.images)
     
     const getInitialValues = () => {
         return {
@@ -39,7 +39,7 @@ const S3Upload = (props) => {
                     nameToUrlNameMap: updatedNameToUrlName,
                 }})
         } catch (err) {
-            //TODO: show message?
+            message.error('There was an issue with upload.')
         }
         
         return signedUrl
@@ -58,28 +58,14 @@ const S3Upload = (props) => {
             initialValue={getInitialValues()}
             rules={[{
                 validator: (rule, value) => {
-                        const curFileList = value.fileList
-                        let uploadInProgress = false
-                        if(curFileList){
-                            console.log(curFileList.length)
-                            for(let i=0; i<curFileList.length; i++){
-                                console.log(curFileList[i].status)
-                                if(curFileList[i].status === 'uploading'){
-                                    uploadInProgress = true
-                                    break
-                                }
-                            }
-                        }
-
-                        if (uploadInProgress){
+                        if (uploadInProgress(value.fileList)){
                             uploadInProgressMsg()
                             return Promise.reject('')
                             
                         }
                         return Promise.resolve()
                     }
-                }]}
-             >
+                }]} >
             <Upload
                 fileList={fileList}
                 action={getSignedUrl}

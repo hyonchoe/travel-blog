@@ -102,10 +102,22 @@ const useS3Upload = (images) => {
             previewTitle: file.name || file.url.substring(file.url.lastIndexOf('/')+1),
         })
     }
+    const uploadInProgress = (curFileList) => {
+        let uploadInProgress = false
+        if(curFileList){
+            for(let i=0; i<curFileList.length; i++){
+                if(curFileList[i].status === 'uploading'){
+                    uploadInProgress = true
+                    break
+                }
+            }
+        }
+        return uploadInProgress
+    }
 
     return { previewInfo, fileList,
             previewCancel, showPreview, getS3SignedUrl,
-            upload, chkUploadUpdates, initialFileList, initialNameToUrlNameMap }
+            upload, chkUploadUpdates, initialFileList, initialNameToUrlNameMap, uploadInProgress }
 }
 
 /**
