@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PrivateRoute matches snapshot for add trips 1`] = `
+<Route
+  clearEditTrip={[MockFunction]}
+  editTrip={true}
+  path="/addTrip"
+  render={[Function]}
+/>
+`;
+
+exports[`PrivateRoute matches snapshot for my trips 1`] = `
+<Route
+  editTrip={[MockFunction]}
+  path="/myTrips"
+  render={[Function]}
+  showMyTrips={true}
+/>
+`;
