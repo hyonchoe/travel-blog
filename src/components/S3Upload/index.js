@@ -45,10 +45,6 @@ const S3Upload = (props) => {
         return signedUrl
     }
 
-    const uploadInProgressMsg = () => {
-        message.error('File upload is not completed yet.')
-    }
-
     const uploadLimit = 2
 
     return (
@@ -59,7 +55,7 @@ const S3Upload = (props) => {
             rules={[{
                 validator: (rule, value) => {
                         if (uploadInProgress(value.fileList)){
-                            uploadInProgressMsg()
+                            message.error('File upload is not completed yet.')
                             return Promise.reject('')
                             
                         }

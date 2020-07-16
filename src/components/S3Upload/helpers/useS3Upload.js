@@ -131,6 +131,10 @@ const useS3Upload = (images) => {
 */
 const getInitialImgValues = (images) => {
     let initialValues = []
+    if (!images){
+        return initialValues
+    } 
+
     images.forEach((img) => {
         initialValues.push({
             uid: img.fileUrlName,
@@ -143,8 +147,12 @@ const getInitialImgValues = (images) => {
     return initialValues
 }
 
-const getInitialNameToUrlMapping = (images) => {
+const getInitialNameToUrlMapping = (images) => {    
     let mapping = {}
+    if (!images){
+        return mapping
+    }
+
     images.forEach((img) => {
         mapping[img.fileUrlName] = { 
             name: img.name,
