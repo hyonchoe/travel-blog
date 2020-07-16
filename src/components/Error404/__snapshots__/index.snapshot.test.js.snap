@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Error404 matches snapshot 1`] = `
+<p
+  className="error"
+>
+  Page not found
+</p>
+`;
