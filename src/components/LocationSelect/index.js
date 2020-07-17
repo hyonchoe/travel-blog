@@ -2,47 +2,16 @@ import React, { useState } from 'react'
 import { Form, Input, Button, Modal } from 'antd'
 import { CloseCircleOutlined, PlusOutlined } from '@ant-design/icons'
 import MyMapContainer from '../MyMapContainer'
+import useMap from './helpers/useMap'
 import './style.css'
 
 const LocationSelect = (props) => {
-    const [markerLatLng, setMarkerLatLng] = useState({
-        lat: null,
-        lng: null,
-    })
-    const [mapCenter, setMapCenter] = useState({
-        // Default coordinate is New York, NY
-        lat: 40.730610,
-        lng: -73.935242,
-    })    
-    const [addr, setAddr] = useState({
-        city: '',
-        state: '',
-        country: '',
-        fmtAddr: '',
-    })
     const [modalVisible, setModalVisible] = useState(false)
     const [locFieldNameIndex, setLocFieldNameIndex] = useState(-1)
 
-    const getInitialMapCenter = () => {
-        return {
-            lat: 40.730610,
-            lng: -73.935242,
-        }
-    }
-    const getInitialAddr = () => {
-        return {
-            city: '',
-            state: '',
-            country: '',
-            fmtAddr: '',
-        }
-    }
-    const getInitialMarker = () => {
-        return {
-            lat: null,
-            lng: null,
-        }
-    }
+    const { mapCenter, markerLatLng, addr,
+            clearMapStates, setLocationData } = useMap()
+    
     const listName = props.listName
     const fmtAddrFldName = 'fmtAddr'
     const latLngFldName = 'latLng'
@@ -69,28 +38,14 @@ const LocationSelect = (props) => {
         }
         props.form.setFieldsValue({locationList: updatedValues})
 
-        setModalVisible(false)
         clearMapStates()
+        setModalVisible(false)
         setLocFieldNameIndex(-1)
     }
     const handleModalCancel = () => {
-        setModalVisible(false)
         clearMapStates()
+        setModalVisible(false)
         setLocFieldNameIndex(-1)
-    }
-    const onLocSelected = (locAddrInfo, locLatLngInfo) => {
-        setAddr(locAddrInfo)
-        setMarkerLatLng(locLatLngInfo)
-        setMapCenter(locLatLngInfo)
-    }
-    const clearMapStates = () => {
-        const resetAddr = getInitialAddr()
-        const resetMarker = getInitialMarker()
-        const resetMapCenter = getInitialMapCenter()
-
-        setAddr(resetAddr)
-        setMarkerLatLng(resetMarker)
-        setMapCenter(resetMapCenter)
     }
     const onButtonClicked = (locFieldIndex) => {
         setModalVisible(true)
@@ -189,7 +144,7 @@ const LocationSelect = (props) => {
                         mapCenterLng={mapCenter.lng}
                         markerLat={markerLatLng.lat}
                         markerLng={markerLatLng.lng}
-                        onLocSelected={onLocSelected} />
+                        onLocSelected={setLocationData} />
             </Modal>
         </div>
     )
