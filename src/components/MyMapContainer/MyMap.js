@@ -33,15 +33,16 @@ const MyMap = withScriptjs(withGoogleMap((props) =>{
     const parsedAddrInfo = getLocAddrInfo(addrComponents)
     const fmtAddr = place.formatted_address
 
-    const locAddrInfo = {}
-    locAddrInfo['city'] = parsedAddrInfo.city
-    locAddrInfo['state'] = parsedAddrInfo.state
-    locAddrInfo['country'] = parsedAddrInfo.country
-    locAddrInfo['fmtAddr'] = fmtAddr
-
-    const locLatLngInfo = {}
-    locLatLngInfo['lat'] = newLat
-    locLatLngInfo['lng'] = newLng
+    const locAddrInfo = {
+      city: parsedAddrInfo.city,
+      state: parsedAddrInfo.state,
+      country: parsedAddrInfo.country,
+      fmtAddr: fmtAddr
+    }
+    const locLatLngInfo = {
+      lat: newLat,
+      lng: newLng
+    }
 
     props.onLocSelected(locAddrInfo, locLatLngInfo)
   }
