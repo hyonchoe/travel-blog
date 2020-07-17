@@ -1,0 +1,191 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DisplayTrips matches snapshot for my trips 1`] = `
+<div
+  className="displayTripsContainer"
+>
+  <Memo(BackTop) />
+  <Row
+    gutter={
+      Array [
+        0,
+        8,
+      ]
+    }
+    justify="start"
+  >
+    <Col
+      span={2}
+    />
+    <Col
+      span={20}
+    >
+      <Title>
+        Your memorable travels and memories
+      </Title>
+    </Col>
+    <Col
+      span={2}
+    />
+  </Row>
+  <Row
+    gutter={
+      Array [
+        8,
+        16,
+      ]
+    }
+    justify="center"
+  >
+    <Col
+      span={4}
+    />
+    <Col
+      span={16}
+    >
+      <Skeleton
+        active={true}
+        avatar={false}
+        loading={true}
+        paragraph={true}
+        title={true}
+      />
+    </Col>
+    <Col
+      span={4}
+    />
+  </Row>
+  <Modal
+    bodyStyle={
+      Object {
+        "height": "500px",
+      }
+    }
+    confirmLoading={false}
+    footer={
+      Array [
+        <ForwardRef(InternalButton)
+          block={false}
+          ghost={false}
+          htmlType="button"
+          loading={false}
+          onClick={[Function]}
+          type="primary"
+        >
+          Close
+        </ForwardRef(InternalButton)>,
+      ]
+    }
+    maskClosable={false}
+    maskTransitionName="fade"
+    okType="primary"
+    onCancel={[Function]}
+    title="Trip locations"
+    transitionName="zoom"
+    visible={false}
+    width="500px"
+  >
+    <MyMapContainer
+      mapCenterLat={null}
+      mapCenterLng={null}
+      searchMode={false}
+      tripLocations={null}
+    />
+  </Modal>
+</div>
+`;
+
+exports[`DisplayTrips matches snapshot for public trips 1`] = `
+<div
+  className="displayTripsContainer"
+>
+  <Memo(BackTop) />
+  <Row
+    gutter={
+      Array [
+        0,
+        8,
+      ]
+    }
+    justify="start"
+  >
+    <Col
+      span={2}
+    />
+    <Col
+      span={20}
+    >
+      <Title>
+        Stories and footmarks from travelers in the world
+      </Title>
+    </Col>
+    <Col
+      span={2}
+    />
+  </Row>
+  <Row
+    gutter={
+      Array [
+        8,
+        16,
+      ]
+    }
+    justify="center"
+  >
+    <Col
+      span={4}
+    />
+    <Col
+      span={16}
+    >
+      <Skeleton
+        active={true}
+        avatar={false}
+        loading={true}
+        paragraph={true}
+        title={true}
+      />
+    </Col>
+    <Col
+      span={4}
+    />
+  </Row>
+  <Modal
+    bodyStyle={
+      Object {
+        "height": "500px",
+      }
+    }
+    confirmLoading={false}
+    footer={
+      Array [
+        <ForwardRef(InternalButton)
+          block={false}
+          ghost={false}
+          htmlType="button"
+          loading={false}
+          onClick={[Function]}
+          type="primary"
+        >
+          Close
+        </ForwardRef(InternalButton)>,
+      ]
+    }
+    maskClosable={false}
+    maskTransitionName="fade"
+    okType="primary"
+    onCancel={[Function]}
+    title="Trip locations"
+    transitionName="zoom"
+    visible={false}
+    width="500px"
+  >
+    <MyMapContainer
+      mapCenterLat={null}
+      mapCenterLng={null}
+      searchMode={false}
+      tripLocations={null}
+    />
+  </Modal>
+</div>
+`;

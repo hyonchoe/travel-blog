@@ -3,7 +3,7 @@ import { shallow } from 'enzyme'
 import LocationSelect from './'
 
 describe('LocationSelect', () => {
-    it('handles pop-up close on okay correctly', () => {
+    it('matches snapshot', () => {
         const dummyForm = {}
         const wrapper = shallow(
             <LocationSelect

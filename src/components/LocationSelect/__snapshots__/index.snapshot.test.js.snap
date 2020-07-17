@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`LocationSelect handles pop-up close on okay correctly 1`] = `
+exports[`LocationSelect matches snapshot 1`] = `
 <div>
   <FormList
     name="dummylistname"
