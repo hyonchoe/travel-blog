@@ -2,14 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { Button, Input, DatePicker, Checkbox, Form, Space, Spin, Row, Col, Typography  } from 'antd'
 import { Prompt } from 'react-router-dom'
 import history from '../../services/history'
-import { useAuth0 } from '@auth0/auth0-react'
 import LocationSelect from '../LocationSelect'
 import S3Upload from '../S3Upload'
-import tripService from '../../services/api'
+import useTripCreateUpdate from './helpers/useTripCreateUpdate'
 
 const EditTrip = props => {
     const [showNavPrompt, setShowNavPrompt] = useState(true)
-    const [savingInProgress, setSavingInProgress] = useState(false)
+    
     useEffect(() => {
         // For showing prompt on re-loading and closing window
         const handleUnload = (e) => {
@@ -27,7 +26,7 @@ const EditTrip = props => {
         }
     }, [])
 
-    const { getAccessTokenSilently, user } = useAuth0()
+    const { savingInProgress, createTrip, updateTrip } = useTripCreateUpdate()
 
     const listName = 'locationList'
     const latLngDelim = ','
@@ -122,26 +121,19 @@ const EditTrip = props => {
         props.clearEditTrip()
         history.push('/myTrips')
     }
-    const handleSubmit = async (trip) => {
-        setSavingInProgress(true)
-        trip.userName = user.given_name
-        trip.userEmail = user.email
-        const res = await tripService.submitNewTrip(trip, getAccessTokenSilently)
 
-        setSavingInProgress(false)
+    const handleSubmit = async (trip) => {
+        const res = await createTrip(trip)
         if(res){
             setShowNavPrompt(false)
             history.push('/myTrips')
         }
     }
     const handleUpdate = async (updatedTrip, tripId) => {
-        setSavingInProgress(true)
-
-        await tripService.updateTrip(updatedTrip, tripId, getAccessTokenSilently)
+        await updateTrip(updatedTrip, tripId)
+        
         props.clearEditTrip()
-        setSavingInProgress(false)
         setShowNavPrompt(false)
-
         history.push('/myTrips')
     }
     

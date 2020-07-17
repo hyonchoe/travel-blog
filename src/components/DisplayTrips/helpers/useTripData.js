@@ -5,7 +5,7 @@ import tripService from '../../../services/api'
 const useTripData = (showMyTrips) => {
   const displayLimit = 10
 
-  const { getAccessTokenSilently } = useAuth0()  
+  const { getAccessTokenSilently } = useAuth0()
   
   const [tripList, setTripList] = useState({
         trips: [],
