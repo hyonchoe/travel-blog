@@ -1,4 +1,4 @@
-const addrTypes = {
+export const addrTypes = {
     city: 'locality',
     state: 'administrative_area_level_1',
     country: 'country',
