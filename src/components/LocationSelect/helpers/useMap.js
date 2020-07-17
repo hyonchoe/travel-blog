@@ -53,6 +53,7 @@ const useMap = () => {
     }
 
     return { mapCenter, markerLatLng, addr,
+            getInitialAddr, getInitialMapCenter, getInitialMarker,
             clearMapStates, setLocationData }
 }
 

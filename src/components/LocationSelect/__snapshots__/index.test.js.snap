@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LocationSelect handles pop-up close on okay correctly 1`] = `
+<div>
+  <FormList
+    name="dummylistname"
+  >
+    <Component />
+  </FormList>
+  <Modal
+    bodyStyle={
+      Object {
+        "height": "550px",
+      }
+    }
+    confirmLoading={false}
+    destroyOnClose={true}
+    maskClosable={false}
+    maskTransitionName="fade"
+    okButtonProps={
+      Object {
+        "disabled": true,
+      }
+    }
+    okType="primary"
+    onCancel={[Function]}
+    onOk={[Function]}
+    title="Search your trip location"
+    transitionName="zoom"
+    visible={false}
+    width="500px"
+  >
+    <MyMapContainer
+      mapCenterLat={40.73061}
+      mapCenterLng={-73.935242}
+      markerLat={null}
+      markerLng={null}
+      onLocSelected={[Function]}
+      searchMode={true}
+      tripLocations={null}
+    />
+  </Modal>
+</div>
+`;
