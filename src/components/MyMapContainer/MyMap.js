@@ -1,25 +1,9 @@
 import React from "react";
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps";
 import Autocomplete from 'react-google-autocomplete'
+import { getLocAddrInfo } from './helpers/mapUtils'
 
 const MyMap = withScriptjs(withGoogleMap((props) =>{
-
-  const addrTypes = {
-    city: 'locality',
-    state: 'administrative_area_level_1',
-    country: 'country',
-  }
-
-  const findSpecificAddrComp = (addrComponents, target) => {
-    for (let i=0; i<addrComponents.length; i++){
-      const comp = addrComponents[i]
-      const found = comp.types.find( val => (val === target))
-      if (found){
-        return (target !== addrTypes.state) ? comp.long_name : comp.short_name
-      }      
-    }
-    return ''
-  }
 
   const createMarkers = (tripLocations) => {
     const latLngs = []
@@ -46,15 +30,13 @@ const MyMap = withScriptjs(withGoogleMap((props) =>{
     const newLat = latLngInfo.lat()
     const newLng = latLngInfo.lng()
   
-    const city = findSpecificAddrComp(addrComponents, addrTypes.city)
-    const state = findSpecificAddrComp(addrComponents, addrTypes.state)
-    const country = findSpecificAddrComp(addrComponents, addrTypes.country)
+    const parsedAddrInfo = getLocAddrInfo(addrComponents)
     const fmtAddr = place.formatted_address
 
     const locAddrInfo = {}
-    locAddrInfo['city'] = city
-    locAddrInfo['state'] = state
-    locAddrInfo['country'] = country
+    locAddrInfo['city'] = parsedAddrInfo.city
+    locAddrInfo['state'] = parsedAddrInfo.state
+    locAddrInfo['country'] = parsedAddrInfo.country
     locAddrInfo['fmtAddr'] = fmtAddr
 
     const locLatLngInfo = {}
@@ -81,8 +63,7 @@ const MyMap = withScriptjs(withGoogleMap((props) =>{
       <div>
         <GoogleMap
           defaultZoom={zoomLevel}
-          center={ { lat: props.mapCenterLat, lng: props.mapCenterLng } }
-          >
+          center={ { lat: props.mapCenterLat, lng: props.mapCenterLng } } >
             {markers}
         </GoogleMap>        
         {props.searchMode &&
@@ -95,8 +76,7 @@ const MyMap = withScriptjs(withGoogleMap((props) =>{
             marginBottom: '2px'
           }}
           onPlaceSelected = { onPlaceSelected }
-          types={['(regions)']}
-        />
+          types={['(regions)']} />
         }
       </div>
     );
