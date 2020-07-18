@@ -5,3 +5,7 @@
 .userInfo {
     margin-right: 10px;
 }
+
+.collapsedMenu {
+    float: right;
+}
