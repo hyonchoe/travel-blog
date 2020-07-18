@@ -159,7 +159,7 @@ const EditTrip = props => {
                 justify="start" >
                 <Col span={4}/>
                 <Col span={16}>
-                <Typography.Title>{greetingMsg((existingTrip) ? true:  false)}</Typography.Title>
+                    <Typography.Title>{greetingMsg((existingTrip) ? true:  false)}</Typography.Title>
                 </Col>
                 <Col span={4}/>
             </Row>

@@ -1,0 +1,475 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EditTrip matches snapshot for creating new trip 1`] = `
+<Spin
+  size="default"
+  spinning={false}
+  tip="Submitting the trip"
+  wrapperClassName=""
+>
+  <Prompt
+    message="You may have unsaved changes, are you sure you want to leave the page?"
+    when={true}
+  />
+  <Row
+    gutter={
+      Array [
+        0,
+        8,
+      ]
+    }
+    justify="start"
+  >
+    <Col
+      span={4}
+    />
+    <Col
+      span={16}
+    >
+      <Title>
+        It's time to put one down in the books
+      </Title>
+    </Col>
+    <Col
+      span={4}
+    />
+  </Row>
+  <ForwardRef(InternalForm)
+    form={
+      Object {
+        "__INTERNAL__": Object {},
+        "getFieldError": [Function],
+        "getFieldValue": [Function],
+        "getFieldsError": [Function],
+        "getFieldsValue": [Function],
+        "getInternalHooks": [Function],
+        "isFieldTouched": [Function],
+        "isFieldValidating": [Function],
+        "isFieldsTouched": [Function],
+        "isFieldsValidating": [Function],
+        "resetFields": [Function],
+        "scrollToField": [Function],
+        "setFields": [Function],
+        "setFieldsValue": [Function],
+        "submit": [Function],
+        "validateFields": [Function],
+      }
+    }
+    initialValues={Object {}}
+    labelCol={
+      Object {
+        "span": 8,
+      }
+    }
+    layout="horizontal"
+    onFinish={[Function]}
+    wrapperCol={
+      Object {
+        "span": 10,
+      }
+    }
+  >
+    <FormItem
+      label="Trip Title"
+      name="title"
+      rules={
+        Array [
+          Object {
+            "message": "Please input your trip title.",
+            "required": true,
+          },
+        ]
+      }
+    >
+      <Input
+        type="text"
+      />
+    </FormItem>
+    <FormItem
+      label="Date of Trip"
+      name="dates"
+      rules={
+        Array [
+          Object {
+            "message": "Please input your trip date.",
+            "required": true,
+          },
+        ]
+      }
+    >
+      <RangePicker
+        allowClear={true}
+      />
+    </FormItem>
+    <FormItem
+      name="public"
+      valuePropName="checked"
+      wrapperCol={
+        Object {
+          "offset": 8,
+          "span": 12,
+        }
+      }
+    >
+      <Checkbox
+        indeterminate={false}
+      >
+        Allow public access
+      </Checkbox>
+    </FormItem>
+    <FormItem
+      label="Details"
+      name="details"
+      rules={
+        Array [
+          Object {
+            "message": "Pleaes input your trip details.",
+            "required": true,
+          },
+        ]
+      }
+    >
+      <TextArea
+        autoSize={
+          Object {
+            "maxRows": 20,
+            "minRows": 4,
+          }
+        }
+      />
+    </FormItem>
+    <LocationSelect
+      form={
+        Object {
+          "__INTERNAL__": Object {},
+          "getFieldError": [Function],
+          "getFieldValue": [Function],
+          "getFieldsError": [Function],
+          "getFieldsValue": [Function],
+          "getInternalHooks": [Function],
+          "isFieldTouched": [Function],
+          "isFieldValidating": [Function],
+          "isFieldsTouched": [Function],
+          "isFieldsValidating": [Function],
+          "resetFields": [Function],
+          "scrollToField": [Function],
+          "setFields": [Function],
+          "setFieldsValue": [Function],
+          "submit": [Function],
+          "validateFields": [Function],
+        }
+      }
+      latLngDelim=","
+      listName="locationList"
+    />
+    <S3Upload
+      fieldName="files"
+      form={
+        Object {
+          "__INTERNAL__": Object {},
+          "getFieldError": [Function],
+          "getFieldValue": [Function],
+          "getFieldsError": [Function],
+          "getFieldsValue": [Function],
+          "getInternalHooks": [Function],
+          "isFieldTouched": [Function],
+          "isFieldValidating": [Function],
+          "isFieldsTouched": [Function],
+          "isFieldsValidating": [Function],
+          "resetFields": [Function],
+          "scrollToField": [Function],
+          "setFields": [Function],
+          "setFieldsValue": [Function],
+          "submit": [Function],
+          "validateFields": [Function],
+        }
+      }
+      images={Array []}
+    />
+    <FormItem
+      wrapperCol={
+        Object {
+          "offset": 8,
+          "span": 12,
+        }
+      }
+    >
+      <Space>
+        <Button
+          block={false}
+          ghost={false}
+          htmlType="submit"
+          loading={false}
+          type="primary"
+        >
+          Submit
+        </Button>
+        <Button
+          block={false}
+          ghost={false}
+          htmlType="button"
+          loading={false}
+          onClick={[Function]}
+          type="link"
+        >
+          Cancel
+        </Button>
+      </Space>
+    </FormItem>
+  </ForwardRef(InternalForm)>
+</Spin>
+`;
+
+exports[`EditTrip matches snapshot for editing existing trip 1`] = `
+<Spin
+  size="default"
+  spinning={false}
+  tip="Updating the trip"
+  wrapperClassName=""
+>
+  <Prompt
+    message="You may have unsaved changes, are you sure you want to leave the page?"
+    when={true}
+  />
+  <Row
+    gutter={
+      Array [
+        0,
+        8,
+      ]
+    }
+    justify="start"
+  >
+    <Col
+      span={4}
+    />
+    <Col
+      span={16}
+    >
+      <Title>
+        What has changed?
+      </Title>
+    </Col>
+    <Col
+      span={4}
+    />
+  </Row>
+  <ForwardRef(InternalForm)
+    form={
+      Object {
+        "__INTERNAL__": Object {},
+        "getFieldError": [Function],
+        "getFieldValue": [Function],
+        "getFieldsError": [Function],
+        "getFieldsValue": [Function],
+        "getInternalHooks": [Function],
+        "isFieldTouched": [Function],
+        "isFieldValidating": [Function],
+        "isFieldsTouched": [Function],
+        "isFieldsValidating": [Function],
+        "resetFields": [Function],
+        "scrollToField": [Function],
+        "setFields": [Function],
+        "setFieldsValue": [Function],
+        "submit": [Function],
+        "validateFields": [Function],
+      }
+    }
+    initialValues={
+      Object {
+        "dates": Array [
+          "2020-07-01T05:00:00.000Z",
+          "2020-07-04T05:00:00.000Z",
+        ],
+        "details": "dummydetails",
+        "locationList": Array [
+          Object {
+            "city": "dummycity1",
+            "country": "dummycountry1",
+            "fmtAddr": "dummyfmtaddr1",
+            "latLng": "1,1",
+            "state": "dummystate1",
+          },
+          Object {
+            "city": "dummycity2",
+            "country": "dummycountry2",
+            "fmtAddr": "dummyfmtaddr2",
+            "latLng": "2,2",
+            "state": "dummystate2",
+          },
+        ],
+        "public": true,
+        "title": "dummytitle",
+      }
+    }
+    labelCol={
+      Object {
+        "span": 8,
+      }
+    }
+    layout="horizontal"
+    onFinish={[Function]}
+    wrapperCol={
+      Object {
+        "span": 10,
+      }
+    }
+  >
+    <FormItem
+      label="Trip Title"
+      name="title"
+      rules={
+        Array [
+          Object {
+            "message": "Please input your trip title.",
+            "required": true,
+          },
+        ]
+      }
+    >
+      <Input
+        type="text"
+      />
+    </FormItem>
+    <FormItem
+      label="Date of Trip"
+      name="dates"
+      rules={
+        Array [
+          Object {
+            "message": "Please input your trip date.",
+            "required": true,
+          },
+        ]
+      }
+    >
+      <RangePicker
+        allowClear={true}
+      />
+    </FormItem>
+    <FormItem
+      name="public"
+      valuePropName="checked"
+      wrapperCol={
+        Object {
+          "offset": 8,
+          "span": 12,
+        }
+      }
+    >
+      <Checkbox
+        indeterminate={false}
+      >
+        Allow public access
+      </Checkbox>
+    </FormItem>
+    <FormItem
+      label="Details"
+      name="details"
+      rules={
+        Array [
+          Object {
+            "message": "Pleaes input your trip details.",
+            "required": true,
+          },
+        ]
+      }
+    >
+      <TextArea
+        autoSize={
+          Object {
+            "maxRows": 20,
+            "minRows": 4,
+          }
+        }
+      />
+    </FormItem>
+    <LocationSelect
+      form={
+        Object {
+          "__INTERNAL__": Object {},
+          "getFieldError": [Function],
+          "getFieldValue": [Function],
+          "getFieldsError": [Function],
+          "getFieldsValue": [Function],
+          "getInternalHooks": [Function],
+          "isFieldTouched": [Function],
+          "isFieldValidating": [Function],
+          "isFieldsTouched": [Function],
+          "isFieldsValidating": [Function],
+          "resetFields": [Function],
+          "scrollToField": [Function],
+          "setFields": [Function],
+          "setFieldsValue": [Function],
+          "submit": [Function],
+          "validateFields": [Function],
+        }
+      }
+      latLngDelim=","
+      listName="locationList"
+    />
+    <S3Upload
+      fieldName="files"
+      form={
+        Object {
+          "__INTERNAL__": Object {},
+          "getFieldError": [Function],
+          "getFieldValue": [Function],
+          "getFieldsError": [Function],
+          "getFieldsValue": [Function],
+          "getInternalHooks": [Function],
+          "isFieldTouched": [Function],
+          "isFieldValidating": [Function],
+          "isFieldsTouched": [Function],
+          "isFieldsValidating": [Function],
+          "resetFields": [Function],
+          "scrollToField": [Function],
+          "setFields": [Function],
+          "setFieldsValue": [Function],
+          "submit": [Function],
+          "validateFields": [Function],
+        }
+      }
+      images={
+        Array [
+          Object {
+            "S3Url": "dummys3url",
+            "fileUrlName": "dummyurlname",
+            "name": "dummyname",
+          },
+        ]
+      }
+    />
+    <FormItem
+      wrapperCol={
+        Object {
+          "offset": 8,
+          "span": 12,
+        }
+      }
+    >
+      <Space>
+        <Button
+          block={false}
+          ghost={false}
+          htmlType="submit"
+          loading={false}
+          type="primary"
+        >
+          Update
+        </Button>
+        <Button
+          block={false}
+          ghost={false}
+          htmlType="button"
+          loading={false}
+          onClick={[Function]}
+          type="link"
+        >
+          Cancel
+        </Button>
+      </Space>
+    </FormItem>
+  </ForwardRef(InternalForm)>
+</Spin>
+`;
