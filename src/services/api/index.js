@@ -86,11 +86,8 @@ export default {
     },
 
     uploadToS3: async (file, signedUrl) => {
-        console.log(file)
-        console.log(signedUrl)
         try{
             let res = await axios.put(`/uploadToS3`, file)
-            console.log(res)
         } catch (error) {
             console.log(error)
         }
