@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App matches snapshot 1`] = `
+<div
+  className="appContainer"
+>
+  <Router
+    history={
+      Object {
+        "action": "POP",
+        "block": [Function],
+        "createHref": [Function],
+        "go": [Function],
+        "goBack": [Function],
+        "goForward": [Function],
+        "length": 1,
+        "listen": [Function],
+        "location": Object {
+          "hash": "",
+          "pathname": "/",
+          "search": "",
+          "state": undefined,
+        },
+        "push": [Function],
+        "replace": [Function],
+      }
+    }
+  >
+    <Layout
+      className="appLayout"
+    >
+      <Header
+        className="appHeader"
+      >
+        <NavBar />
+      </Header>
+      <Content
+        className="appContent"
+      >
+        <Switch>
+          <Route
+            exact={true}
+            path="/"
+          >
+            <DisplayTrips
+              editTrip={[Function]}
+              showMyTrips={false}
+            />
+          </Route>
+          <PrivateRoute
+            component={[Function]}
+            editTrip={[Function]}
+            path="/myTrips"
+            showMyTrips={true}
+          />
+          <PrivateRoute
+            clearEditTrip={[Function]}
+            component={[Function]}
+            editTrip={null}
+            path="/addTrip"
+          />
+          <Route
+            component={[Function]}
+          />
+        </Switch>
+      </Content>
+      <Footer
+        className="appFooter"
+      >
+        <span
+          className="footerWord"
+        >
+          Travel
+        </span>
+        <span
+          className="footerWord"
+        >
+          Explore
+        </span>
+        <span
+          className="footerWord"
+        >
+          Learn
+        </span>
+        <span
+          className="footerWord"
+        >
+          Remember
+        </span>
+      </Footer>
+    </Layout>
+  </Router>
+</div>
+`;
