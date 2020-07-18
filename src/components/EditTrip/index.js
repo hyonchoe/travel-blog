@@ -28,6 +28,8 @@ const EditTrip = props => {
 
     const { savingInProgress, createTrip, updateTrip } = useTripCreateUpdate()
 
+    const titleMaxLength = 40
+    const detailsMaxLength = 1000
     const listName = 'locationList'
     const latLngDelim = ','
     const uploadFldName = 'files'
@@ -178,7 +180,7 @@ const EditTrip = props => {
                                 message: 'Please input your trip title.',
                             },
                         ]} >
-                        <Input />
+                        <Input maxLength={titleMaxLength} />
                     </Form.Item>
 
                     <Form.Item
@@ -211,7 +213,8 @@ const EditTrip = props => {
                             },
                         ]} >
                         <Input.TextArea
-                            autoSize={ {minRows:4, maxRows:20} } />
+                            autoSize={ {minRows:4, maxRows:20} }
+                            maxLength={detailsMaxLength} />
                     </Form.Item>
 
                     <LocationSelect
