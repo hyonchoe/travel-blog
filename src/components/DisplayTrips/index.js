@@ -51,16 +51,44 @@ const DisplayTrips = (props) => {
       mapCenterLng = modalMap.tripLocations[0].latLng[1]
     }
     const userId = (isAuthenticated) ? user.sub : ''
+    const msgColLayoutSides = {
+      xs: { span: 0 },
+      md: { span: 2 },
+      lg: { span: 3 },
+      xl: { span: 4 },
+      xxl: { span: 5 }
+    }
+    const msgColLayoutContent = {
+      xs: { span: 24 },
+      md: { span: 20 },
+      lg: { span: 18 },
+      xl: { span: 16 },
+      xxl: { span: 14 }
+    }
+    const tripListColLayoutSides = {
+      xs: { span: 0 },
+      md: { span: 3 },
+      lg: { span: 4 },
+      xl: { span: 5 },
+      xxl: { span: 6 }
+    }
+    const tripListColLayoutContent = {
+      xs: { span: 24 },
+      md: { span: 18 },
+      lg: { span: 16 },
+      xl: { span: 14 },
+      xxl: { span: 12 }
+    }
 
     const loadMoreButton = (!tripList.loadingData && !tripList.noMoreRecords) ? 
-                              (<div style={{ textAlign: 'center', marginTop: 12, }} >
+                              (<div style={{ textAlign: 'center' }} >
                                 <Button onClick={onLoadMoreClicked}>Load more</Button>
                               </div>)
                               : null
     const tripCard = (item, itemRef) =>
                               (<div ref={itemRef} className="tripContainer">
                                 { item.placeholder && 
-                                <div style={{ textAlign: 'center', }} >
+                                <div style={{ textAlign: 'center' }} >
                                   <Button onClick={reloadTripData}>Trips removed from display. Click to refresh the feed</Button>
                                 </div>
                                 }
@@ -82,18 +110,18 @@ const DisplayTrips = (props) => {
           <Row
             gutter={[0, 8]}
             justify="start" >
-            <Col span={2} />
-            <Col span={20}>
+            <Col {...msgColLayoutSides} />
+            <Col {...msgColLayoutContent} >
               <Typography.Title>{greetingMsg(showMyTrips)}</Typography.Title>
             </Col>
-            <Col span={2} />
+            <Col {...msgColLayoutSides} />
           </Row>
 
           <Row
-            gutter={[8, 16]}
+            gutter={[0, 8]}
             justify="center" >
-            <Col span={4} />
-            <Col span={16}>
+            <Col {...tripListColLayoutSides} />
+            <Col {...tripListColLayoutContent} >
               { !showMyTrips && tripList.trips.length > 0 && 
               <List
                 itemLayout="vertical"
@@ -134,7 +162,7 @@ const DisplayTrips = (props) => {
               <Empty />
               }
             </Col>
-            <Col span={4} />
+            <Col {...tripListColLayoutSides} />
           </Row>
         <Modal
           title='Trip locations'
