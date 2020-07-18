@@ -84,14 +84,6 @@ export default {
             return null
         }
     },
-
-    uploadToS3: async (file, signedUrl) => {
-        try{
-            let res = await axios.put(`/uploadToS3`, file)
-        } catch (error) {
-            console.log(error)
-        }
-    }
 }
 
 const createTripErrMsg = 'Unable to create trip due to error'
