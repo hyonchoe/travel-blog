@@ -82,6 +82,7 @@ exports[`EditTrip matches snapshot for creating new trip 1`] = `
       }
     >
       <Input
+        maxLength={40}
         type="text"
       />
     </FormItem>
@@ -136,6 +137,7 @@ exports[`EditTrip matches snapshot for creating new trip 1`] = `
             "minRows": 4,
           }
         }
+        maxLength={1000}
       />
     </FormItem>
     <LocationSelect
@@ -328,6 +330,7 @@ exports[`EditTrip matches snapshot for editing existing trip 1`] = `
       }
     >
       <Input
+        maxLength={40}
         type="text"
       />
     </FormItem>
@@ -382,6 +385,7 @@ exports[`EditTrip matches snapshot for editing existing trip 1`] = `
             "minRows": 4,
           }
         }
+        maxLength={1000}
       />
     </FormItem>
     <LocationSelect

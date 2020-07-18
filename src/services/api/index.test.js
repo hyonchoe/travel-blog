@@ -8,7 +8,8 @@ describe('API is calling correct axios HTTP methods with route', () => {
         headers: { 'Authorization': 'Bearer dummytoken' } 
     }
     beforeEach(() => {
-        axios.get = jest.fn()
+        const dummyData = []
+        axios.get = jest.fn().mockResolvedValue({ data: dummyData })
         axios.post = jest.fn()
         axios.put = jest.fn()
         axios.delete = jest.fn()

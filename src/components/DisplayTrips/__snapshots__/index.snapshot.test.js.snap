@@ -15,33 +15,153 @@ exports[`DisplayTrips matches snapshot for my trips 1`] = `
     justify="start"
   >
     <Col
-      span={2}
+      lg={
+        Object {
+          "span": 3,
+        }
+      }
+      md={
+        Object {
+          "span": 2,
+        }
+      }
+      xl={
+        Object {
+          "span": 4,
+        }
+      }
+      xs={
+        Object {
+          "span": 0,
+        }
+      }
+      xxl={
+        Object {
+          "span": 5,
+        }
+      }
     />
     <Col
-      span={20}
+      lg={
+        Object {
+          "span": 18,
+        }
+      }
+      md={
+        Object {
+          "span": 20,
+        }
+      }
+      xl={
+        Object {
+          "span": 16,
+        }
+      }
+      xs={
+        Object {
+          "span": 24,
+        }
+      }
+      xxl={
+        Object {
+          "span": 14,
+        }
+      }
     >
       <Title>
         Your memorable travels and memories
       </Title>
     </Col>
     <Col
-      span={2}
+      lg={
+        Object {
+          "span": 3,
+        }
+      }
+      md={
+        Object {
+          "span": 2,
+        }
+      }
+      xl={
+        Object {
+          "span": 4,
+        }
+      }
+      xs={
+        Object {
+          "span": 0,
+        }
+      }
+      xxl={
+        Object {
+          "span": 5,
+        }
+      }
     />
   </Row>
   <Row
     gutter={
       Array [
+        0,
         8,
-        16,
       ]
     }
     justify="center"
   >
     <Col
-      span={4}
+      lg={
+        Object {
+          "span": 4,
+        }
+      }
+      md={
+        Object {
+          "span": 3,
+        }
+      }
+      xl={
+        Object {
+          "span": 5,
+        }
+      }
+      xs={
+        Object {
+          "span": 0,
+        }
+      }
+      xxl={
+        Object {
+          "span": 6,
+        }
+      }
     />
     <Col
-      span={16}
+      lg={
+        Object {
+          "span": 16,
+        }
+      }
+      md={
+        Object {
+          "span": 18,
+        }
+      }
+      xl={
+        Object {
+          "span": 14,
+        }
+      }
+      xs={
+        Object {
+          "span": 24,
+        }
+      }
+      xxl={
+        Object {
+          "span": 12,
+        }
+      }
     >
       <Skeleton
         active={true}
@@ -52,7 +172,31 @@ exports[`DisplayTrips matches snapshot for my trips 1`] = `
       />
     </Col>
     <Col
-      span={4}
+      lg={
+        Object {
+          "span": 4,
+        }
+      }
+      md={
+        Object {
+          "span": 3,
+        }
+      }
+      xl={
+        Object {
+          "span": 5,
+        }
+      }
+      xs={
+        Object {
+          "span": 0,
+        }
+      }
+      xxl={
+        Object {
+          "span": 6,
+        }
+      }
     />
   </Row>
   <Modal
@@ -110,33 +254,153 @@ exports[`DisplayTrips matches snapshot for public trips 1`] = `
     justify="start"
   >
     <Col
-      span={2}
+      lg={
+        Object {
+          "span": 3,
+        }
+      }
+      md={
+        Object {
+          "span": 2,
+        }
+      }
+      xl={
+        Object {
+          "span": 4,
+        }
+      }
+      xs={
+        Object {
+          "span": 0,
+        }
+      }
+      xxl={
+        Object {
+          "span": 5,
+        }
+      }
     />
     <Col
-      span={20}
+      lg={
+        Object {
+          "span": 18,
+        }
+      }
+      md={
+        Object {
+          "span": 20,
+        }
+      }
+      xl={
+        Object {
+          "span": 16,
+        }
+      }
+      xs={
+        Object {
+          "span": 24,
+        }
+      }
+      xxl={
+        Object {
+          "span": 14,
+        }
+      }
     >
       <Title>
         Stories and footmarks from travelers in the world
       </Title>
     </Col>
     <Col
-      span={2}
+      lg={
+        Object {
+          "span": 3,
+        }
+      }
+      md={
+        Object {
+          "span": 2,
+        }
+      }
+      xl={
+        Object {
+          "span": 4,
+        }
+      }
+      xs={
+        Object {
+          "span": 0,
+        }
+      }
+      xxl={
+        Object {
+          "span": 5,
+        }
+      }
     />
   </Row>
   <Row
     gutter={
       Array [
+        0,
         8,
-        16,
       ]
     }
     justify="center"
   >
     <Col
-      span={4}
+      lg={
+        Object {
+          "span": 4,
+        }
+      }
+      md={
+        Object {
+          "span": 3,
+        }
+      }
+      xl={
+        Object {
+          "span": 5,
+        }
+      }
+      xs={
+        Object {
+          "span": 0,
+        }
+      }
+      xxl={
+        Object {
+          "span": 6,
+        }
+      }
     />
     <Col
-      span={16}
+      lg={
+        Object {
+          "span": 16,
+        }
+      }
+      md={
+        Object {
+          "span": 18,
+        }
+      }
+      xl={
+        Object {
+          "span": 14,
+        }
+      }
+      xs={
+        Object {
+          "span": 24,
+        }
+      }
+      xxl={
+        Object {
+          "span": 12,
+        }
+      }
     >
       <Skeleton
         active={true}
@@ -147,7 +411,31 @@ exports[`DisplayTrips matches snapshot for public trips 1`] = `
       />
     </Col>
     <Col
-      span={4}
+      lg={
+        Object {
+          "span": 4,
+        }
+      }
+      md={
+        Object {
+          "span": 3,
+        }
+      }
+      xl={
+        Object {
+          "span": 5,
+        }
+      }
+      xs={
+        Object {
+          "span": 0,
+        }
+      }
+      xxl={
+        Object {
+          "span": 6,
+        }
+      }
     />
   </Row>
   <Modal
