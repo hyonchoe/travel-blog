@@ -6,7 +6,6 @@ import { MenuOutlined } from '@ant-design/icons'
 import useWindowDimensions from './useWindowDimensions'
 import './style.css'
 
-
 const breakingPointMd = 768
 
 const NavBar = () =>{
@@ -15,27 +14,14 @@ const NavBar = () =>{
     const { windowWidth } = useWindowDimensions()
     const collapsed = useCollapsedMenu(windowWidth)
 
-    const UserMenuItem = () => {
-        if (collapsed){
-            return (
-            <Menu.Item>
-                {!isAuthenticated && (
-                    <Button onClick={()=>loginWithPopup()}>Log in</Button>
-                )}
-                {isAuthenticated && (
-                    <Button onClick={()=>logout()}>Log out</Button>
-                )}
-            </Menu.Item>               
-            )
-        }
-       
+    const UserMenuItem = () => {       
         return (
             <Menu.Item
-                className="userMenus" >
+                className={ (collapsed) ? "" : "userMenus"} >
                 {!isAuthenticated && (
                     <Button onClick={()=>loginWithPopup()}>Log in</Button>
                 )}
-                {isAuthenticated &&  (
+                {isAuthenticated && !collapsed && (
                 UserNameSpan()
                 )}
                 {isAuthenticated && (
