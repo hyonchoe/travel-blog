@@ -1,9 +1,8 @@
 import React from 'react'
 import { Card } from 'antd'
-import './style.css'
-
 import { LocationSpans, TravelerName, CardTitle, TripTabContent, TripDates, getCardActions } from './helpers/tripComponents'
 import useTripTabs from './helpers/useTripTabs'
+import './style.css'
 
 const Trip = (props) => {
     const { tabState, onTabChange, getTabList } = useTripTabs()

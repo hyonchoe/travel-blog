@@ -1,8 +1,8 @@
 import React from 'react'
 import { Typography, Tooltip, Popconfirm } from 'antd'
 import { LockOutlined, GlobalOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons'
-import PictureCarousel from '../../PictureCarousel'
 import { journalKey, imageKey } from './useTripTabs'
+import PictureCarousel from '../../PictureCarousel'
 import { onGlobeClicked, popoverConfirm, popoverCancel, showDeleteConfirm } from './cardActions'
     
 export const LocationSpans = (locations, cssStyle) => {

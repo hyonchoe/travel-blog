@@ -7,7 +7,7 @@ import { checkIsMyTrip } from './'
 import Trip from './'
 import * as cardActionsModule from './helpers/cardActions'
 
-describe('Trip is ', () => {
+describe('Trip is', () => {
     const myId = 'myid'
     const otherUserId = 'otherid'
 
@@ -40,7 +40,6 @@ describe('Trip card', () => {
         locations: [{fmtAddr: 'dummyaddr'}],
         images: [],
     }
-    
     const tripProps = {
         isAuthenticated: true,
         userId: 'dummyuserid',
