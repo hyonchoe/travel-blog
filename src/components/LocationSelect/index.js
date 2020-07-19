@@ -19,31 +19,8 @@ const LocationSelect = (props) => {
     const stateFldName = 'state'
     const countryFldName = 'country'
     const maxLocationCount = 5
-    const layout = {
-        labelCol: {
-            sm: { span: 5 },
-            md: { offset: 0, span: 5 },
-            lg: { offset: 1, span: 5 },
-            xl: { offset: 2, span: 5 },
-            xxl: { offset: 3, span: 5 },
-        },
-        wrapperCol: {
-            sm: { span: 19 },
-            md: { span: 16 },
-            lg: { span: 12 },
-            xl: { span: 10 },
-            xxl: { span: 8 },
-        }
-    }
-    const tailLayout = {
-        wrapperCol: {
-            sm: { offset: 5 , span: 19 },
-            md: { offset: 5 , span: 16 },
-            lg: { offset: 6, span: 12 },
-            xl: { offset: 7, span: 10 },
-            xxl: { offset: 8, span: 8 },
-        }
-    }
+    const layout = props.layouts.layout
+    const tailLayout = props.layouts.tailLayout
 
     const handleModalOk = () => {
         const updatedValues = props.form.getFieldValue(listName).slice()

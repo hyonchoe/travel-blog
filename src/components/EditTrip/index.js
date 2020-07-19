@@ -202,7 +202,6 @@ const EditTrip = props => {
             </Row>
             <Form
                 form={form}
-                //{...layout}
                 {...formLayout}
                 initialValues={getInitialFormValues(existingTrip)}
                 layout="horizontal"
@@ -233,7 +232,6 @@ const EditTrip = props => {
                     </Form.Item>
 
                     <Form.Item
-                        //{...tailLayout}
                         {...formTailLayout}
                         name="public"
                         valuePropName="checked" >
@@ -256,6 +254,7 @@ const EditTrip = props => {
 
                     <LocationSelect
                         form={form}
+                        layouts={{ layout: formLayout, tailLayout: formTailLayout }}
                         listName={listName}
                         latLngDelim={latLngDelim} />
 
@@ -265,7 +264,6 @@ const EditTrip = props => {
                         images={existingImages} />
 
                     <Form.Item
-                        //{...tailLayout}
                         {...formTailLayout} >
                             <Space>
                                 <Button type="primary" htmlType="submit">{btnName}</Button>
