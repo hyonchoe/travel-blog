@@ -3,7 +3,7 @@ import { testHook } from '../../../testUtils'
 import useWindowDimensions from './useWindowDimensions'
 
 let useWinDimenHook
-describe('useWindowDimensions()' , () => {
+describe('useWindowDimensions()', () => {
     beforeEach(() => {
         testHook(() => {
             useWinDimenHook = useWindowDimensions()

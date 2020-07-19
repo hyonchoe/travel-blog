@@ -5,7 +5,6 @@ import PrivateRoute from './'
 describe('PrivateRoute', () => {
     const dummyComponent = (<div className='dummy'></div>)
     
-    
     it('matches snapshot for my trips', () => {
         const handleEditTrip = jest.fn()
         const wrapper = shallow(

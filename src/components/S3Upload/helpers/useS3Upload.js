@@ -4,6 +4,7 @@ import { useAuth0 } from '@auth0/auth0-react'
 import tripService from '../../../services/api'
 
 const useS3Upload = (images) => {
+    const { getAccessTokenSilently } = useAuth0()
     const myImage = useRef('')
     const [fileReader, setFileReader] = useState(new FileReader())
     const [fileList, setFileList] = useState(getInitialImgValues(images))
@@ -12,8 +13,6 @@ const useS3Upload = (images) => {
         previewImage: '',
         privewTitle: '',
     })
-    
-    const { getAccessTokenSilently } = useAuth0()
 
     const getS3SignedUrl = async (fileName, fileType, fileUID) => {
         try{
@@ -79,7 +78,7 @@ const useS3Upload = (images) => {
             fileReader.onloadend = (obj) => {
                 myImage.current = obj.srcElement.result
             }
-            fileReader.readAsArrayBuffer(file.originFileObj);
+            fileReader.readAsArrayBuffer(file.originFileObj)
         }
     }
     const initialFileList = () => {
@@ -146,7 +145,6 @@ const getInitialImgValues = (images) => {
 
     return initialValues
 }
-
 const getInitialNameToUrlMapping = (images) => {    
     let mapping = {}
     if (!images){
@@ -163,14 +161,13 @@ const getInitialNameToUrlMapping = (images) => {
 
     return mapping
 }
-
 const getBase64 = (file) => {
     return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = error => reject(error);
-    });
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = () => resolve(reader.result)
+      reader.onerror = error => reject(error)
+    })
 }
 
 export default useS3Upload

@@ -4,8 +4,10 @@ import { PlusOutlined } from '@ant-design/icons'
 import useS3Upload from './helpers/useS3Upload'
 
 const S3Upload = (props) => {
-    const { previewInfo, fileList, previewCancel, showPreview,
-            getS3SignedUrl, upload, chkUploadUpdates,
+    const UPLOAD_LIMIT = 2
+
+    const { previewInfo, fileList,
+            previewCancel, showPreview, getS3SignedUrl, upload, chkUploadUpdates,
             initialFileList, initialNameToUrlNameMap, uploadInProgress } = useS3Upload(props.images)
     
     const getInitialValues = () => {
@@ -14,7 +16,6 @@ const S3Upload = (props) => {
             nameToUrlNameMap: initialNameToUrlNameMap(),
         }
     }
-
     const handleChange = (info) => {
         const file = info.file
         const curFileList = info.fileList
@@ -24,7 +25,6 @@ const S3Upload = (props) => {
             }})
         chkUploadUpdates(file, curFileList)
     }
-
     const getSignedUrl = async (file) => {
         let signedUrl = ''
         try {
@@ -44,8 +44,6 @@ const S3Upload = (props) => {
         
         return signedUrl
     }
-
-    const uploadLimit = 2
 
     return (
         <Form.Item
@@ -69,7 +67,7 @@ const S3Upload = (props) => {
                 listType="picture-card"
                 onPreview={showPreview}
                 onChange={handleChange} >
-                { fileList.length >= uploadLimit ? null : <UploadButton /> }
+                { fileList.length >= UPLOAD_LIMIT ? null : <UploadButton /> }
             </Upload>
             <Modal
                 visible={previewInfo.previewVisible}

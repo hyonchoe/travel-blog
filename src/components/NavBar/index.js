@@ -6,15 +6,15 @@ import { MenuOutlined } from '@ant-design/icons'
 import useWindowDimensions from './helpers/useWindowDimensions'
 import './style.css'
 
-const breakingPointMd = 768
+const BREAKING_PT_MD = 768
 
-const NavBar = () =>{
+const NavBar = () => {
     const location = useLocation()
     const { isAuthenticated, user, logout, loginWithPopup } = useAuth0()
     const { windowWidth } = useWindowDimensions()
     const collapsed = useCollapsedMenu(windowWidth)
 
-    const UserMenuItem = () => {       
+    const UserMenuItem = () => {
         return (
             <Menu.Item
                 className={ (collapsed) ? "" : "userMenus"} >
@@ -45,7 +45,6 @@ const NavBar = () =>{
                 </Menu.Item>
             )
         }
-        
         return null
     }
     const AddTripsMenuItem = () => {
@@ -56,7 +55,6 @@ const NavBar = () =>{
                 </Menu.Item>
             )
         }
-
         return null
     }
     const UserNameMenuItem = () => {
@@ -68,7 +66,6 @@ const NavBar = () =>{
                 </Menu.Item>
             )
         }
-
         return null
     }
     const UserNameSpan = () => {
@@ -114,7 +111,7 @@ const NavBar = () =>{
 }
 
 const useCollapsedMenu = (windowWidth) => {
-    return windowWidth < breakingPointMd
+    return windowWidth < BREAKING_PT_MD
 }
 
 export default NavBar
