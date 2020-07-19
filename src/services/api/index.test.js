@@ -13,7 +13,6 @@ describe('API is calling correct axios HTTP methods with route', () => {
         axios.post = jest.fn()
         axios.put = jest.fn()
         axios.delete = jest.fn()
-
     })
     
     it('for submitting new trip', async () => {

@@ -2,6 +2,11 @@ import axios from 'axios'
 import moment from 'moment'
 import { message } from 'antd'
 
+const CREATE_TRIP_ERR_MSG = 'Unable to create trip due to error'
+const LOAD_TRIP_ERR_MSG = 'Unable to load trips due to error'
+const DELETE_TRIP_ERR_MSG = 'Unable to delete trip due to error'
+const UPDATE_TRIP_ERR_MSG = 'There was an issue with the trip update. Check the trip entry.'
+
 export default {
     submitNewTrip: async (trip, getAccessTokenSilently) => {
         try {
@@ -11,7 +16,7 @@ export default {
             return true
         } catch (error){
             console.log(error)
-            message.error(createTripErrMsg)
+            message.error(CREATE_TRIP_ERR_MSG)
             return false
         }
     },
@@ -23,7 +28,7 @@ export default {
             return processTripData(res.data)
         } catch (error){
             console.log(error)
-            message.error(loadTripErrMsg)
+            message.error(LOAD_TRIP_ERR_MSG)
             return []
         }
     },
@@ -40,7 +45,7 @@ export default {
             return processTripData(res.data)
         } catch (error){
             console.log(error)
-            message.error(loadTripErrMsg)
+            message.error(LOAD_TRIP_ERR_MSG)
             return []
         }
     },
@@ -52,7 +57,7 @@ export default {
             message.success(updateTripMsg(updatedTrip.title))
         } catch (error) {
             console.log(error)
-            message.error(updateTripErrMsg)
+            message.error(UPDATE_TRIP_ERR_MSG)
         }
     },
 
@@ -64,7 +69,7 @@ export default {
             return true
         } catch (error) {
             console.log(error)
-            message.error(deleteTripErrMsg)
+            message.error(DELETE_TRIP_ERR_MSG)
             return false
         }
     },
@@ -86,14 +91,9 @@ export default {
     },
 }
 
-const createTripErrMsg = 'Unable to create trip due to error'
-const loadTripErrMsg = 'Unable to load trips due to error'
-const deleteTripErrMsg = 'Unable to delete trip due to error'
-const updateTripErrMsg = 'There was an issue with the trip update. Check the trip entry.'
 const createTripMsg = (tripTitle) => `Trip "${tripTitle}" added successfully`
 const updateTripMsg = (tripTitle) => `Trip "${tripTitle}" updated successfully`
 const deleteTripMsg = (tripTitle) => `Trip "${tripTitle}" removed successfully`
-
 const getAuthHeader = async (getAccessTokenSilently) => {
     const token = await getAccessTokenSilently()
     return {
@@ -102,14 +102,12 @@ const getAuthHeader = async (getAccessTokenSilently) => {
         }        
     }
 }
-
 const processTripData = (trips) => {
     if (trips){
         return processDates(trips)
     }
     return []
 }
-
 const processDates = (trips) => {
     const curTrips = trips.map((trip) => {
         trip.startDate = moment(trip.startDate)
