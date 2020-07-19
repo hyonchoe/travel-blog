@@ -1,4 +1,4 @@
-import { getLocAddrInfo, addrTypes } from './mapUtils'
+import { getLocAddrInfo, ADDR_TYPES } from './mapUtils'
 
 describe('Processing Google Places address data for city, state, and country', () => {
     it('returns valid found information', () => {
@@ -6,17 +6,17 @@ describe('Processing Google Places address data for city, state, and country', (
             {
                 long_name: 'state_longname',
                 short_name: 'state_shortname',
-                types: [addrTypes.state]
+                types: [ADDR_TYPES.state]
             },
             {
                 long_name: 'city_longname',
                 short_name: 'city_shortname',
-                types: [addrTypes.city]
+                types: [ADDR_TYPES.city]
             },
             {
                 long_name: 'country_longname',
                 short_name: 'country_shortname',
-                types: [addrTypes.country]
+                types: [ADDR_TYPES.country]
             },
         ]
         const expected = { 

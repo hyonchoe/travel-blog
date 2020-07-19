@@ -1,10 +1,9 @@
-import React from "react";
-import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps";
+import React from "react"
+import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
 import Autocomplete from 'react-google-autocomplete'
 import { getLocAddrInfo } from './helpers/mapUtils'
 
 const MyMap = withScriptjs(withGoogleMap((props) =>{
-
   const createMarkers = (tripLocations) => {
     const latLngs = []
     tripLocations.forEach((loc)=> {

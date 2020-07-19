@@ -6,19 +6,19 @@ import useMap from './helpers/useMap'
 import './style.css'
 
 const LocationSelect = (props) => {
+    const FMT_ADDR_FLD_NAME = 'fmtAddr'
+    const LAT_LNG_FLD_NAME = 'latLng'
+    const CITY_FLD_NAME = 'city'
+    const STATE_FLD_NAME = 'state'
+    const COUNTRY_FLD_NAME = 'country'
+    const MAX_LOCATION_COUNT = 5
+
+    const { mapCenter, markerLatLng, addr,
+        clearMapStates, setLocationData } = useMap()
     const [modalVisible, setModalVisible] = useState(false)
     const [locFieldNameIndex, setLocFieldNameIndex] = useState(-1)
 
-    const { mapCenter, markerLatLng, addr,
-            clearMapStates, setLocationData } = useMap()
-    
     const listName = props.listName
-    const fmtAddrFldName = 'fmtAddr'
-    const latLngFldName = 'latLng'
-    const cityFldName = 'city'
-    const stateFldName = 'state'
-    const countryFldName = 'country'
-    const maxLocationCount = 5
     const layout = props.layouts.layout
     const tailLayout = props.layouts.tailLayout
 
@@ -60,36 +60,36 @@ const LocationSelect = (props) => {
                             key={field.key} >
                             <Form.Item
                                 {...field}
-                                name={[field.name, fmtAddrFldName]}
-                                fieldKey={[field.fieldKey, fmtAddrFldName]}
+                                name={[field.name, FMT_ADDR_FLD_NAME]}
+                                fieldKey={[field.fieldKey, FMT_ADDR_FLD_NAME]}
                                 noStyle >
                                 <Input placeholder="Where did you go?" readOnly={true} style={{ width: '60%' }} />
                             </Form.Item>
                             <Form.Item
                                 {...field}
-                                name={[field.name, latLngFldName]}
-                                fieldKey={[field.fieldKey, latLngFldName]}
+                                name={[field.name, LAT_LNG_FLD_NAME]}
+                                fieldKey={[field.fieldKey, LAT_LNG_FLD_NAME]}
                                 style={{ display: 'none' }} >
                                 <Input readOnly={true} />
                             </Form.Item>
                             <Form.Item
                                 {...field}
-                                name={[field.name, cityFldName]}
-                                fieldKey={[field.fieldKey, cityFldName]}
+                                name={[field.name, CITY_FLD_NAME]}
+                                fieldKey={[field.fieldKey, CITY_FLD_NAME]}
                                 style={{ display: 'none' }} >
                                 <Input readOnly={true} />
                             </Form.Item>
                             <Form.Item
                                 {...field}
-                                name={[field.name, stateFldName]}
-                                fieldKey={[field.fieldKey, stateFldName]}
+                                name={[field.name, STATE_FLD_NAME]}
+                                fieldKey={[field.fieldKey, STATE_FLD_NAME]}
                                 style={{ display: 'none' }} >
                                 <Input readOnly={true} />
                             </Form.Item>
                             <Form.Item
                                 {...field}
-                                name={[field.name, countryFldName]}
-                                fieldKey={[field.fieldKey, countryFldName]}
+                                name={[field.name, COUNTRY_FLD_NAME]}
+                                fieldKey={[field.fieldKey, COUNTRY_FLD_NAME]}
                                 style={{ display: 'none' }} >
                                 <Input readOnly={true} />
                             </Form.Item>
@@ -103,7 +103,7 @@ const LocationSelect = (props) => {
                         </Form.Item>
                     ))}
 
-                    { fields.length < maxLocationCount &&
+                    { fields.length < MAX_LOCATION_COUNT &&
                     <Form.Item
                         {...tailLayout} >
                         <Button

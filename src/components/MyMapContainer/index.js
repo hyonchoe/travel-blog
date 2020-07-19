@@ -2,8 +2,8 @@ import React from "react"
 import MyMap from "./MyMap.js"
 
 const MyMapContainer = props => {
-	const api_key = process.env.REACT_APP_GOOGLE_MAPS_API_KEY
-	const mapURL = `https://maps.googleapis.com/maps/api/js?key=${api_key}&v=3.exp&libraries=geometry,drawing,places`
+	const API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY
+	const mapURL = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&v=3.exp&libraries=geometry,drawing,places`
 
 	return (    
 			<MyMap
