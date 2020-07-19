@@ -3,9 +3,8 @@ import { useAuth0 } from '@auth0/auth0-react'
 import tripService from '../../../services/api'
 
 const useTripCreateUpdate = () => {
-    const [savingInProgress, setSavingInProgress] = useState(false)
-
     const { user, getAccessTokenSilently } = useAuth0()
+    const [savingInProgress, setSavingInProgress] = useState(false)
 
     const createTrip = async (trip) => {
         setSavingInProgress(true)

@@ -6,6 +6,36 @@ import Trip from '../Trip'
 import useTripData from './helpers/useTripData'
 
 const DisplayTrips = (props) => {    
+    const TRIP_COUNTS_PER_PAGE = 10  
+    const MSG_COL_LAYOUT_SIDES = {
+      xs: { span: 0 },
+      md: { span: 2 },
+      lg: { span: 3 },
+      xl: { span: 4 },
+      xxl: { span: 5 }
+    }
+    const MSG_COL_LAYOUT_CONTENT = {
+      xs: { span: 24 },
+      md: { span: 20 },
+      lg: { span: 18 },
+      xl: { span: 16 },
+      xxl: { span: 14 }
+    }
+    const TRIP_LIST_COL_LAYOUT_SIDES = {
+      xs: { span: 0 },
+      md: { span: 3 },
+      lg: { span: 4 },
+      xl: { span: 5 },
+      xxl: { span: 6 }
+    }
+    const TRIP_LIST_COL_LAYOUT_CONTENT = {
+      xs: { span: 24 },
+      md: { span: 18 },
+      lg: { span: 16 },
+      xl: { span: 14 },
+      xxl: { span: 12 }
+    }
+
     const { tripList, reloadTripData, handleDeleteTrip, onLoadMore } = useTripData(props.showMyTrips)
     const { isAuthenticated, user } = useAuth0()
     const [modalMap, setModalMap] = useState({
@@ -41,7 +71,6 @@ const DisplayTrips = (props) => {
       })
     }
 
-    const tripCountsPerPage = 10
     const showMyTrips = props.showMyTrips
     const handleEditTrip = props.editTrip
     let mapCenterLat = null
@@ -51,41 +80,13 @@ const DisplayTrips = (props) => {
       mapCenterLng = modalMap.tripLocations[0].latLng[1]
     }
     const userId = (isAuthenticated) ? user.sub : ''
-    const msgColLayoutSides = {
-      xs: { span: 0 },
-      md: { span: 2 },
-      lg: { span: 3 },
-      xl: { span: 4 },
-      xxl: { span: 5 }
-    }
-    const msgColLayoutContent = {
-      xs: { span: 24 },
-      md: { span: 20 },
-      lg: { span: 18 },
-      xl: { span: 16 },
-      xxl: { span: 14 }
-    }
-    const tripListColLayoutSides = {
-      xs: { span: 0 },
-      md: { span: 3 },
-      lg: { span: 4 },
-      xl: { span: 5 },
-      xxl: { span: 6 }
-    }
-    const tripListColLayoutContent = {
-      xs: { span: 24 },
-      md: { span: 18 },
-      lg: { span: 16 },
-      xl: { span: 14 },
-      xxl: { span: 12 }
-    }
 
     const loadMoreButton = (!tripList.loadingData && !tripList.noMoreRecords) ? 
                               (<div style={{ textAlign: 'center' }} >
                                 <Button onClick={onLoadMoreClicked}>Load more</Button>
                               </div>)
                               : null
-    const tripCard = (item, itemRef) =>
+    const getTripCard = (item, itemRef) =>
                               (<div ref={itemRef} className="tripContainer">
                                 { item.placeholder && 
                                 <div style={{ textAlign: 'center' }} >
@@ -110,18 +111,18 @@ const DisplayTrips = (props) => {
           <Row
             gutter={[0, 8]}
             justify="start" >
-            <Col {...msgColLayoutSides} />
-            <Col {...msgColLayoutContent} >
-              <Typography.Title>{greetingMsg(showMyTrips)}</Typography.Title>
+            <Col {...MSG_COL_LAYOUT_SIDES} />
+            <Col {...MSG_COL_LAYOUT_CONTENT} >
+              <Typography.Title>{getGreetingMsg(showMyTrips)}</Typography.Title>
             </Col>
-            <Col {...msgColLayoutSides} />
+            <Col {...MSG_COL_LAYOUT_SIDES} />
           </Row>
 
           <Row
             gutter={[0, 8]}
             justify="center" >
-            <Col {...tripListColLayoutSides} />
-            <Col {...tripListColLayoutContent} >
+            <Col {...TRIP_LIST_COL_LAYOUT_SIDES} />
+            <Col {...TRIP_LIST_COL_LAYOUT_CONTENT} >
               { !showMyTrips && tripList.trips.length > 0 && 
               <List
                 itemLayout="vertical"
@@ -131,10 +132,10 @@ const DisplayTrips = (props) => {
                 renderItem={(item) => (
                   <List.Item>
                     {item._id === scrollToTripId && 
-                      tripCard(item, lastItemRef)
+                      getTripCard(item, lastItemRef)
                     }
                     {item._id !== scrollToTripId && 
-                      tripCard(item, null)
+                      getTripCard(item, null)
                     }
                   </List.Item>
                 )} />
@@ -146,12 +147,12 @@ const DisplayTrips = (props) => {
                   onChange: page=> {
                     window.scrollTo({top:0, behavior: 'smooth'})
                   },
-                  pageSize: tripCountsPerPage,
+                  pageSize: TRIP_COUNTS_PER_PAGE,
                 }}
                 dataSource={tripList.trips}
                 renderItem={(item) => (
                   <List.Item>
-                    {tripCard(item)}
+                    {getTripCard(item)}
                   </List.Item>
                 )} />
               }
@@ -162,7 +163,7 @@ const DisplayTrips = (props) => {
               <Empty />
               }
             </Col>
-            <Col {...tripListColLayoutSides} />
+            <Col {...TRIP_LIST_COL_LAYOUT_SIDES} />
           </Row>
         <Modal
           title='Trip locations'
@@ -189,7 +190,7 @@ const DisplayTrips = (props) => {
       )
 }
 
-const greetingMsg = (isMyTrips) => {
+const getGreetingMsg = (isMyTrips) => {
   if (isMyTrips){
     return 'Your memorable travels and memories'
   }

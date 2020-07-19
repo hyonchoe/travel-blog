@@ -6,7 +6,6 @@ import useTripCreateUpdate from './useTripCreateUpdate'
 
 let useTripCUHook
 describe('useTripCreateUpdate()', () => {
-    
     jest.spyOn(hooks, 'useAuth0').mockImplementation(() => ({
         user: { name: 'dummyname', email: 'dummyemail', sub: 'dummysub' },
         getAccessTokenSilently: jest.fn()
