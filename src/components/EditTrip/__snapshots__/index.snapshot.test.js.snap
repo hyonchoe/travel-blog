@@ -21,17 +21,104 @@ exports[`EditTrip matches snapshot for creating new trip 1`] = `
     justify="start"
   >
     <Col
-      span={4}
+      lg={
+        Object {
+          "span": 4,
+        }
+      }
+      md={
+        Object {
+          "span": 3,
+        }
+      }
+      sm={
+        Object {
+          "span": 2,
+        }
+      }
+      xl={
+        Object {
+          "span": 5,
+        }
+      }
+      xs={
+        Object {
+          "span": 0,
+        }
+      }
+      xxl={
+        Object {
+          "span": 6,
+        }
+      }
     />
     <Col
-      span={16}
+      lg={
+        Object {
+          "span": 16,
+        }
+      }
+      md={
+        Object {
+          "span": 18,
+        }
+      }
+      sm={
+        Object {
+          "span": 20,
+        }
+      }
+      xl={
+        Object {
+          "span": 14,
+        }
+      }
+      xs={
+        Object {
+          "span": 24,
+        }
+      }
+      xxl={
+        Object {
+          "span": 12,
+        }
+      }
     >
       <Title>
         It's time to put one down in the books
       </Title>
     </Col>
     <Col
-      span={4}
+      lg={
+        Object {
+          "span": 4,
+        }
+      }
+      md={
+        Object {
+          "span": 3,
+        }
+      }
+      sm={
+        Object {
+          "span": 2,
+        }
+      }
+      xl={
+        Object {
+          "span": 5,
+        }
+      }
+      xs={
+        Object {
+          "span": 0,
+        }
+      }
+      xxl={
+        Object {
+          "span": 6,
+        }
+      }
     />
   </Row>
   <ForwardRef(InternalForm)
@@ -58,14 +145,46 @@ exports[`EditTrip matches snapshot for creating new trip 1`] = `
     initialValues={Object {}}
     labelCol={
       Object {
-        "span": 8,
+        "lg": Object {
+          "offset": 1,
+          "span": 5,
+        },
+        "md": Object {
+          "offset": 0,
+          "span": 5,
+        },
+        "sm": Object {
+          "span": 5,
+        },
+        "xl": Object {
+          "offset": 2,
+          "span": 5,
+        },
+        "xxl": Object {
+          "offset": 3,
+          "span": 5,
+        },
       }
     }
     layout="horizontal"
     onFinish={[Function]}
     wrapperCol={
       Object {
-        "span": 10,
+        "lg": Object {
+          "span": 12,
+        },
+        "md": Object {
+          "span": 16,
+        },
+        "sm": Object {
+          "span": 19,
+        },
+        "xl": Object {
+          "span": 10,
+        },
+        "xxl": Object {
+          "span": 8,
+        },
       }
     }
   >
@@ -107,8 +226,26 @@ exports[`EditTrip matches snapshot for creating new trip 1`] = `
       valuePropName="checked"
       wrapperCol={
         Object {
-          "offset": 8,
-          "span": 12,
+          "lg": Object {
+            "offset": 6,
+            "span": 12,
+          },
+          "md": Object {
+            "offset": 5,
+            "span": 16,
+          },
+          "sm": Object {
+            "offset": 5,
+            "span": 19,
+          },
+          "xl": Object {
+            "offset": 7,
+            "span": 10,
+          },
+          "xxl": Object {
+            "offset": 8,
+            "span": 8,
+          },
         }
       }
     >
@@ -162,6 +299,74 @@ exports[`EditTrip matches snapshot for creating new trip 1`] = `
         }
       }
       latLngDelim=","
+      layouts={
+        Object {
+          "layout": Object {
+            "labelCol": Object {
+              "lg": Object {
+                "offset": 1,
+                "span": 5,
+              },
+              "md": Object {
+                "offset": 0,
+                "span": 5,
+              },
+              "sm": Object {
+                "span": 5,
+              },
+              "xl": Object {
+                "offset": 2,
+                "span": 5,
+              },
+              "xxl": Object {
+                "offset": 3,
+                "span": 5,
+              },
+            },
+            "wrapperCol": Object {
+              "lg": Object {
+                "span": 12,
+              },
+              "md": Object {
+                "span": 16,
+              },
+              "sm": Object {
+                "span": 19,
+              },
+              "xl": Object {
+                "span": 10,
+              },
+              "xxl": Object {
+                "span": 8,
+              },
+            },
+          },
+          "tailLayout": Object {
+            "wrapperCol": Object {
+              "lg": Object {
+                "offset": 6,
+                "span": 12,
+              },
+              "md": Object {
+                "offset": 5,
+                "span": 16,
+              },
+              "sm": Object {
+                "offset": 5,
+                "span": 19,
+              },
+              "xl": Object {
+                "offset": 7,
+                "span": 10,
+              },
+              "xxl": Object {
+                "offset": 8,
+                "span": 8,
+              },
+            },
+          },
+        }
+      }
       listName="locationList"
     />
     <S3Upload
@@ -191,8 +396,26 @@ exports[`EditTrip matches snapshot for creating new trip 1`] = `
     <FormItem
       wrapperCol={
         Object {
-          "offset": 8,
-          "span": 12,
+          "lg": Object {
+            "offset": 6,
+            "span": 12,
+          },
+          "md": Object {
+            "offset": 5,
+            "span": 16,
+          },
+          "sm": Object {
+            "offset": 5,
+            "span": 19,
+          },
+          "xl": Object {
+            "offset": 7,
+            "span": 10,
+          },
+          "xxl": Object {
+            "offset": 8,
+            "span": 8,
+          },
         }
       }
     >
@@ -243,17 +466,104 @@ exports[`EditTrip matches snapshot for editing existing trip 1`] = `
     justify="start"
   >
     <Col
-      span={4}
+      lg={
+        Object {
+          "span": 4,
+        }
+      }
+      md={
+        Object {
+          "span": 3,
+        }
+      }
+      sm={
+        Object {
+          "span": 2,
+        }
+      }
+      xl={
+        Object {
+          "span": 5,
+        }
+      }
+      xs={
+        Object {
+          "span": 0,
+        }
+      }
+      xxl={
+        Object {
+          "span": 6,
+        }
+      }
     />
     <Col
-      span={16}
+      lg={
+        Object {
+          "span": 16,
+        }
+      }
+      md={
+        Object {
+          "span": 18,
+        }
+      }
+      sm={
+        Object {
+          "span": 20,
+        }
+      }
+      xl={
+        Object {
+          "span": 14,
+        }
+      }
+      xs={
+        Object {
+          "span": 24,
+        }
+      }
+      xxl={
+        Object {
+          "span": 12,
+        }
+      }
     >
       <Title>
         What has changed?
       </Title>
     </Col>
     <Col
-      span={4}
+      lg={
+        Object {
+          "span": 4,
+        }
+      }
+      md={
+        Object {
+          "span": 3,
+        }
+      }
+      sm={
+        Object {
+          "span": 2,
+        }
+      }
+      xl={
+        Object {
+          "span": 5,
+        }
+      }
+      xs={
+        Object {
+          "span": 0,
+        }
+      }
+      xxl={
+        Object {
+          "span": 6,
+        }
+      }
     />
   </Row>
   <ForwardRef(InternalForm)
@@ -306,14 +616,46 @@ exports[`EditTrip matches snapshot for editing existing trip 1`] = `
     }
     labelCol={
       Object {
-        "span": 8,
+        "lg": Object {
+          "offset": 1,
+          "span": 5,
+        },
+        "md": Object {
+          "offset": 0,
+          "span": 5,
+        },
+        "sm": Object {
+          "span": 5,
+        },
+        "xl": Object {
+          "offset": 2,
+          "span": 5,
+        },
+        "xxl": Object {
+          "offset": 3,
+          "span": 5,
+        },
       }
     }
     layout="horizontal"
     onFinish={[Function]}
     wrapperCol={
       Object {
-        "span": 10,
+        "lg": Object {
+          "span": 12,
+        },
+        "md": Object {
+          "span": 16,
+        },
+        "sm": Object {
+          "span": 19,
+        },
+        "xl": Object {
+          "span": 10,
+        },
+        "xxl": Object {
+          "span": 8,
+        },
       }
     }
   >
@@ -355,8 +697,26 @@ exports[`EditTrip matches snapshot for editing existing trip 1`] = `
       valuePropName="checked"
       wrapperCol={
         Object {
-          "offset": 8,
-          "span": 12,
+          "lg": Object {
+            "offset": 6,
+            "span": 12,
+          },
+          "md": Object {
+            "offset": 5,
+            "span": 16,
+          },
+          "sm": Object {
+            "offset": 5,
+            "span": 19,
+          },
+          "xl": Object {
+            "offset": 7,
+            "span": 10,
+          },
+          "xxl": Object {
+            "offset": 8,
+            "span": 8,
+          },
         }
       }
     >
@@ -410,6 +770,74 @@ exports[`EditTrip matches snapshot for editing existing trip 1`] = `
         }
       }
       latLngDelim=","
+      layouts={
+        Object {
+          "layout": Object {
+            "labelCol": Object {
+              "lg": Object {
+                "offset": 1,
+                "span": 5,
+              },
+              "md": Object {
+                "offset": 0,
+                "span": 5,
+              },
+              "sm": Object {
+                "span": 5,
+              },
+              "xl": Object {
+                "offset": 2,
+                "span": 5,
+              },
+              "xxl": Object {
+                "offset": 3,
+                "span": 5,
+              },
+            },
+            "wrapperCol": Object {
+              "lg": Object {
+                "span": 12,
+              },
+              "md": Object {
+                "span": 16,
+              },
+              "sm": Object {
+                "span": 19,
+              },
+              "xl": Object {
+                "span": 10,
+              },
+              "xxl": Object {
+                "span": 8,
+              },
+            },
+          },
+          "tailLayout": Object {
+            "wrapperCol": Object {
+              "lg": Object {
+                "offset": 6,
+                "span": 12,
+              },
+              "md": Object {
+                "offset": 5,
+                "span": 16,
+              },
+              "sm": Object {
+                "offset": 5,
+                "span": 19,
+              },
+              "xl": Object {
+                "offset": 7,
+                "span": 10,
+              },
+              "xxl": Object {
+                "offset": 8,
+                "span": 8,
+              },
+            },
+          },
+        }
+      }
       listName="locationList"
     />
     <S3Upload
@@ -447,8 +875,26 @@ exports[`EditTrip matches snapshot for editing existing trip 1`] = `
     <FormItem
       wrapperCol={
         Object {
-          "offset": 8,
-          "span": 12,
+          "lg": Object {
+            "offset": 6,
+            "span": 12,
+          },
+          "md": Object {
+            "offset": 5,
+            "span": 16,
+          },
+          "sm": Object {
+            "offset": 5,
+            "span": 19,
+          },
+          "xl": Object {
+            "offset": 7,
+            "span": 10,
+          },
+          "xxl": Object {
+            "offset": 8,
+            "span": 8,
+          },
         }
       }
     >
