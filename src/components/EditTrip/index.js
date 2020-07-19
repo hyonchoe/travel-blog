@@ -33,12 +33,47 @@ const EditTrip = props => {
     const listName = 'locationList'
     const latLngDelim = ','
     const uploadFldName = 'files'
-    const layout = {
-        labelCol: { span: 8 },
-        wrapperCol: { span: 10, },
+    const msgColLayoutSides = {
+        xs: { span: 0 },
+        sm: { span: 2 },
+        md: { span: 3 },
+        lg: { span: 4 },
+        xl: { span: 5 },
+        xxl: { span: 6 }
     }
-    const tailLayout = {
-        wrapperCol: { offset: 8, span: 12 }
+      const msgColLayoutContent = {
+        xs: { span: 24 },
+        sm: { span: 20 },
+        md: { span: 18 },
+        lg: { span: 16 },
+        xl: { span: 14 },
+        xxl: { span: 12 }
+    }
+
+    const formLayout = {
+        labelCol: {
+            sm: { span: 5 },
+            md: { offset: 0, span: 5 },
+            lg: { offset: 1, span: 5 },
+            xl: { offset: 2, span: 5 },
+            xxl: { offset: 3, span: 5 },
+        },
+        wrapperCol: {
+            sm: { span: 19 },
+            md: { span: 16 },
+            lg: { span: 12 },
+            xl: { span: 10 },
+            xxl: { span: 8 },
+        }
+      }
+    const formTailLayout = {
+        wrapperCol: {
+            sm: { offset: 5 , span: 19 },
+            md: { offset: 5 , span: 16 },
+            lg: { offset: 6, span: 12 },
+            xl: { offset: 7, span: 10 },
+            xxl: { offset: 8, span: 8 },
+        }
     }
 
     const getInitialFormValues = (existingTrip) => {
@@ -159,15 +194,16 @@ const EditTrip = props => {
             <Row
                 gutter={[0, 8]}
                 justify="start" >
-                <Col span={4}/>
-                <Col span={16}>
+                <Col {...msgColLayoutSides} />
+                <Col {...msgColLayoutContent}>
                     <Typography.Title>{greetingMsg((existingTrip) ? true:  false)}</Typography.Title>
                 </Col>
-                <Col span={4}/>
+                <Col {...msgColLayoutSides}/>
             </Row>
             <Form
                 form={form}
-                {...layout}
+                //{...layout}
+                {...formLayout}
                 initialValues={getInitialFormValues(existingTrip)}
                 layout="horizontal"
                 onFinish={onFinish} >
@@ -197,7 +233,8 @@ const EditTrip = props => {
                     </Form.Item>
 
                     <Form.Item
-                        {...tailLayout}
+                        //{...tailLayout}
+                        {...formTailLayout}
                         name="public"
                         valuePropName="checked" >
                             <Checkbox>Allow public access</Checkbox>
@@ -228,7 +265,8 @@ const EditTrip = props => {
                         images={existingImages} />
 
                     <Form.Item
-                        {...tailLayout} >
+                        //{...tailLayout}
+                        {...formTailLayout} >
                             <Space>
                                 <Button type="primary" htmlType="submit">{btnName}</Button>
                                 <Button type="link" onClick={onCancel}>Cancel</Button>
