@@ -1,3 +1,7 @@
+/**
+ * Test utility component for testing custom hooks
+ */
+
 import React from 'react'
 import { mount } from 'enzyme'
 

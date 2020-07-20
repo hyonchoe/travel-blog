@@ -1,3 +1,8 @@
+/**
+ * Starting point for Travel Blog app.
+ * Wraps the component in Auth0Provider for authentication and authorization features
+ */
+
 import React from 'react'
 import ReactDom from 'react-dom'
 import { Auth0Provider } from '@auth0/auth0-react'
