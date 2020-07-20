@@ -1,3 +1,9 @@
+/**
+ * Unit tests for APIs calls
+ * 
+ * Run by running 'npm test' in command line.
+ */
+
 import moment from 'moment'
 import axios from 'axios'
 import tripService from './'
