@@ -1,3 +1,9 @@
+/**
+ * Unit tests for useTripData() hook
+ * 
+ * Run by running 'npm test' in command line.
+ */
+
 import { act } from 'react-dom/test-utils'
 import { testHook } from '../../../testUtils'
 import useTripData from './useTripData'
@@ -73,6 +79,5 @@ describe('useTripData()', () => {
                 expect(tripService.getPublicTrips).toHaveBeenCalledWith(mockTripData[0])
             })
         })
-    })
-    
+    })  
 })
