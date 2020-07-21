@@ -1,3 +1,9 @@
+/**
+ * Unit tests for useTripCreateUpdate() hook.
+ * 
+ * Run by running 'npm test' in command line.
+ */
+
 import { act } from '@testing-library/react'
 import * as hooks from '@auth0/auth0-react'
 import { testHook } from '../../../testUtils'

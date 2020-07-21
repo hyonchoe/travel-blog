@@ -1,12 +1,28 @@
+/**
+ * EditTrip component for editing existing trip data or creating new trip
+ */
+
 import React, { useState, useEffect } from 'react'
 import { Button, Input, DatePicker, Checkbox, Form, Space, Spin, Row, Col, Typography  } from 'antd'
 import { Prompt } from 'react-router-dom'
+import PropTypes from 'prop-types'
 import history from '../../services/history'
 import LocationSelect from '../LocationSelect'
 import S3Upload from '../S3Upload'
 import useTripCreateUpdate from './helpers/useTripCreateUpdate'
 
 const EditTrip = (props) => {
+    EditTrip.propTypes = {
+        /** Trip data for editing */
+        tripToEdit: PropTypes.object.isRequired,
+        /** Callback to clear trip data used for editing */
+        clearEditTrip: PropTypes.func.isRequired
+    }
+    EditTrip.defaultProps = {
+        tripToEdit: null,
+        clearEditTrip: () => {}
+    }
+
     const TITLE_MAX_LENGTH = 40
     const DETAILS_MAX_LENGTH = 1000
     const LOC_LIST_NAME = 'locationList'
@@ -57,6 +73,9 @@ const EditTrip = (props) => {
     const { savingInProgress, createTrip, updateTrip } = useTripCreateUpdate()
     const [showNavPrompt, setShowNavPrompt] = useState(true)
     
+    /**
+     * Adds event listener for 'beforeunload' to display navigation prompt
+     */
     useEffect(() => {
         // For showing prompt on re-loading and closing window
         const handleUnload = (e) => {
@@ -74,6 +93,11 @@ const EditTrip = (props) => {
         }
     }, [])
 
+    /**
+     * Gets initial values to populate the form with
+     * @param {Object} existingTrip Trip data for edit
+     * @returns {Object} Initial values to use for the form
+     */
     const getInitialFormValues = (existingTrip) => {
         // Initial values for upload images are handled inside own component
         if (existingTrip){
@@ -97,7 +121,12 @@ const EditTrip = (props) => {
 
         return {}
     }
-    const onFinish = values => {
+
+    /**
+     * Retrieves values from the form and and creates/updates the trip
+     * @param {Object} values Form values
+     */
+    const onFinish = (values) => {
         // Get location data
         const locationData = []
         const locationList = (values[LOC_LIST_NAME]) ? values[LOC_LIST_NAME] : []
@@ -150,10 +179,20 @@ const EditTrip = (props) => {
             handleSubmit(tripData)
         }
     }
+
+    /**
+     * Cancels the trip edit and goes back to My Trips page
+     */
     const onCancel = () => {
         props.clearEditTrip()
         history.push('/myTrips')
     }
+
+    /**
+     * Creates trip with the given data from the form
+     * and goes back to My Trips page
+     * @param {Object} trip Trip data for new trip creation
+     */
     const handleSubmit = async (trip) => {
         const res = await createTrip(trip)
         if(res){
@@ -161,6 +200,13 @@ const EditTrip = (props) => {
             history.push('/myTrips')
         }
     }
+
+    /**
+     * Updates the existing trip with new information
+     * and goes back to My Trips page
+     * @param {Object} updatedTrip Trip data for update
+     * @param {String} tripId Trip ID for existing trip being updated
+     */
     const handleUpdate = async (updatedTrip, tripId) => {
         await updateTrip(updatedTrip, tripId)
         
@@ -270,11 +316,18 @@ const EditTrip = (props) => {
     )
 }
 
+//#region Helper methods
+/**
+ * Gets display message for the form
+ * @param {boolean} editTrip Flag for form is for editing existing trip
+ *                          or creating new trip
+ */
 const greetingMsg = (editTrip) => {
     if (editTrip){
         return "What has changed?"
     }
     return "It's time to put one down in the books"
 }
+//#endregion
 
 export default EditTrip
