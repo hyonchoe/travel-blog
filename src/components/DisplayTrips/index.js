@@ -9,6 +9,7 @@ import PropTypes from 'prop-types'
 import MyMapContainer from '../MyMapContainer'
 import Trip from '../Trip'
 import useTripData from './helpers/useTripData'
+import useWindowDimensions from '../../hooks/useWindowDimensions'
 
 const DisplayTrips = (props) => {
     DisplayTrips.propTypes = {
@@ -21,6 +22,7 @@ const DisplayTrips = (props) => {
       showMyTrips: false,
       editTrip: () => {}
     }
+    const BREAKING_PT_XS = 576
     const TRIP_COUNTS_PER_PAGE = 10  
     const MSG_COL_LAYOUT_SIDES = {
       xs: { span: 0 },
@@ -51,6 +53,7 @@ const DisplayTrips = (props) => {
       xxl: { span: 12 }
     }
 
+    const { windowWidth } = useWindowDimensions()
     const { tripList, reloadTripData, handleDeleteTrip, onLoadMore } = useTripData(props.showMyTrips)
     const { isAuthenticated, user } = useAuth0()
     const [modalMap, setModalMap] = useState({
@@ -139,7 +142,8 @@ const DisplayTrips = (props) => {
                                   trip={item}
                                   deleteTrip={handleDeleteTrip}
                                   editTrip={handleEditTrip}
-                                  launchMapModal={handleLaunchMapModal} />
+                                  launchMapModal={handleLaunchMapModal}
+                                  useDateIcon={windowWidth < BREAKING_PT_XS} />
                                 }
                               </div>)
     //#endregion

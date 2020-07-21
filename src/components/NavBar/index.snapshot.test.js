@@ -8,7 +8,7 @@ import React from 'react'
 import { shallow } from 'enzyme'
 import * as hooks from '@auth0/auth0-react'
 import mockData from '../../testutils/mockData'
-import * as windowHooks from './helpers/useWindowDimensions'
+import * as windowHooks from '../../hooks/useWindowDimensions'
 import NavBar from './'
 
 jest.mock('react-router-dom', () => ({

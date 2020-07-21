@@ -5,7 +5,7 @@
  */
 
 import { act } from '@testing-library/react'
-import { testHook } from '../../../testutils/testHook'
+import { testHook } from '../testutils/testHook'
 import useWindowDimensions from './useWindowDimensions'
 
 let useWinDimenHook

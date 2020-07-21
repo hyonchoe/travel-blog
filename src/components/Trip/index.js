@@ -25,6 +25,8 @@ const Trip = (props) => {
         editTrip: PropTypes.func.isRequired,
         /** Callback for deleting trip */
         deleteTrip: PropTypes.func.isRequired,
+        /** Flag to use icon instead of full text for dates */
+        useDateIcon: PropTypes.bool
     }
     Trip.defaultProps = {
         isAuthenticated: false,
@@ -34,6 +36,7 @@ const Trip = (props) => {
         launchMapModal: () => {},
         editTrip: () => {},
         deleteTrip: () => {},
+        useDateIcon: false
     }
 
     const { tabState, onTabChange, getTabList } = useTripTabs()
@@ -45,6 +48,7 @@ const Trip = (props) => {
         launchMapModal,
         editTrip,
         deleteTrip,
+        useDateIcon,
     } = props
 
     const locAddr = LocationSpans(trip.locations, 'spanLocation')
@@ -58,7 +62,7 @@ const Trip = (props) => {
             title={CardTitle(trip.title, trip.public, 'privateIcon')}
             hoverable={true}
             bordered={true}
-            extra={TripDates(trip)}
+            extra={TripDates(trip, useDateIcon)}
             actions={getCardActions(trip, isMyTrip, launchMapModal, editTrip, deleteTrip)}
             tabList={getTabList(trip.images)}
             activeTabKey={ tabState.key }

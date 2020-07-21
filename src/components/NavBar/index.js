@@ -7,7 +7,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react'
 import { Menu, Button } from 'antd'
 import { MenuOutlined } from '@ant-design/icons'
-import useWindowDimensions from './helpers/useWindowDimensions'
+import useWindowDimensions from '../../hooks/useWindowDimensions'
 import './style.css'
 
 const BREAKING_PT_MD = 768

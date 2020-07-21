@@ -4,7 +4,7 @@
 
 import React from 'react'
 import { Typography, Tooltip, Popconfirm } from 'antd'
-import { LockOutlined, GlobalOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons'
+import { LockOutlined, GlobalOutlined, EditOutlined, DeleteOutlined, CalendarOutlined } from '@ant-design/icons'
 import { journalKey, imageKey } from './useTripTabs'
 import PictureCarousel from '../../PictureCarousel'
 import { onGlobeClicked, popoverConfirm, popoverCancel, showDeleteConfirm } from './cardActions'
@@ -91,15 +91,23 @@ export const TripTabContent = (props) => {
 /**
  * Displays trip's dates
  * @param {Object} curTrip Trip data
+ * @param {boolean} useDateIcon Flag to use icon instead of text
  */
-export const TripDates = (curTrip) => {
-    const dateFormat="dddd, MMMM Do YYYY"
+export const TripDates = (curTrip, useDateIcon) => {
+    const dateFormat="ddd, MMM Do YYYY"
     let dateStr = curTrip.startDate.format(dateFormat)
-    if (curTrip.endDate){
+    if (curTrip.endDate && !(curTrip.endDate.isSame(curTrip.startDate, 'day'))){
         dateStr += " - " + curTrip.endDate.format(dateFormat)
     }
     
-    return dateStr
+    if (useDateIcon) {
+        return (
+            <Tooltip title={dateStr}>
+                <CalendarOutlined />
+            </Tooltip>
+        )
+    }
+    return (<span>{dateStr}</span>)
 }
 
 /**

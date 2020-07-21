@@ -139,9 +139,17 @@ describe('TripTabContent', () => {
 })
 
 describe('TripDates', () => {
-    it('matches snapshot for trip dates string', () => {
+    it('matches snapshot for trip dates as text display', () => {
         const component = renderer.create(
-            TripDates(trip)
+            TripDates(trip, false)
+        )
+        const tree = component.toJSON()
+        expect(tree).toMatchSnapshot()
+    })
+
+    it('matches snapshot for trip dates string as icon display', () => {
+        const component = renderer.create(
+            TripDates(trip, true)
         )
         const tree = component.toJSON()
         expect(tree).toMatchSnapshot()
