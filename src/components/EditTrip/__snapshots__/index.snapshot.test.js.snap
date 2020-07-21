@@ -865,9 +865,19 @@ exports[`EditTrip matches snapshot for editing existing trip 1`] = `
       images={
         Array [
           Object {
-            "S3Url": "dummys3url",
-            "fileUrlName": "dummyurlname",
-            "name": "dummyname",
+            "S3Url": "dummys3url1",
+            "fileUrlName": "dummyurlname1",
+            "name": "dummyname1",
+          },
+          Object {
+            "S3Url": "dummys3url2",
+            "fileUrlName": "dummyurlname2",
+            "name": "dummyname2",
+          },
+          Object {
+            "S3Url": "dummys3url3",
+            "fileUrlName": "dummyurlname3",
+            "name": "dummyname3",
           },
         ]
       }

@@ -7,6 +7,7 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 import * as hooks from '@auth0/auth0-react'
+import mockData from '../../testutils/mockData'
 import * as windowHooks from './helpers/useWindowDimensions'
 import NavBar from './'
 
@@ -17,7 +18,7 @@ jest.mock('react-router-dom', () => ({
     })
 }))
 
-const auth0UserInfo = { name: 'dummyname', email: 'dummyemail', sub: 'dummysub' }
+const auth0UserInfo = mockData().getAuth0UserInfo()
 
 describe('NavBar', () => {
     describe('for full menu', () =>{

@@ -77,12 +77,19 @@ const mockData = () => {
         userEmail,
     })
 
+    const getAuth0UserInfo = () => ({
+        name: 'dummyname',
+        email: 'dummyemail',
+        sub: 'dummysub'
+    })
+
     return {
         tokenVal,
         tripId, otherTripId, title, startDate, endDate,
         fileType,
         images, locations, loc1,
-        getTrip, getLastTripLoaded, getUserInfo
+        getTrip, getLastTripLoaded, getUserInfo,
+        getAuth0UserInfo
     }
 }
 
