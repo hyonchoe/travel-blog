@@ -21,7 +21,7 @@ const S3Upload = (props) => {
         fieldName: 's3upload'
     }
 
-    const UPLOAD_LIMIT = 2
+    const UPLOAD_LIMIT = 5
 
     const { previewInfo, fileList,
             previewCancel, showPreview, getS3SignedUrl, upload, chkUploadUpdates,

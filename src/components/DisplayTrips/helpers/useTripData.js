@@ -7,7 +7,7 @@ import { useAuth0 } from '@auth0/auth0-react'
 import tripService from '../../../services/api'
 
 const useTripData = (showMyTrips) => {
-  const DISPLAY_LIMIT = 10
+  const DISPLAY_LIMIT = 40
   
   const { getAccessTokenSilently } = useAuth0()
   const [tripList, setTripList] = useState({
