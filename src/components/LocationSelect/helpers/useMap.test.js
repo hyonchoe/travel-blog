@@ -6,6 +6,7 @@
 
 import { act } from 'react-dom/test-utils'
 import { testHook } from '../../../testutils/testHook'
+import mockData from '../../../testutils/mockData'
 import useMap from './useMap'
 
 let useMapHook
@@ -17,12 +18,8 @@ describe('useMap()', () => {
     })
 
     it('sets and clears map location data', () => {
-        const locAddrInfo = { 
-            city: 'dummyCity',
-            state: 'dummyState',
-            country: 'dummyCountry',
-            fmtAddr: 'dummyFmtAddr',
-        }
+        const locAddrInfo = mockData().loc1
+        delete locAddrInfo.latLng
         const locLatLngInfo = {
             lat: 30.24,
             lng: 25.21,

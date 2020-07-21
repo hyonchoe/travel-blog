@@ -81,7 +81,7 @@ const mockData = () => {
         tokenVal,
         tripId, otherTripId, title, startDate, endDate,
         fileType,
-        images, locations,
+        images, locations, loc1,
         getTrip, getLastTripLoaded, getUserInfo
     }
 }
