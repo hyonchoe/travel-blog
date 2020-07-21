@@ -17,6 +17,8 @@ jest.mock('react-router-dom', () => ({
     })
 }))
 
+const auth0UserInfo = { name: 'dummyname', email: 'dummyemail', sub: 'dummysub' }
+
 describe('NavBar', () => {
     describe('for full menu', () =>{
         beforeEach(() => {
@@ -28,7 +30,7 @@ describe('NavBar', () => {
         it('matches snapshot authenticated', () => {
             jest.spyOn(hooks, 'useAuth0').mockImplementation(() => ({
                 isAuthenticated: true,
-                user: { name: 'dummyname', email: 'dummyemail', sub: 'dummysub' },
+                user: auth0UserInfo,
                 logout: jest.fn(),
                 loginWithPopup: jest.fn()
             }))
@@ -62,7 +64,7 @@ describe('NavBar', () => {
         it('matches snapshot authenticated', () => {
             jest.spyOn(hooks, 'useAuth0').mockImplementation(() => ({
                 isAuthenticated: true,
-                user: { name: 'dummyname', email: 'dummyemail', sub: 'dummysub' },
+                user: auth0UserInfo,
                 logout: jest.fn(),
                 loginWithPopup: jest.fn()
             }))
