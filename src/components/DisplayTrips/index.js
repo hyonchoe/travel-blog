@@ -1,11 +1,26 @@
+/**
+ * DisplayTrips component that displays list of trips (either user specific trips or public trips)
+ */
+
 import React, { useState, useRef } from 'react'
 import { useAuth0 } from '@auth0/auth0-react'
 import { Empty, Skeleton, Row, Col, BackTop, message, Modal, Button, List, Typography } from 'antd'
+import PropTypes from 'prop-types'
 import MyMapContainer from '../MyMapContainer'
 import Trip from '../Trip'
 import useTripData from './helpers/useTripData'
 
-const DisplayTrips = (props) => {    
+const DisplayTrips = (props) => {
+    DisplayTrips.propTypes = {
+      /** Flag to display user trips or public trips  */
+      showMyTrips: PropTypes.bool.isRequired,
+      /** Callback to set trip data for editing */
+      editTrip: PropTypes.func.isRequired
+    }
+    DisplayTrips.defaultProps = {
+      showMyTrips: false,
+      editTrip: () => {}
+    }
     const TRIP_COUNTS_PER_PAGE = 10  
     const MSG_COL_LAYOUT_SIDES = {
       xs: { span: 0 },
@@ -45,6 +60,9 @@ const DisplayTrips = (props) => {
     const [scrollToTripId, setScrollToTripId] = useState('')
     const lastItemRef = useRef(null)
 
+    /**
+     * Loads more public trips and updates the scroll location
+     */
     const onLoadMoreClicked = async () => {
       const { noMoreRecords, scrollToTripId } = await onLoadMore()
 
@@ -58,12 +76,22 @@ const DisplayTrips = (props) => {
         }
       }
     }
+
+    /**
+     * Makes modal visible and sets location data that is used for map markers
+     * @param {string} tripTitle Trip title
+     * @param {Array} tripLocations Locations for the trip
+     */
     const handleLaunchMapModal = (tripTitle, tripLocations) => {
       setModalMap({
         modalVisible: true,
         tripLocations: tripLocations
       })
     }
+
+    /**
+     * Makes modal disappear and resets the trip locations for the map
+     */
     const handleModalOk = () => {
       setModalMap({
         modalVisible: false,
@@ -81,11 +109,21 @@ const DisplayTrips = (props) => {
     }
     const userId = (isAuthenticated) ? user.sub : ''
 
+    //#region Helper components
+    /**
+     * Helper component for 'Load more' button to load more public trips
+     */
     const loadMoreButton = (!tripList.loadingData && !tripList.noMoreRecords) ? 
                               (<div style={{ textAlign: 'center' }} >
                                 <Button onClick={onLoadMoreClicked}>Load more</Button>
                               </div>)
                               : null
+    
+    /**
+     * Helper component that is either Trip component or Reload button
+     * @param {Object} item List item, which is Trip data
+     * @param {Object} itemRef Reference to the DOM element, used for identifying last loaded trip
+     */
     const getTripCard = (item, itemRef) =>
                               (<div ref={itemRef} className="tripContainer">
                                 { item.placeholder && 
@@ -104,6 +142,7 @@ const DisplayTrips = (props) => {
                                   launchMapModal={handleLaunchMapModal} />
                                 }
                               </div>)
+    //#endregion
 
     return (
       <div className="displayTripsContainer">
@@ -190,11 +229,18 @@ const DisplayTrips = (props) => {
       )
 }
 
+//#region Helper methods
+/**
+ * Gets page title/message to display
+ * @param {boolean} isMyTrips Flag for displaying user trips
+ * @returns Greeting message
+ */
 const getGreetingMsg = (isMyTrips) => {
   if (isMyTrips){
     return 'Your memorable travels and memories'
   }
   return "Stories and footmarks from travelers in the world"
 }
+//#endregion
 
 export default DisplayTrips
