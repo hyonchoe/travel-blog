@@ -1,3 +1,7 @@
+/**
+ * Snapshot tests for PrivateRoute component
+ */
+
 import React from 'react'
 import { shallow } from 'enzyme'
 import PrivateRoute from './'
