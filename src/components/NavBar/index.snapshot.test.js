@@ -1,3 +1,9 @@
+/**
+ * Snapshot test for NavBar component.
+ * 
+ * Run by running 'npm test' in command line.
+ */
+
 import React from 'react'
 import { shallow } from 'enzyme'
 import * as hooks from '@auth0/auth0-react'

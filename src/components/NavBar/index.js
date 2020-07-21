@@ -1,3 +1,7 @@
+/**
+ * Navigation component for application
+ */
+
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react'
@@ -14,6 +18,10 @@ const NavBar = () => {
     const { windowWidth } = useWindowDimensions()
     const collapsed = useCollapsedMenu(windowWidth)
 
+    //#region Helper components
+    /**
+     * Helper component for user related menu item
+     */
     const UserMenuItem = () => {
         return (
             <Menu.Item
@@ -30,6 +38,9 @@ const NavBar = () => {
             </Menu.Item>
         )
     }
+    /**
+     * Helper component for public trips menu item
+     */
     const TravelerFeedMenuItem = () => {
         return (
             <Menu.Item key="/">
@@ -37,6 +48,9 @@ const NavBar = () => {
             </Menu.Item>
         )
     }
+    /**
+     * Helper component for my trips menu item
+     */
     const MyTripsMenuItem = () => {
         if (isAuthenticated){
             return (
@@ -47,6 +61,9 @@ const NavBar = () => {
         }
         return null
     }
+    /**
+     * Helper component for add/edit trip menu item
+     */
     const AddTripsMenuItem = () => {
         if (isAuthenticated){
             return (
@@ -57,6 +74,9 @@ const NavBar = () => {
         }
         return null
     }
+    /**
+     * Helper component for user name menu item (just for display)
+     */
     const UserNameMenuItem = () => {
         if(isAuthenticated){
             return (
@@ -68,11 +88,15 @@ const NavBar = () => {
         }
         return null
     }
+    /**
+     * Helper component for displaying user information
+     */
     const UserNameSpan = () => {
         return (
             <span className="userInfo">Hello, {(user.name) ? user.name : user.email}</span>
         )
     }
+    //#endregion
 
     return (
         <Menu
@@ -105,13 +129,19 @@ const NavBar = () => {
             { !collapsed &&
             UserMenuItem()
             }
-
         </Menu> 
     )   
 }
 
+//#region Helper methods
+/**
+ * Checks if collapsed menu should be used instead of full menu
+ * @param {number} windowWidth
+ * @returns {boolean} True to use collapse menu, false otherwise
+ */
 const useCollapsedMenu = (windowWidth) => {
     return windowWidth < BREAKING_PT_MD
 }
+//#endregion
 
 export default NavBar

@@ -1,3 +1,8 @@
+/**
+ * Parent component for the application.
+ * Sets the application layout and handles routing to applicable components/view based on path.
+ */
+
 import React from 'react'
 import { Switch, Route, Router } from 'react-router-dom'
 import { Layout } from 'antd'
@@ -18,11 +23,18 @@ class App extends React.Component {
     
     componentDidMount() {}
 
+    /**
+     * Sets the edit trip state data that will be used for edit component/page
+     * @param {Object} trip Trip data to use for edit page
+     */
     handleEditTrip = (trip) => {
         this.setState({
             tripToEdit: trip
         })
     }
+    /**
+     * Clears out the edit trip state data
+     */
     clearEditTrip = () => {
         this.setState({
             tripToEdit: null

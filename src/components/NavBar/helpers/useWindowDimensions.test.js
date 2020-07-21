@@ -1,3 +1,9 @@
+/**
+ * Unit test for useWindowDimensions() hook.
+ * 
+ * Run by running 'npm test' in command line.
+ */
+
 import { act } from '@testing-library/react'
 import { testHook } from '../../../testUtils'
 import useWindowDimensions from './useWindowDimensions'
