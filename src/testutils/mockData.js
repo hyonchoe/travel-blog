@@ -14,7 +14,23 @@ const mockData = () => {
     const locations = [
         {fmtAddr: 'dummyaddr'}
     ]
-    const images = []
+
+    const image1 = {
+        name: 'dummyname1',
+        fileUrlName: 'dummyurlname1',
+        S3Url: 'dummys3url1'
+    }
+    const image2 = {
+        name: 'dummyname2',
+        fileUrlName: 'dummyurlname2',
+        S3Url: 'dummys3url2'
+    }
+    const image3 = {
+        name: 'dummyname3',
+        fileUrlName: 'dummyurlname3',
+        S3Url: 'dummys3url3'
+    }
+    const images = [image1, image2, image3]
     const startDate = moment('2020-07-01', 'YYYY-MM-DD')
     const endDate = moment('2020-07-04', 'YYYY-MM-DD')
 
@@ -44,6 +60,7 @@ const mockData = () => {
         tokenVal,
         tripId, otherTripId, startDate, endDate,
         fileType,
+        images,
         getTrip, getLastTripLoaded
     }
 }
