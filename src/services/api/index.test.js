@@ -9,7 +9,7 @@ import mockData from '../../testutils/mockData'
 import tripService from './'
 
 describe('API is calling correct axios HTTP methods with route', () => {
-    const dummyTokenVal = mockData().tokenVal
+    const dummyTokenVal = 'dummytoken'
     const getAccessTokenSilently = jest.fn().mockReturnValue(dummyTokenVal)
     const headers = { 
         headers: { 'Authorization': `Bearer ${dummyTokenVal}` } 
@@ -66,7 +66,7 @@ describe('API is calling correct axios HTTP methods with route', () => {
     })
 
     it('for getting S3 signed url', async () => {
-        const dummyFileType = mockData().fileType
+        const dummyFileType = 'dummyfiletype'
         const res = await tripService.getS3SignedUrl(dummyFileType, getAccessTokenSilently)
         expect(axios.get).toHaveBeenCalledWith(`/get-signed-url`, {
             ...headers,

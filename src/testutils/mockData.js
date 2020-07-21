@@ -1,10 +1,7 @@
 import moment from 'moment'
 
 const mockData = () => {
-    //TODO: remove tokenVal and fileType?
-
-    const tokenVal = 'dummytoken'
-    
+    //#region Data values
     const tripId = 'dummytripid'
     const otherTripId = 'otherdummytripid'
     const userId = 'dummyuserid'
@@ -13,7 +10,6 @@ const mockData = () => {
     const title = 'dummytitle'
     const isPublic = true
     const details = 'dummydetails'
-    
     const loc1 = {
         fmtAddr: 'dummyfmtaddr1',
         latLng: [1, 1],
@@ -29,7 +25,6 @@ const mockData = () => {
         country: 'dummycountry2',
     }
     const locations = [loc1, loc2]
-
     const image1 = {
         name: 'dummyname1',
         fileUrlName: 'dummyurlname1',
@@ -46,11 +41,9 @@ const mockData = () => {
         S3Url: 'dummys3url3'
     }
     const images = [image1, image2, image3]
-
     const startDate = moment('2020-07-01', 'YYYY-MM-DD')
     const endDate = moment('2020-07-04', 'YYYY-MM-DD')
-
-    const fileType = 'dummyfiletype'
+    //#endregion
 
     const getTrip = () => ({
         _id: tripId,
@@ -84,9 +77,7 @@ const mockData = () => {
     })
 
     return {
-        tokenVal,
         tripId, otherTripId, title, startDate, endDate,
-        fileType,
         images, locations, loc1,
         getTrip, getLastTripLoaded, getUserInfo,
         getAuth0UserInfo
