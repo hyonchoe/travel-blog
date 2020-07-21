@@ -1,3 +1,9 @@
+/**
+ * Unit tests for mapUtils.
+ * 
+ * Run by running 'npm test' in command line.
+ */
+
 import { getLocAddrInfo, ADDR_TYPES } from './mapUtils'
 
 describe('Processing Google Places address data for city, state, and country', () => {

@@ -1,7 +1,26 @@
+/**
+ * Wrapper for MyMap component
+ */
+
 import React from "react"
+import PropTypes from 'prop-types'
 import MyMap from "./MyMap.js"
 
 const MyMapContainer = props => {
+	MyMapContainer.propTypes = {
+		searchMode: PropTypes.bool.isRequired,
+		tripLocations: PropTypes.array.isRequired,
+		mapCenterLat: PropTypes.number.isRequired,
+		mapCenterLng: PropTypes.number.isRequired,
+		markerLat: PropTypes.number,
+		markerLng: PropTypes.number,
+		onLocSelected: PropTypes.func
+	}
+	MyMapContainer.defaultProps = {
+		searchMode: false,
+		tripLocations: []
+	}
+	
 	const API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY
 	const mapURL = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&v=3.exp&libraries=geometry,drawing,places`
 

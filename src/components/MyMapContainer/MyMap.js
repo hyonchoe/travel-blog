@@ -1,9 +1,49 @@
+/**
+ * MyMap component for using Google Map and Autocomplete
+ */
+
 import React from "react"
+import PropTypes from 'prop-types'
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
 import Autocomplete from 'react-google-autocomplete'
 import { getLocAddrInfo } from './helpers/mapUtils'
 
 const MyMap = withScriptjs(withGoogleMap((props) =>{
+  MyMap.propTypes= {
+    /** Flag for using search vs view mode */
+    searchMode: PropTypes.bool.isRequired,
+    /** Location data to turn into markers */
+    tripLocations: PropTypes.array.isRequired,
+    /** Center of the map - latitude */
+		mapCenterLat: PropTypes.number.isRequired,
+    /** Center of the map - longitutde */
+    mapCenterLng: PropTypes.number.isRequired,
+    /** Latitude for marker used when searching */
+    markerLat: PropTypes.number,
+    /** Longitude for marker used when searching */
+    markerLng: PropTypes.number,
+    /** Callback to call when location selection is made */
+    onLocSelected: PropTypes.func.isRequired,
+    /** URL with API key to use for Google Maps */
+    googleMapURL: PropTypes.string.isRequired,
+    /** Container needed for HOCs */
+    loadingElement: PropTypes.node.isRequired,
+    /** Container needed for HOCs */
+    containerElement: PropTypes.node.isRequired,
+    /** Container needed for HOCs */
+    mapElement: PropTypes.node.isRequired
+  }
+  MyMap.defaultProps = {
+    searchMode: false,
+		tripLocations: [],
+    onLocSelected: () => {}
+  }
+  
+  /**
+   * Creates array of Markers to use on the map
+   * @param {Array} tripLocations Location data with latitude and longitude
+   * @returns {Array} Markers to use on the map
+   */
   const createMarkers = (tripLocations) => {
     const latLngs = []
     tripLocations.forEach((loc)=> {
@@ -19,6 +59,11 @@ const MyMap = withScriptjs(withGoogleMap((props) =>{
     ))
   }
 
+  /**
+   * Parses out the location information from selected Google Place,
+   * and calls the callback with the data
+   * @param {Object} place Google Place object from Autocomplete
+   */
   const onPlaceSelected = (place) => {
     if (!place.address_components || !place.geometry){
         return
