@@ -1,21 +1,47 @@
+/**
+ * S3Upload component to use in Form for uploading images to AWS S3
+ */
+
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Form, Modal, Upload, message  } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import useS3Upload from './helpers/useS3Upload'
 
 const S3Upload = (props) => {
+    S3Upload.propTypes = {
+        /** FormInstance for the form this component is being used in */
+        form: PropTypes.object.isRequired,
+        /** Field name for the component, used to access values from the form */
+        fieldName: PropTypes.string.isRequired,
+        /** Existing trip images */
+        images: PropTypes.array
+    }
+    S3Upload.defaultProps = {
+        fieldName: 's3upload'
+    }
+
     const UPLOAD_LIMIT = 2
 
     const { previewInfo, fileList,
             previewCancel, showPreview, getS3SignedUrl, upload, chkUploadUpdates,
             initialFileList, initialNameToUrlNameMap, uploadInProgress } = useS3Upload(props.images)
     
+    /**
+     * Gets initial values for trip with existing images
+     * @returns {Object} Uploaded images data
+     */
     const getInitialValues = () => {
         return {
             fileList: initialFileList(),
             nameToUrlNameMap: initialNameToUrlNameMap(),
         }
     }
+
+    /**
+     * Updates the form with latest value and check status of upload action
+     * @param {Object} info Upload info
+     */
     const handleChange = (info) => {
         const file = info.file
         const curFileList = info.fileList
@@ -25,6 +51,13 @@ const S3Upload = (props) => {
             }})
         chkUploadUpdates(file, curFileList)
     }
+
+    /**
+     * Gets signed URL to upload file to and updates mapping
+     * for original file and URL file name
+     * @param {Object} file Upload file
+     * @returns {string} Signed URL
+     */
     const getSignedUrl = async (file) => {
         let signedUrl = ''
         try {
@@ -81,6 +114,10 @@ const S3Upload = (props) => {
     )
 }
 
+//#region Helper components
+/**
+ * Simple Upload button component
+ */
 const UploadButton = () => {
     return (
         <div>
@@ -89,5 +126,6 @@ const UploadButton = () => {
         </div>
     )
 }
+//#endregion
 
 export default S3Upload

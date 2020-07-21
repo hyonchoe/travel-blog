@@ -1,5 +1,7 @@
 /**
- * Snapshot tests for PrivateRoute component
+ * Snapshot tests for PrivateRoute component.
+ * 
+ * Run by running 'npm test' in command line.
  */
 
 import React from 'react'

@@ -1,3 +1,9 @@
+/**
+ * Hook for handling uploading to S3.
+ * 
+ * Run by running 'npm test' in command line.
+ */
+
 import { act } from 'react-dom/test-utils'
 import useS3Upload from './useS3Upload'
 import { testHook } from '../../../testUtils'

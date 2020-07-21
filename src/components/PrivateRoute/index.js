@@ -10,6 +10,7 @@ import { useAuth0 } from '@auth0/auth0-react'
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
     PrivateRoute.propTypes = {
+        /** Component to render if authenticated */
         component: PropTypes.elementType.isRequired
     }
     
