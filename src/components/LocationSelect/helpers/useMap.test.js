@@ -5,7 +5,7 @@
  */
 
 import { act } from 'react-dom/test-utils'
-import { testHook } from '../../../testUtils'
+import { testHook } from '../../../testutils/testHook'
 import useMap from './useMap'
 
 let useMapHook

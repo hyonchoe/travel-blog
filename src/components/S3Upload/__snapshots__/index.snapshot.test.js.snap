@@ -73,7 +73,9 @@ exports[`S3Upload matches snapshot 1`] = `
     showUploadList={true}
     supportServerRender={true}
     type="select"
-  />
+  >
+    <UploadButton />
+  </Upload>
   <Modal
     confirmLoading={false}
     footer={null}

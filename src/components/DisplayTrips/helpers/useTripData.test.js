@@ -5,7 +5,7 @@
  */
 
 import { act } from 'react-dom/test-utils'
-import { testHook } from '../../../testUtils'
+import { testHook } from '../../../testutils/testHook'
 import useTripData from './useTripData'
 import tripService from '../../../services/api'
 

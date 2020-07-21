@@ -18,7 +18,7 @@ describe('EditTrip', () => {
     it('matches snapshot for creating new trip', () => {
         const wrapper = shallow(
             <EditTrip
-                editTrip={null}
+                tripToEdit={null}
                 clearEditTrip={clearEditTrip} />
         )
         expect(wrapper).toMatchSnapshot()
@@ -65,7 +65,7 @@ describe('EditTrip', () => {
         }
         const wrapper = shallow(
             <EditTrip
-                editTrip={dummyTrip}
+                tripToEdit={dummyTrip}
                 clearEditTrip={clearEditTrip} />
         )
         expect(wrapper).toMatchSnapshot()

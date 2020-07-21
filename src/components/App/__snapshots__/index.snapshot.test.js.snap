@@ -56,8 +56,8 @@ exports[`App matches snapshot 1`] = `
           <PrivateRoute
             clearEditTrip={[Function]}
             component={[Function]}
-            editTrip={null}
             path="/addTrip"
+            tripToEdit={null}
           />
           <Route
             component={[Function]}

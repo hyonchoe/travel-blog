@@ -6,7 +6,7 @@
 
 import { act } from '@testing-library/react'
 import * as hooks from '@auth0/auth0-react'
-import { testHook } from '../../../testUtils'
+import { testHook } from '../../../testutils/testHook'
 import tripService from '../../../services/api'
 import useTripCreateUpdate from './useTripCreateUpdate'
 

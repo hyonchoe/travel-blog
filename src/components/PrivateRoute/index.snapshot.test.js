@@ -9,14 +9,18 @@ import { shallow } from 'enzyme'
 import PrivateRoute from './'
 
 describe('PrivateRoute', () => {
-    const dummyComponent = (<div className='dummy'></div>)
+    const DummyComponent = () => {
+        return (
+            <div className='dummy'></div>
+        )
+    }
     
     it('matches snapshot for my trips', () => {
         const handleEditTrip = jest.fn()
         const wrapper = shallow(
             <PrivateRoute 
                 path='/myTrips'
-                component={dummyComponent}
+                component={DummyComponent}
                 showMyTrips={true}
                 editTrip={handleEditTrip} />
         )
@@ -28,7 +32,7 @@ describe('PrivateRoute', () => {
         const wrapper = shallow(
             <PrivateRoute
                 path='/addTrip'
-                component={dummyComponent}
+                component={DummyComponent}
                 editTrip={true}
                 clearEditTrip={clearEditTrip} />
         )

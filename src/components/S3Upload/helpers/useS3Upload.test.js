@@ -6,7 +6,7 @@
 
 import { act } from 'react-dom/test-utils'
 import useS3Upload from './useS3Upload'
-import { testHook } from '../../../testUtils'
+import { testHook } from '../../../testutils/testHook'
 import tripService from '../../../services/api'
 
 let useS3UploadHook
