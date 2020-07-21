@@ -4,14 +4,15 @@
  * Run by running 'npm test' in command line.
  */
 
-import moment from 'moment'
 import axios from 'axios'
+import mockData from '../../testutils/mockData'
 import tripService from './'
 
 describe('API is calling correct axios HTTP methods with route', () => {
-    const getAccessTokenSilently = jest.fn().mockReturnValue('dummytoken')
+    const dummyTokenVal = mockData().tokenVal
+    const getAccessTokenSilently = jest.fn().mockReturnValue(dummyTokenVal)
     const headers = { 
-        headers: { 'Authorization': 'Bearer dummytoken' } 
+        headers: { 'Authorization': `Bearer ${dummyTokenVal}` } 
     }
     beforeEach(() => {
         const dummyData = []
@@ -38,19 +39,12 @@ describe('API is calling correct axios HTTP methods with route', () => {
     })
 
     it('for getting public trips subsequent load', async () => {
-        const dummyTripId = 'dummytripid'
-        const dummyStartDate = moment('2020-07-01', 'YYYY-MM-DD')
-        const dummyEndDate = moment('2020-07-04', 'YYYY-MM-DD')
-        const lastTripLoaded = {
-            _id: dummyTripId,
-            startDate: dummyStartDate,
-            endDate: dummyEndDate,
-        }
+        const lastTripLoaded = mockData().getLastTripLoaded()
         const params = {
             params: {
-                tripId: dummyTripId,
-                startDate: dummyStartDate.toISOString(),
-                endDate: dummyEndDate.toISOString(),
+                tripId: lastTripLoaded._id,
+                startDate: lastTripLoaded.startDate.toISOString(),
+                endDate: lastTripLoaded.endDate.toISOString(),
             }
         }
         const res = await tripService.getPublicTrips(lastTripLoaded)
@@ -58,21 +52,21 @@ describe('API is calling correct axios HTTP methods with route', () => {
     })
 
     it('for updating existing trip', async () => {
-        const dummyTripId = 'dummytripid'
-        const dummyTrip = { title: 'dummytitle' }
+        const dummyTripId = mockData().tripId
+        const dummyTrip = mockData().getTrip()
         const res = await tripService.updateTrip(dummyTrip, dummyTripId, getAccessTokenSilently)
         expect(axios.put).toHaveBeenCalledWith(`/trips/${dummyTripId}`, dummyTrip, headers)
     })
 
     it('for deleting existing trip', async () => {
-        const dummyTripId = 'dummytripid'
-        const dummyTripTitle = 'dummytitle'
+        const dummyTripId = mockData().tripId
+        const dummyTripTitle = mockData().tripTitle
         const res = await tripService.deleteTrip(dummyTripId, dummyTripTitle, getAccessTokenSilently)
         expect(axios.delete).toHaveBeenCalledWith(`/trips/${dummyTripId}`, headers)
     })
 
     it('for getting S3 signed url', async () => {
-        const dummyFileType = 'dummyfiletype'
+        const dummyFileType = mockData().fileType
         const res = await tripService.getS3SignedUrl(dummyFileType, getAccessTokenSilently)
         expect(axios.get).toHaveBeenCalledWith(`/get-signed-url`, {
             ...headers,
