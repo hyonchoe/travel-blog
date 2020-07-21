@@ -1,3 +1,7 @@
+/**
+ * Hook for handling loading and deleting trips from server
+ */
+
 import { useState, useEffect } from 'react'
 import { useAuth0 } from '@auth0/auth0-react'
 import tripService from '../../../services/api'
@@ -12,6 +16,9 @@ const useTripData = (showMyTrips) => {
         noMoreRecords: false,
   })
 
+  /**
+   * Loads either public trips or user trips
+   */
   useEffect(() => {
       const fetchData = async () => {
           const res = (showMyTrips) ?
@@ -28,6 +35,10 @@ const useTripData = (showMyTrips) => {
         fetchData()
   }, [])
 
+  /**
+   * Reload data for trip list.
+   * Used for public list since it removes older trips based on threshold.
+   */
   const reloadTripData = async () => {
       setTripList( {
         ...tripList,
@@ -42,6 +53,12 @@ const useTripData = (showMyTrips) => {
         noMoreRecords: false,
       })
   }
+
+  /**
+   * Deletes the given trip
+   * @param {string} tripId Trip ID to delete
+   * @param {string} tripTitle Title of trip to delete
+   */
   const handleDeleteTrip = async (tripId, tripTitle) => {
     const res = await tripService.deleteTrip(tripId, tripTitle, getAccessTokenSilently)
     
@@ -52,6 +69,13 @@ const useTripData = (showMyTrips) => {
       })
     }
   }
+
+  /**
+   * Loads more public trips
+   * @returns {Object} Object with
+   *                    - Flag specifying no more trips to load from database
+   *                    - Trip ID to update scroll position to
+   */
   const onLoadMore = async () => {
       setTripList({
         ...tripList,
