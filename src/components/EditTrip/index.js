@@ -143,8 +143,8 @@ const EditTrip = (props) => {
             locations: locationData,
             images: imageInfoData,
         }
-        if (props.editTrip){
-            handleUpdate(tripData, props.editTrip._id)
+        if (props.tripToEdit){
+            handleUpdate(tripData, props.tripToEdit._id)
         }
         else{
             handleSubmit(tripData)
@@ -170,7 +170,7 @@ const EditTrip = (props) => {
     }
     
     const [form] = Form.useForm()
-    const existingTrip = props.editTrip
+    const existingTrip = props.tripToEdit
     const existingImages = (existingTrip && existingTrip.images) ? existingTrip.images : []
     let btnName = 'Submit'
     let spinTip = 'Submitting the trip'

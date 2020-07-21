@@ -67,7 +67,7 @@ class App extends React.Component {
                                 <PrivateRoute 
                                     path="/addTrip"
                                     component={EditTrip}
-                                    editTrip={tripToEdit}
+                                    tripToEdit={tripToEdit}
                                     clearEditTrip={this.clearEditTrip} />
                                 <Route component={Error404} />
                             </Switch>
