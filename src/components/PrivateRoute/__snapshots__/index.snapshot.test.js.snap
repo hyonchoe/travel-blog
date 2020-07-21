@@ -3,9 +3,9 @@
 exports[`PrivateRoute matches snapshot for add trips 1`] = `
 <Route
   clearEditTrip={[MockFunction]}
-  editTrip={true}
   path="/addTrip"
   render={[Function]}
+  tripToEdit={null}
 />
 `;
 

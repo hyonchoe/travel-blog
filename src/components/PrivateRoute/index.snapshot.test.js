@@ -33,7 +33,7 @@ describe('PrivateRoute', () => {
             <PrivateRoute
                 path='/addTrip'
                 component={DummyComponent}
-                editTrip={true}
+                tripToEdit={null}
                 clearEditTrip={clearEditTrip} />
         )
         expect(wrapper).toMatchSnapshot()
