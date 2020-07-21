@@ -17,6 +17,12 @@ exports[`S3Upload matches snapshot 1`] = `
           "uid": "dummyurlname2",
           "url": "dummys3url2",
         },
+        Object {
+          "name": "dummyname3",
+          "status": "done",
+          "uid": "dummyurlname3",
+          "url": "dummys3url3",
+        },
       ],
       "nameToUrlNameMap": Object {
         "dummyurlname1": Object {
@@ -28,6 +34,11 @@ exports[`S3Upload matches snapshot 1`] = `
           "fileUrlName": "dummyurlname2",
           "name": "dummyname2",
           "pendingFileUrl": "dummys3url2",
+        },
+        "dummyurlname3": Object {
+          "fileUrlName": "dummyurlname3",
+          "name": "dummyname3",
+          "pendingFileUrl": "dummys3url3",
         },
       },
     }
@@ -63,6 +74,12 @@ exports[`S3Upload matches snapshot 1`] = `
           "status": "done",
           "uid": "dummyurlname2",
           "url": "dummys3url2",
+        },
+        Object {
+          "name": "dummyname3",
+          "status": "done",
+          "uid": "dummyurlname3",
+          "url": "dummys3url3",
         },
       ]
     }

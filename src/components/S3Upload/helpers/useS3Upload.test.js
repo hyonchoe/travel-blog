@@ -8,8 +8,12 @@ import { act } from 'react-dom/test-utils'
 import useS3Upload from './useS3Upload'
 import { testHook } from '../../../testutils/testHook'
 import tripService from '../../../services/api'
+import mockData from '../../../testutils/mockData'
 
+const doneStatus = 'done'
+const uploadingStatus = 'uploading'
 let useS3UploadHook
+
 describe('Upload', () => {
     beforeEach(() => {
         testHook(() => {
@@ -20,12 +24,12 @@ describe('Upload', () => {
     it('is not in progress', () => {
         expect(useS3UploadHook.uploadInProgress()).toBe(false)
         expect(useS3UploadHook.uploadInProgress([])).toBe(false)
-        expect(useS3UploadHook.uploadInProgress([{ status: 'done' }])).toBe(false)
+        expect(useS3UploadHook.uploadInProgress([{ status: doneStatus }])).toBe(false)
     })
 
     it('is in progress', () => {
-        expect(useS3UploadHook.uploadInProgress([{ status: 'uploading' }])).toBe(true)
-        expect(useS3UploadHook.uploadInProgress([{ status: 'done' }, { status: 'uploading' }])).toBe(true)
+        expect(useS3UploadHook.uploadInProgress([{ status: uploadingStatus }])).toBe(true)
+        expect(useS3UploadHook.uploadInProgress([{ status: doneStatus }, { status: uploadingStatus }])).toBe(true)
     })
 })
 
@@ -37,18 +41,22 @@ describe('Preview', () => {
     })
 
     it('has right data', () => {
-        let file = { name: 'dummyname', url: 'dummyurl' }
+        const dummyName = 'dummyname'
+        const dummyUrl = 'dummyurl'
+        const dummyPreviewData = 'dummypreviewdata'
+
+        let file = { name: dummyName, url: dummyUrl }
         act(() => {
             useS3UploadHook.showPreview(file)
         })
-        let expected = { previewImage: 'dummyurl', previewVisible: true, previewTitle: 'dummyname' }
+        let expected = { previewImage: dummyUrl, previewVisible: true, previewTitle: dummyName }
         expect(useS3UploadHook.previewInfo).toEqual(expected)
 
-        file = { name: 'dummyname', preview: 'dummypreviewdata' }
+        file = { name: dummyName, preview: dummyPreviewData }
         act(() => {
             useS3UploadHook.showPreview(file)
         })
-        expected = { previewImage: 'dummypreviewdata', previewVisible: true, previewTitle: 'dummyname' }
+        expected = { previewImage: dummyPreviewData, previewVisible: true, previewTitle: dummyName }
         expect(useS3UploadHook.previewInfo).toEqual(expected)
     })
 })
@@ -71,45 +79,43 @@ describe('Initial values for', () => {
     })
 
     describe('trip with existing images', () => {
-        const names =  ['dummyname1', 'dummyname2', 'dummyname3']
-        const fileUrlNames = ['dummyurlname1', 'dummyurlname2', 'dummyurlname3']
-        const s3Urls = ['dummys3url1', 'dummys3url2', 'dummys3url3']
+        const images = mockData().images
+        const expectedUrlNames = [...images.map((img) => (img.fileUrlName))]
+        const expectedUids = expectedUrlNames
+        const expectedNames = [...images.map((img) => (img.name))]
+        const expectedS3Urls = [...images.map((img) => (img.S3Url))]
         
         beforeEach(() => {
             testHook(() => {
-                useS3UploadHook = useS3Upload([
-                    {name: names[0], fileUrlName: fileUrlNames[0], S3Url: s3Urls[0]},
-                    {name: names[1], fileUrlName: fileUrlNames[1], S3Url: s3Urls[1]},
-                    {name: names[2], fileUrlName: fileUrlNames[2], S3Url: s3Urls[2]},
-                ])
+                useS3UploadHook = useS3Upload(images)
             })
         })
 
         it('is correct for file list', ()=> {
             const expected = [
-                {uid: fileUrlNames[0], name: names[0], status: 'done', url: s3Urls[0] },
-                {uid: fileUrlNames[1], name: names[1], status: 'done', url: s3Urls[1] },
-                {uid: fileUrlNames[2], name: names[2], status: 'done', url: s3Urls[2] },
+                {uid: expectedUids[0], name: expectedNames[0], status: doneStatus, url: expectedS3Urls[0] },
+                {uid: expectedUids[1], name: expectedNames[1], status: doneStatus, url: expectedS3Urls[1] },
+                {uid: expectedUids[2], name: expectedNames[2], status: doneStatus, url: expectedS3Urls[2] },
             ]
             expect(useS3UploadHook.initialFileList()).toEqual(expected)
         })
     
         it('is correct for name to url-name map', ()=> {
             const expected = {
-                [fileUrlNames[0]]: {
-                    name: names[0],
-                    fileUrlName: fileUrlNames[0],
-                    pendingFileUrl: s3Urls[0],
+                [expectedUids[0]]: {
+                    name: expectedNames[0],
+                    fileUrlName: expectedUrlNames[0],
+                    pendingFileUrl: expectedS3Urls[0],
                 },
-                [fileUrlNames[1]]: {
-                    name: names[1],
-                    fileUrlName: fileUrlNames[1],
-                    pendingFileUrl: s3Urls[1],
+                [expectedUids[1]]: {
+                    name: expectedNames[1],
+                    fileUrlName: expectedUrlNames[1],
+                    pendingFileUrl: expectedS3Urls[1],
                 },
-                [fileUrlNames[2]]: {
-                    name: names[2],
-                    fileUrlName: fileUrlNames[2],
-                    pendingFileUrl: s3Urls[2],
+                [expectedUids[2]]: {
+                    name: expectedNames[2],
+                    fileUrlName: expectedUrlNames[2],
+                    pendingFileUrl: expectedS3Urls[2],
                 },
             }
             expect(useS3UploadHook.initialNameToUrlNameMap()).toEqual(expected)

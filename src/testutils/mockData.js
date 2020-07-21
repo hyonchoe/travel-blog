@@ -1,6 +1,8 @@
 import moment from 'moment'
 
 const mockData = () => {
+    //TODO: remove tokenVal and fileType?
+
     const tokenVal = 'dummytoken'
     
     const tripId = 'dummytripid'
