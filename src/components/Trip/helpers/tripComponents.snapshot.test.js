@@ -6,29 +6,30 @@
 
 import React from 'react'
 import renderer from 'react-test-renderer'
-import moment from 'moment'
 import { LocationSpans, TravelerName, CardTitle, TripTabContent, TripDates, getCardActions } from './tripComponents'
 import { journalKey, imageKey } from './useTripTabs'
+import mockData from '../../../testutils/mockData'
 
 jest.mock('../../PictureCarousel', () => {
     const mockedComponent = () => <div className='mockedPictureCarousel' />
     return mockedComponent
 })
 
+const dummyCssClassName = 'dummyCssClassName'
+const trip = mockData().getTrip()
+
 describe('LocationSpans', () => {
     it('matches snapshot for no location', () => {
         const component = renderer.create(
-            LocationSpans(null, 'dummyCssClassName')
+            LocationSpans(null, dummyCssClassName)
         )
         const tree = component.toJSON()
         expect(tree).toMatchSnapshot()
     })
 
     it('matches snapshot for some locations', () => {
-        const dummyLocData = {fmtAddr: 'dummy addr'}
-        const dummyLocs = [ dummyLocData, dummyLocData ]
         const component = renderer.create(
-            LocationSpans(dummyLocs, 'dummyCssClassName')
+            LocationSpans(mockData().locations, dummyCssClassName)
         )
         const tree = component.toJSON()
         expect(tree).toMatchSnapshot()
@@ -37,25 +38,26 @@ describe('LocationSpans', () => {
 
 describe('TravelerName', () => {
     it('matches snapshot for showing My Trips', () => {
-        const dummyParam = ''
+        const dummyParamIsMyTrip = true
+        const dummyParamUserInfo = {}
         const component = renderer.create(
-            TravelerName(true, dummyParam, dummyParam)
+            TravelerName(true, dummyParamIsMyTrip, dummyParamUserInfo)
         )
         const tree = component.toJSON()
         expect(tree).toMatchSnapshot()
     })
 
     it('matches snapshot for my trip in public trips', () => {
-        const dummyParam = ''
+        const dummyParamUserInfo = {}
         const component = renderer.create(
-            TravelerName(false, true, dummyParam)
+            TravelerName(false, true, dummyParamUserInfo)
         )
         const tree = component.toJSON()
         expect(tree).toMatchSnapshot()
     })
 
     it('matches snapshot for not my trip in public trips - user name', () => {
-        const userInfo = { userName: 'dummyName' }
+        const userInfo = mockData().getUserInfo()
         const component = renderer.create(
             TravelerName(false, false, userInfo)
         )
@@ -64,7 +66,8 @@ describe('TravelerName', () => {
     })
 
     it('matches snapshot for not my trip in public trips - user email', () => {
-        const userInfo = { userEmail: 'dummyEmail' }
+        const userInfo = mockData().getUserInfo()
+        delete userInfo.userName
         const component = renderer.create(
             TravelerName(false, false, userInfo)
         )
@@ -73,9 +76,8 @@ describe('TravelerName', () => {
     })
 
     it('matches snapshot for no identifiable information', () => {
-        const userInfo = {}
         const component = renderer.create(
-            TravelerName(false, false, userInfo)
+            TravelerName(false, false, {})
         )
         const tree = component.toJSON()
         expect(tree).toMatchSnapshot()
@@ -83,9 +85,11 @@ describe('TravelerName', () => {
 })
 
 describe('CardTitle', () => {
+    const title = mockData().title
+
     it('matches snapshot for public trip', () => {
         const component = renderer.create(
-            CardTitle('dummyTitle', true, 'dummyCssClassName')
+            CardTitle(title, true, dummyCssClassName)
         )
         const tree = component.toJSON()
         expect(tree).toMatchSnapshot()
@@ -93,7 +97,7 @@ describe('CardTitle', () => {
 
     it('matches snapshot for private trip', () => {
         const component = renderer.create(
-            CardTitle('dummyTitle', false, 'dummyCssClassName')
+            CardTitle(title, false, dummyCssClassName)
         )
         const tree = component.toJSON()
         expect(tree).toMatchSnapshot()
@@ -101,14 +105,19 @@ describe('CardTitle', () => {
 })
 
 describe('TripTabContent', () => {
+    const dummyLocSpans = (<span className='dummy' key={0}>dummy addr</span>)
+    const dummyTravelersName = (<span>dummy traveler name</span>)
+    const dummyNameCssClass = 'nameCssClass'
+    const dummyLocCssClass = 'locCssClass'
+
     it('matches snapshot for journey tab content', () => {
         const component = renderer.create(
             <TripTabContent 
                 tabKey={journalKey}
-                curTrip= { {details: 'dummyDetails', images: [{name: 'dummyfilename', S3Url: 'dummyurl'}]} }
-                locAddr= 'dummyAddr'
-                travelerName= 'dummyName'
-                cssStyle= { {name: 'nameCssClass', loc: 'locCssClass'} } />
+                curTrip= {trip}
+                locAddr= {dummyLocSpans}
+                travelerName= {dummyTravelersName}
+                cssStyle= { {name: dummyNameCssClass, loc: dummyLocCssClass} } />
         )
         const tree = component.toJSON()
         expect(tree).toMatchSnapshot()
@@ -118,10 +127,10 @@ describe('TripTabContent', () => {
         const component = renderer.create(
             <TripTabContent 
                 tabKey={imageKey}
-                curTrip= { {details: 'dummyDetails', images: [{name: 'dummyfilename', S3Url: 'dummyurl'}]} }
-                locAddr= 'dummyAddr'
-                travelerName= 'dummyName'
-                cssStyle= { {name: 'nameCssClass', loc: 'locCssClass'} } />
+                curTrip= {trip}
+                locAddr= {dummyLocSpans}
+                travelerName= {dummyTravelersName}
+                cssStyle= { {name: dummyNameCssClass, loc: dummyLocCssClass} } />
         )
         const tree = component.toJSON()
         expect(tree).toMatchSnapshot()       
@@ -131,10 +140,8 @@ describe('TripTabContent', () => {
 
 describe('TripDates', () => {
     it('matches snapshot for trip dates string', () => {
-        const dummyStartDate = moment('2020-07-01', 'YYYY-MM-DD')
-        const dummyEndDate = moment('2020-07-04', 'YYYY-MM-DD')
         const component = renderer.create(
-            TripDates({ startDate: dummyStartDate, endDate: dummyEndDate })
+            TripDates(trip)
         )
         const tree = component.toJSON()
         expect(tree).toMatchSnapshot()
@@ -142,10 +149,11 @@ describe('TripDates', () => {
 })
 
 describe('Card actions', () => {
-    const dummyParam = ''
+    const dummyParamCallback = () => {}
+
     it('matches snapshot for one action (map)', () => {
         const component = renderer.create(
-            getCardActions(dummyParam, false, dummyParam, dummyParam, dummyParam)
+            getCardActions(trip, false, dummyParamCallback, dummyParamCallback, dummyParamCallback)
         )
         const tree = component.toJSON()
         expect(tree).toMatchSnapshot()
@@ -153,7 +161,7 @@ describe('Card actions', () => {
 
     it('matches snapshot for three actions (map, edit, delete)', () => {
         const component = renderer.create(
-            getCardActions(dummyParam, true, dummyParam, dummyParam, dummyParam)
+            getCardActions(trip, true, dummyParamCallback, dummyParamCallback, dummyParamCallback)
         )
         const tree = component.toJSON()
         expect(tree).toMatchSnapshot()

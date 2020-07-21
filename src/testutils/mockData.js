@@ -11,9 +11,22 @@ const mockData = () => {
     const title = 'dummytitle'
     const isPublic = true
     const details = 'dummydetails'
-    const locations = [
-        {fmtAddr: 'dummyaddr'}
-    ]
+    
+    const loc1 = {
+        fmtAddr: 'dummyfmtaddr1',
+        latLng: [1, 1],
+        city: 'dummycity1',
+        state: 'dummystate1',
+        country: 'dummycountry1',
+    }
+    const loc2 = {
+        fmtAddr: 'dummyfmtaddr2',
+        latLng: [2, 2],
+        city: 'dummycity2',
+        state: 'dummystate2',
+        country: 'dummycountry2',
+    }
+    const locations = [loc1, loc2]
 
     const image1 = {
         name: 'dummyname1',
@@ -31,6 +44,7 @@ const mockData = () => {
         S3Url: 'dummys3url3'
     }
     const images = [image1, image2, image3]
+
     const startDate = moment('2020-07-01', 'YYYY-MM-DD')
     const endDate = moment('2020-07-04', 'YYYY-MM-DD')
 
@@ -56,12 +70,17 @@ const mockData = () => {
         endDate: endDate,
     })
 
+    const getUserInfo = () => ({
+        userName,
+        userEmail,
+    })
+
     return {
         tokenVal,
-        tripId, otherTripId, startDate, endDate,
+        tripId, otherTripId, title, startDate, endDate,
         fileType,
-        images,
-        getTrip, getLastTripLoaded
+        images, locations,
+        getTrip, getLastTripLoaded, getUserInfo
     }
 }
 

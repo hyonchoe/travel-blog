@@ -109,7 +109,7 @@ Array [
 
 exports[`CardTitle matches snapshot for private trip 1`] = `
 <span>
-  dummyTitle
+  dummytitle
   <span
     aria-label="lock"
     className="anticon anticon-lock dummyCssClassName"
@@ -135,7 +135,7 @@ exports[`CardTitle matches snapshot for private trip 1`] = `
 
 exports[`CardTitle matches snapshot for public trip 1`] = `
 <span>
-  dummyTitle
+  dummytitle
 </span>
 `;
 
@@ -146,12 +146,12 @@ Array [
   <span
     className="dummyCssClassName"
   >
-    dummy addr
+    dummyfmtaddr1
   </span>,
   <span
     className="dummyCssClassName"
   >
-    dummy addr
+    dummyfmtaddr2
   </span>,
 ]
 `;
@@ -173,14 +173,14 @@ exports[`TravelerName matches snapshot for no identifiable information 1`] = `
 exports[`TravelerName matches snapshot for not my trip in public trips - user email 1`] = `
 <span>
   Travelled by 
-  dummyEmail
+  dummyuseremail
 </span>
 `;
 
 exports[`TravelerName matches snapshot for not my trip in public trips - user name 1`] = `
 <span>
   Travelled by 
-  dummyName
+  dummyusername
 </span>
 `;
 
@@ -195,15 +195,21 @@ exports[`TripTabContent matches snapshot for journey tab content 1`] = `
   <div
     className="nameCssClass"
   >
-    dummyName
+    <span>
+      dummy traveler name
+    </span>
   </div>
   <div
     className="locCssClass"
   >
-    dummyAddr
+    <span
+      className="dummy"
+    >
+      dummy addr
+    </span>
   </div>
   <p>
-    dummyDetails
+    dummydetails
   </p>
 </article>
 `;
