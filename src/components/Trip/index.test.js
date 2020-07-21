@@ -6,16 +6,16 @@
 
 import React from 'react'
 import { mount } from 'enzyme'
-import moment from 'moment'
 import { Popconfirm } from 'antd'
 import { GlobalOutlined, DeleteOutlined } from '@ant-design/icons'
+import mockData from '../../testutils/mockData'
 import { checkIsMyTrip } from './'
 import Trip from './'
 import * as cardActionsModule from './helpers/cardActions'
 
 describe('Trip is', () => {
-    const myId = 'myid'
-    const otherUserId = 'otherid'
+    const myId = mockData().tripId
+    const otherUserId = mockData().otherTripId
 
     it('my trip', () => {
         expect(checkIsMyTrip(true, myId, myId)).toBe(true)
@@ -31,24 +31,10 @@ describe('Trip is', () => {
 })
 
 describe('Trip card', () => {
-    const dummyStartDate = moment('2020-07-01', 'YYYY-MM-DD')
-    const dummyEndDate = moment('2020-07-04', 'YYYY-MM-DD')
-    const trip = {
-        _id: 'dummytripid',
-        userId: 'dummyuserid',
-        userName: 'dummyusername',
-        userEmail: 'dummyuseremail',
-        title: 'dummytitle',
-        startDate: dummyStartDate,
-        endDate: dummyEndDate,
-        public: true,
-        details: 'dummydetails',
-        locations: [{fmtAddr: 'dummyaddr'}],
-        images: [],
-    }
+    const trip = mockData().getTrip()
     const tripProps = {
         isAuthenticated: true,
-        userId: 'dummyuserid',
+        userId: trip.userId,
         showMyTrips: true,
         trip: trip,
     }

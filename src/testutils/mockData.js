@@ -4,7 +4,17 @@ const mockData = () => {
     const tokenVal = 'dummytoken'
     
     const tripId = 'dummytripid'
-    const tripTitle = 'dummytitle'
+    const otherTripId = 'otherdummytripid'
+    const userId = 'dummyuserid'
+    const userName = 'dummyusername'
+    const userEmail = 'dummyuseremail'
+    const title = 'dummytitle'
+    const isPublic = true
+    const details = 'dummydetails'
+    const locations = [
+        {fmtAddr: 'dummyaddr'}
+    ]
+    const images = []
     const startDate = moment('2020-07-01', 'YYYY-MM-DD')
     const endDate = moment('2020-07-04', 'YYYY-MM-DD')
 
@@ -12,9 +22,16 @@ const mockData = () => {
 
     const getTrip = () => ({
         _id: tripId,
-        title: tripTitle,
-        startDate: startDate,
-        endDAte: endDate,
+        userId,
+        userName,
+        userEmail,
+        title,
+        startDate,
+        endDate,
+        public: isPublic,
+        details,
+        locations,
+        images
     })
 
     const getLastTripLoaded = () => ({
@@ -25,7 +42,7 @@ const mockData = () => {
 
     return {
         tokenVal,
-        tripId, startDate, endDate,
+        tripId, otherTripId, startDate, endDate,
         fileType,
         getTrip, getLastTripLoaded
     }
