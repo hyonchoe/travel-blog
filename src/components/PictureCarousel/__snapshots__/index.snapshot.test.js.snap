@@ -10,9 +10,9 @@ exports[`PictureCarousel matches snapshot for image divs it hosts 1`] = `
     key="0"
   >
     <img
-      alt="dummyname"
+      alt="dummyname1"
       className="carouselPicture"
-      src="dummyurl"
+      src="dummys3url1"
     />
   </div>
   <div
@@ -21,7 +21,16 @@ exports[`PictureCarousel matches snapshot for image divs it hosts 1`] = `
     <img
       alt="dummyname2"
       className="carouselPicture"
-      src="dummyurl2"
+      src="dummys3url2"
+    />
+  </div>
+  <div
+    key="2"
+  >
+    <img
+      alt="dummyname3"
+      className="carouselPicture"
+      src="dummys3url3"
     />
   </div>
 </Carousel>
