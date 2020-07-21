@@ -6,16 +6,20 @@
 
 import { act } from 'react-dom/test-utils'
 import { testHook } from '../../../testutils/testHook'
+import mockData from '../../../testutils/mockData'
 import useTripData from './useTripData'
 import tripService from '../../../services/api'
 
 let useTripDataHook
 describe('useTripData()', () => {
-    const mockTripData = [ { dummyData: 'dummyData' } ]
+    const publicTripsData = [ mockData().getTrip() ]
+    const privateTrip = mockData().getTrip()
+    privateTrip.public = false
+    const privateTripsData = [ privateTrip ]
 
     beforeEach(() => {
-        tripService.getTrips = jest.fn().mockResolvedValue(mockTripData)
-        tripService.getPublicTrips = jest.fn().mockResolvedValue(mockTripData)
+        tripService.getTrips = jest.fn().mockResolvedValue(privateTripsData)
+        tripService.getPublicTrips = jest.fn().mockResolvedValue(publicTripsData)
         tripService.deleteTrip = jest.fn()
     })
     
@@ -69,14 +73,16 @@ describe('useTripData()', () => {
             })
 
             it('for loading more', async () => {
-                const mockTripData2 = [ { dummyData: 'dummyData2' } ]
-                tripService.getPublicTrips = jest.fn().mockResolvedValue(mockTripData2)
+                const otherPublicTrip = mockData().getTrip()
+                otherPublicTrip._id = otherPublicTrip._id + 'other'
+                const morePublicTripsData = [ otherPublicTrip ]
+                tripService.getPublicTrips = jest.fn().mockResolvedValue(morePublicTripsData)
                 
                 await act( async () => {
                     useTripDataHook.onLoadMore()
                 })
 
-                expect(tripService.getPublicTrips).toHaveBeenCalledWith(mockTripData[0])
+                expect(tripService.getPublicTrips).toHaveBeenCalledWith(publicTripsData[0])
             })
         })
     })  
