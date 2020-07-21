@@ -1,3 +1,9 @@
+/**
+ * Unit tests for useTripTabs() hook.
+ * 
+ * Run by running 'npm test' in command line.
+ */
+
 import { getTripTabList, journalTab, imageTab } from './useTripTabs'
 
 describe('Trip card tab list', () => {

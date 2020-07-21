@@ -1,3 +1,9 @@
+/**
+ * Unit tests for helper components in tripComponents.
+ * 
+ * Run by running 'npm test' in command line.
+ */
+
 import { getCardActions } from './tripComponents'
 
 describe('Trip card actions', () => {

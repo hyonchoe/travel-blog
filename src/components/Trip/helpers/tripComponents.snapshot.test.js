@@ -1,3 +1,9 @@
+/**
+ * Snapshot tests for helper components for Trip component (tripComponents)
+ * 
+ * Run by running 'npm test' in command line.
+ */
+
 import React from 'react'
 import renderer from 'react-test-renderer'
 import moment from 'moment'

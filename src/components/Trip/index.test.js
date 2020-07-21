@@ -1,3 +1,9 @@
+/**
+ * Unit tests for Trip component.
+ * 
+ * Run by running 'npm test' in command line.
+ */
+
 import React from 'react'
 import { mount } from 'enzyme'
 import moment from 'moment'
@@ -84,8 +90,7 @@ describe('Trip card', () => {
                                 deleteTrip= {deleteTrip} />)
         
         // Attempt to launch map - should not be launched
-        tripCard.find(GlobalOutlined).simulate('click')        
+        tripCard.find(GlobalOutlined).simulate('click')
         expect(launchMapModal).not.toHaveBeenCalled()
     })
 })
-
