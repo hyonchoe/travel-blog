@@ -1,3 +1,7 @@
+/**
+ * Hook for handling map selection data
+ */
+
 import { useState } from 'react'
 
 const useMap = () => {
@@ -17,12 +21,21 @@ const useMap = () => {
         fmtAddr: '',
     })
     
+    /**
+     * Gets initial map center data.
+     * It's set to New York, NY
+     */
     const getInitialMapCenter = () => {
         return {
             lat: 40.730610,
             lng: -73.935242,
         }
     }
+
+    /**
+     * Gets initial address data,
+     * which is empty.
+     */
     const getInitialAddr = () => {
         return {
             city: '',
@@ -31,12 +44,21 @@ const useMap = () => {
             fmtAddr: '',
         }
     }
+
+    /**
+     * Gets initial map marker data,
+     * which is null
+     */
     const getInitialMarker = () => {
         return {
             lat: null,
             lng: null,
         }
     }
+
+    /**
+     * Clears out map selection data
+     */
     const clearMapStates = () => {
         const resetAddr = getInitialAddr()
         const resetMarker = getInitialMarker()
@@ -46,6 +68,12 @@ const useMap = () => {
         setMarkerLatLng(resetMarker)
         setMapCenter(resetMapCenter)
     }
+
+    /**
+     * 
+     * @param {Object} locAddrInfo Address data to use
+     * @param {Object} locLatLngInfo Latitude and longitude data to use
+     */
     const setLocationData = (locAddrInfo, locLatLngInfo) => {
         setAddr(locAddrInfo)
         setMarkerLatLng(locLatLngInfo)

@@ -1,3 +1,9 @@
+/**
+ * Unit tests for useMap() hook.
+ * 
+ * Run by running 'npm test' in command line.
+ */
+
 import { act } from 'react-dom/test-utils'
 import { testHook } from '../../../testUtils'
 import useMap from './useMap'

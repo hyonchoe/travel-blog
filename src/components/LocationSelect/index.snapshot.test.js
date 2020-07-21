@@ -1,3 +1,9 @@
+/**
+ * Snapshot test for LocationSelect component.
+ * 
+ * Run by running 'npm test' in command line.
+ */
+
 import React from 'react'
 import { shallow } from 'enzyme'
 import LocationSelect from './'
