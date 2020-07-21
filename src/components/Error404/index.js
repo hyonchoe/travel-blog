@@ -1,3 +1,7 @@
+/**
+ * Error404 component for displaying 404 error page
+ */
+
 import React from 'react'
 import './style.css'
 

@@ -1,3 +1,7 @@
+/**
+ * Snapshot test for Error404 component
+ */
+
 import React from 'react'
 import { shallow } from 'enzyme'
 import Error404 from './'
