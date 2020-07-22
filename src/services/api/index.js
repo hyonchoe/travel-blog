@@ -11,6 +11,9 @@ const LOAD_TRIP_ERR_MSG = 'Unable to load trips due to error'
 const DELETE_TRIP_ERR_MSG = 'Unable to delete trip due to error'
 const UPDATE_TRIP_ERR_MSG = 'There was an issue with the trip update. Check the trip entry.'
 
+const isDev = (process.env.REACT_APP_ENV !== 'production')
+const API_URL = (isDev) ? process.env.REACT_APP_API_URL : process.env.REACT_APP_API_URL_PRD
+
 export default {
     /**
      * Create new trip
@@ -21,7 +24,7 @@ export default {
     submitNewTrip: async (trip, getAccessTokenSilently) => {
         try {
             const headers = await getAuthHeader(getAccessTokenSilently)
-            await axios.post('/trips', trip, headers)
+            await axios.post(API_URL + '/trips', trip, headers)
             message.success(createTripMsg(trip.title))
             return true
         } catch (error){
@@ -39,7 +42,7 @@ export default {
     getTrips: async (getAccessTokenSilently) => {
         try {
             const headers = await getAuthHeader(getAccessTokenSilently)
-            let res = await axios.get('/trips', headers)
+            let res = await axios.get(API_URL + '/trips', headers)
             return processTripData(res.data)
         } catch (error){
             console.error(error)
@@ -61,7 +64,7 @@ export default {
                                     endDate: lastTripLoaded.endDate.toISOString(),
                                 } }
                                 : null
-            let res = await axios.get('/publicTrips', params)
+            let res = await axios.get(API_URL + '/publicTrips', params)
             return processTripData(res.data)
         } catch (error){
             console.error(error)
@@ -79,7 +82,7 @@ export default {
     updateTrip: async (updatedTrip, tripId, getAccessTokenSilently) => {
         try {
             const headers = await getAuthHeader(getAccessTokenSilently)
-            await axios.put(`/trips/${tripId}`, updatedTrip, headers)
+            await axios.put(API_URL + `/trips/${tripId}`, updatedTrip, headers)
             message.success(updateTripMsg(updatedTrip.title))
         } catch (error) {
             console.error(error)
@@ -96,7 +99,7 @@ export default {
     deleteTrip: async (tripId, tripTitle, getAccessTokenSilently) => {
         try {
             const headers = await getAuthHeader(getAccessTokenSilently)
-            await axios.delete(`/trips/${tripId}`, headers)
+            await axios.delete(API_URL + `/trips/${tripId}`, headers)
             message.success(deleteTripMsg(tripTitle))
             return true
         } catch (error) {
@@ -115,7 +118,7 @@ export default {
     getS3SignedUrl: async (fileType, getAccessTokenSilently) => {
         try {
             const headers = await getAuthHeader(getAccessTokenSilently)
-            let res = await axios.get(`/get-signed-url`, {
+            let res = await axios.get(API_URL + `/get-signed-url`, {
                 ...headers,
                 params: {
                     type: fileType,
