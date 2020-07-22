@@ -243,7 +243,7 @@ exports[`TripTabContent matches snapshot for journey tab content 1`] = `
 </article>
 `;
 
-exports[`TripTabContent mathces snapshot for photo tab content (PictureCarousel component mocked) 1`] = `
+exports[`TripTabContent matches snapshot for photo tab content (PictureCarousel component mocked) 1`] = `
 <div
   className="mockedPictureCarousel"
 />
