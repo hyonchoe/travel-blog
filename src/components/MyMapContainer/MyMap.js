@@ -15,7 +15,7 @@ const MyMap = withScriptjs(withGoogleMap((props) =>{
     /** Location data to turn into markers */
     tripLocations: PropTypes.array.isRequired,
     /** Center of the map - latitude */
-		mapCenterLat: PropTypes.number.isRequired,
+    mapCenterLat: PropTypes.number.isRequired,
     /** Center of the map - longitutde */
     mapCenterLng: PropTypes.number.isRequired,
     /** Latitude for marker used when searching */
@@ -35,7 +35,7 @@ const MyMap = withScriptjs(withGoogleMap((props) =>{
   }
   MyMap.defaultProps = {
     searchMode: false,
-		tripLocations: [],
+    tripLocations: [],
     onLocSelected: () => {}
   }
   
@@ -124,8 +124,8 @@ const MyMap = withScriptjs(withGoogleMap((props) =>{
           types={['(regions)']} />
         }
       </div>
-    );
+    )
   }
 ))
 
-export default MyMap;
+export default MyMap
