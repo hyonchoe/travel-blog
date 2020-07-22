@@ -123,7 +123,7 @@ describe('TripTabContent', () => {
         expect(tree).toMatchSnapshot()
     })
     
-   it('mathces snapshot for photo tab content (PictureCarousel component mocked)', () => {
+   it('matches snapshot for photo tab content (PictureCarousel component mocked)', () => {
         const component = renderer.create(
             <TripTabContent 
                 tabKey={imageKey}

@@ -55,7 +55,6 @@ export const showDeleteConfirm = (tripId, tripTitle, deleteCallback) => {
     const { confirm } = Modal
 
     confirm({
-      className: 'hacTest',
       title: 'Are you sure you want to delete this trip?',
       icon: <ExclamationCircleOutlined />,
       content: 'After deletion, it will not be recoverable.',

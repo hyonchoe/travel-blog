@@ -1,5 +1,5 @@
 /**
- * PictureCarousel comonent that is a simple wrapper for Carousel component
+ * PictureCarousel component that is a simple wrapper for Carousel component
  */
 
 import React from 'react'

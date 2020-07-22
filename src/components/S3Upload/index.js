@@ -88,7 +88,6 @@ const S3Upload = (props) => {
                         if (uploadInProgress(value.fileList)){
                             message.error('File upload is not completed yet.')
                             return Promise.reject('')
-                            
                         }
                         return Promise.resolve()
                     }
@@ -106,8 +105,7 @@ const S3Upload = (props) => {
                 visible={previewInfo.previewVisible}
                 title={previewInfo.previewTitle}
                 footer={null}
-                onCancel={previewCancel}
-                >
+                onCancel={previewCancel} >
                 <img alt="preview" style={{ width: '100%' }} src={previewInfo.previewImage} />
             </Modal>
         </Form.Item>

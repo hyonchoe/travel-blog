@@ -1,5 +1,5 @@
 /**
- * Hook for handling uploading to S3.
+ * Unit tests for useS3Upload() hook.
  * 
  * Run by running 'npm test' in command line.
  */

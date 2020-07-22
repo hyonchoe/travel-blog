@@ -21,8 +21,8 @@ const useS3Upload = (images) => {
     /**
      * Gets signed URL to upload file to
      * @param {string} fileName Upload file name
-     * @param {*} fileType Uplaod file type
-     * @param {*} fileUID Client generated unique ID for upload file
+     * @param {string} fileType Upload file type
+     * @param {string} fileUID Client generated unique ID for upload file
      * @returns {Object} Signed URL data
      */
     const getS3SignedUrl = async (fileName, fileType, fileUID) => {
