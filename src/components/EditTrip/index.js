@@ -24,7 +24,7 @@ const EditTrip = (props) => {
     }
 
     const TITLE_MAX_LENGTH = 40
-    const DETAILS_MAX_LENGTH = 1000
+    const DETAILS_MAX_LENGTH = 10000
     const LOC_LIST_NAME = 'locationList'
     const LAT_LNG_DELIM = ','
     const UPLOAD_FLD_NAME = 'files'
