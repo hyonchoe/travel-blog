@@ -70,7 +70,7 @@ const useMap = () => {
     }
 
     /**
-     * 
+     * Sets data for the selected location
      * @param {Object} locAddrInfo Address data to use
      * @param {Object} locLatLngInfo Latitude and longitude data to use
      */
