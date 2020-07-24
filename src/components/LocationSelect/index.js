@@ -8,7 +8,7 @@ import { Form, Input, Button, Modal } from 'antd'
 import { CloseCircleOutlined, PlusOutlined } from '@ant-design/icons'
 import PropTypes from 'prop-types'
 import MyMapContainer from '../MyMapContainer'
-import useMap from './helpers/useMap'
+import useMap from '../../hooks/useMap'
 import './style.css'
 
 const LocationSelect = (props) => {

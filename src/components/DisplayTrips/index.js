@@ -9,6 +9,7 @@ import PropTypes from 'prop-types'
 import MyMapContainer from '../MyMapContainer'
 import Trip from '../Trip'
 import useTripData from './helpers/useTripData'
+import useMap from '../../hooks/useMap'
 import useWindowDimensions from '../../hooks/useWindowDimensions'
 
 const DisplayTrips = (props) => {
@@ -55,6 +56,7 @@ const DisplayTrips = (props) => {
 
     const { windowWidth } = useWindowDimensions()
     const { tripList, reloadTripData, handleDeleteTrip, onLoadMore } = useTripData(props.showMyTrips)
+    const { mapCenter } = useMap()
     const { isAuthenticated, user } = useAuth0()
     const [modalMap, setModalMap] = useState({
       modalVisible: false,
@@ -104,8 +106,8 @@ const DisplayTrips = (props) => {
 
     const showMyTrips = props.showMyTrips
     const handleEditTrip = props.editTrip
-    let mapCenterLat = null
-    let mapCenterLng = null
+    let mapCenterLat = mapCenter.lat
+    let mapCenterLng = mapCenter.lng
     if (modalMap.tripLocations && modalMap.tripLocations.length>0) {
       mapCenterLat = modalMap.tripLocations[0].latLng[0]
       mapCenterLng = modalMap.tripLocations[0].latLng[1]
