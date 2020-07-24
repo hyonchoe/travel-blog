@@ -23,7 +23,7 @@ const EditTrip = (props) => {
         clearEditTrip: () => {}
     }
 
-    const TITLE_MAX_LENGTH = 40
+    const TITLE_MAX_LENGTH = 60
     const DETAILS_MAX_LENGTH = 10000
     const LOC_LIST_NAME = 'locationList'
     const LAT_LNG_DELIM = ','

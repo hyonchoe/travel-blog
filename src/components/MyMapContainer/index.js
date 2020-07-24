@@ -10,8 +10,6 @@ const MyMapContainer = props => {
 	MyMapContainer.propTypes = {
 		/** Flag for using search vs view mode */
 		searchMode: PropTypes.bool.isRequired,
-		/** Location data to turn into markers */
-		tripLocations: PropTypes.array.isRequired,
 		/** Center of the map - latitude */
 		mapCenterLat: PropTypes.number.isRequired,
 		/** Center of the map - longitutde */
@@ -21,7 +19,9 @@ const MyMapContainer = props => {
 		/** Longitude for marker used when searching */
 		markerLng: PropTypes.number,
 		/** Callback to call when location selection is made */
-		onLocSelected: PropTypes.func
+		onLocSelected: PropTypes.func,
+		/** Location data to turn into markers */
+		tripLocations: PropTypes.array,
 	}
 	MyMapContainer.defaultProps = {
 		searchMode: false,

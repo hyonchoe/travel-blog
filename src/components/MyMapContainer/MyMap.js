@@ -12,8 +12,6 @@ const MyMap = withScriptjs(withGoogleMap((props) =>{
   MyMap.propTypes= {
     /** Flag for using search vs view mode */
     searchMode: PropTypes.bool.isRequired,
-    /** Location data to turn into markers */
-    tripLocations: PropTypes.array.isRequired,
     /** Center of the map - latitude */
     mapCenterLat: PropTypes.number.isRequired,
     /** Center of the map - longitutde */
@@ -31,7 +29,9 @@ const MyMap = withScriptjs(withGoogleMap((props) =>{
     /** Container needed for HOCs */
     containerElement: PropTypes.node.isRequired,
     /** Container needed for HOCs */
-    mapElement: PropTypes.node.isRequired
+    mapElement: PropTypes.node.isRequired,
+    /** Location data to turn into markers */
+    tripLocations: PropTypes.array,
   }
   MyMap.defaultProps = {
     searchMode: false,
@@ -54,8 +54,10 @@ const MyMap = withScriptjs(withGoogleMap((props) =>{
       latLngs.push(latLngPos)
     })
 
-    return latLngs.map((latLng) => (
-      <Marker position={{ lat: latLng.lat, lng: latLng.lng, }} />
+    return latLngs.map((latLng, index) => (
+      <Marker
+        position={{ lat: latLng.lat, lng: latLng.lng, }}
+        key={index} />
     ))
   }
 

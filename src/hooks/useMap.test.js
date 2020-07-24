@@ -5,8 +5,8 @@
  */
 
 import { act } from 'react-dom/test-utils'
-import { testHook } from '../../../testutils/testHook'
-import mockData from '../../../testutils/mockData'
+import { testHook } from '../testutils/testHook'
+import mockData from '../testutils/mockData'
 import useMap from './useMap'
 
 let useMapHook
