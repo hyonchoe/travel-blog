@@ -230,8 +230,8 @@ exports[`DisplayTrips matches snapshot for my trips 1`] = `
     width="500px"
   >
     <MyMapContainer
-      mapCenterLat={null}
-      mapCenterLng={null}
+      mapCenterLat={40.73061}
+      mapCenterLng={-73.935242}
       searchMode={false}
       tripLocations={null}
     />
@@ -469,8 +469,8 @@ exports[`DisplayTrips matches snapshot for public trips 1`] = `
     width="500px"
   >
     <MyMapContainer
-      mapCenterLat={null}
-      mapCenterLng={null}
+      mapCenterLat={40.73061}
+      mapCenterLng={-73.935242}
       searchMode={false}
       tripLocations={null}
     />
