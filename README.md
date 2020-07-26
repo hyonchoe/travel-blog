@@ -1,8 +1,8 @@
 ## Project Name & Description
-###Name
+### Name
 Travel Blog
 
-###Description
+### Description
 Web application (frontend) to document user's travels and serve as space where user can easily reflect back on the memories and impact each travel provided.
 
 Current published features:
