@@ -31,7 +31,7 @@ Add/Edit Trip
 ## Reflection
 I developed this project:
 - to learn React and Node.js (for backend piece) as it was my first time working with both of them
-- to give myself a tool to track my travels and reflect back on experiences.
+- to give myself a tool to track my travels and reflect back on experiences
 
 I made use of Create React App to bootstrap the project and have it handle setup and environment configuration to more efficiently spend my time working and learning React development.
 
@@ -44,11 +44,12 @@ Some examples include:
 - unit testing tools
 
 Another specific challenge was an attempt to implement virtualized list (provided via npm package) to provide better performance when loading many public trips.
-Due to how Trip card element (the main display element for trip information) currently changes its height often based on the content displayed, it resulted in need of performance degrading height re-calculation often and showed unsightly scrollbar height changes with virtualzied list implementation.
+Due to how Trip card element (the main display element for trip information) currently changes its height often based on the content displayed, it resulted in need of performance degrading height re-calculation often and showed unsightly scrollbar height changes with virtualized list implementation.
 Instead of using virtualized list, I took a different and simpler approach of loading public trip data incrementally via "Load more" button and removing old trip data (i.e, those that have displayed earlier in time) once a threshold limit has reached for performance consideration.
 I plan on re-visiting virtualized list implementation after Trip card improvements are made.
 
 The tools/technology used to build this project include: React, React Router, Ant Design, Auth0, axios, history, react-google-autocomplete, react-google-maps, JavaScript, JSX, CSS.
+
 Jest, Enzyme, and react-test-renderer were used for testing needs.
 
 ## Create React App details
