@@ -17,7 +17,8 @@ Current published features:
 For backend, visit https://github.com/hyonchoe/travel-blog-backend
 
 ## Live Demo / Deployed Application
-Live website: https://notemytravels.netlify.app/
+### Live website
+https://notemytravels.netlify.app/
 (if heroku dyno that hosts the backend needs to spin up to start serving requests, it may take a while for the first load)
 
 ### Screenshot Examples
