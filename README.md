@@ -23,10 +23,10 @@ https://notemytravels.netlify.app/
 
 ### Screenshot Examples
 Splash page / Public Trips
-<>
+![Public trips](../assets/publictrips.png?raw=true)
 
 Add/Edit Trip
-<>
+![Add new trip](../assets/newtrip.png?raw=true)
 
 ## Reflection
 I developed this project:
